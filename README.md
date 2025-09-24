@@ -1,3 +1,3 @@
 # 491-project
 2025 Spring-Fall
-Hello Professor Fahd Albinali
+# CSULB CECS Senior Design Project
