@@ -4,7 +4,7 @@ At California State Univeristy, Long Beach, as one of the final requirements of 
 
 In Spring of 2025, formed RPG Dev and the RPG app. (Work in progess)  
 
-# Featurs
+# Features
 
 # Meet the RPG Development Team 
 Bryan Tran - 
