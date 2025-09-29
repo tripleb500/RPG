@@ -26,12 +26,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RPGTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = Color.White
-                ){
-                    ScreenMain()
-                }
+                ScreenMain()
             }
         }
     }
