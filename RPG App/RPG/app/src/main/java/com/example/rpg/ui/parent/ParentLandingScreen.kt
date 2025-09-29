@@ -10,6 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import com.example.rpg.R
 import com.example.rpg.ui.Routes
 
 @Composable
@@ -18,20 +21,21 @@ fun ParentLandingScreen(
     navController: NavHostController
 ) {
     Column(
-        modifier = Modifier
-        .padding(top = 85.dp),
+        modifier = Modifier.padding(top = 85.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Parent",
-            modifier = modifier.padding(24.dp)
-        )
         //switch button
         Button(
             modifier = Modifier.padding(top = 85.dp),
             onClick = { navController.navigate(Routes.ChildLandingScreen.route) }) {
             Text(text = "Parent")
         }
+        //logo
+        Image(
+            painter = painterResource(R.drawable.rpg_logo_parent),
+            contentDescription = null,
+            modifier = modifier.padding(24.dp)
+        )
     }
 }
