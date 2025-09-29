@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
+import com.example.rpg.ui.child.ChildHomeScreen
 import com.example.rpg.ui.child.ChildLandingScreen
 import com.example.rpg.ui.parent.ParentLandingScreen
 import com.example.rpg.ui.theme.RPGTheme
@@ -49,6 +50,10 @@ fun ScreenMain() {
 // Another Route : childLanding
         composable(Routes.ChildLandingScreen.route) {
             ChildLandingScreen(navController = navController)
+        }
+// Child Route : childHome
+        composable(Routes.ChildHomeScreen.route) {
+            ChildHomeScreen(navController = navController)
         }
     }
 }
