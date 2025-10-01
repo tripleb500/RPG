@@ -37,12 +37,12 @@ fun ChildLandingScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(brush = Brush.linearGradient(
-                //change once we set up material theming
-                colors = listOf(Color(0xFF798B6A), Color(0xFF6c7d5f)),
-                start = Offset(0f,0f),
-                end = Offset(0f,3000f)
-            ))
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(Color(0xFF798B6A), Color(0xFF6c7d5f)
+                )
+                )
+            )
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
