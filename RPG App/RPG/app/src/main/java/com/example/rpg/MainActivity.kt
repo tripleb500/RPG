@@ -57,11 +57,6 @@ fun ScreenMain() {
 @Composable
 fun PreviewScreenMain(){
     RPGTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = Color.White
-        ) {
             ScreenMain()
-        }
     }
 }

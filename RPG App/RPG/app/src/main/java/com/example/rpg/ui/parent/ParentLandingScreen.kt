@@ -21,33 +21,38 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
+import com.example.rpg.ScreenMain
 import com.example.rpg.ui.Routes
+import com.example.rpg.ui.theme.RPGTheme
 
 @Composable
 fun ParentLandingScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
-    Surface(
+    Box(
         modifier = Modifier
         .fillMaxSize()
             .background(brush = Brush.linearGradient(
-                colors = listOf(Color.Cyan,Color.White),
+                //change once we set up material theming
+                colors = listOf(Color(0xFF4782B2), Color(0xFF5F7F93)),
                 start = Offset(0f,0f),
-                end = Offset(0f,0f)
+                end = Offset(0f,3000f)
             ))
     ) {
-        Box(
+        Column(
             modifier = Modifier.fillMaxSize(),
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(top = 16.dp, bottom = 85.dp),
                 horizontalArrangement = Arrangement.End,
             ) {
                 //switch button
                 Button(
-                    modifier = Modifier.padding(bottom = 85.dp),
                     onClick = { navController.navigate(Routes.ChildLandingScreen.route) }) {
                     Text(text = "Parent")
                 }
@@ -66,5 +71,13 @@ fun ParentLandingScreen(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewScreenMain(){
+    RPGTheme {
+        ParentLandingScreen(navController = rememberNavController())
     }
 }
