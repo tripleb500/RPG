@@ -77,10 +77,10 @@ fun ParentLandingScreen(
                     painter = painterResource(R.drawable.ic_launcher_foreground),
                     contentDescription = "Play button",
                     modifier = modifier.padding(bottom = 48.dp)
+                        .size(2400.dp)
                         .clickable {
                             navController.navigate(Routes.ChildHomeScreen.route)
                         }
-                        .size(2400.dp)
                 )
             }
         }
