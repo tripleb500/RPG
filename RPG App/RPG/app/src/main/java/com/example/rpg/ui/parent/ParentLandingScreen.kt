@@ -69,9 +69,8 @@ fun ParentLandingScreen(
                 Image(
                     painter = painterResource(R.drawable.rpg_logo_parent),
                     contentDescription = "ParentLandingScreen.kt logo",
-                    //modifier = modifier.padding(24.dp)
                 )
-                //play button (Drawable place holder
+                //play button (Drawable place holder)
                 //reroute from ChildHomeScreen.kt to parent equivalent once implemented)
                 Image(
                     painter = painterResource(R.drawable.ic_launcher_foreground),
@@ -89,7 +88,7 @@ fun ParentLandingScreen(
 
 @Preview
 @Composable
-fun PreviewScreenMain(){
+fun PreviewParentLandingScreen(){
     RPGTheme {
         ParentLandingScreen(navController = rememberNavController())
     }
