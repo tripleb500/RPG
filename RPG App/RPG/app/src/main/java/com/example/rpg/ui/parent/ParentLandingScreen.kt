@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Surface
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -49,7 +50,7 @@ fun ParentLandingScreen(
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth()
-                    .padding(top = 16.dp, bottom = 85.dp),
+                    .padding(top = 48.dp, bottom = 80.dp),
                 horizontalArrangement = Arrangement.End,
             ) {
                 //switch button
@@ -60,7 +61,7 @@ fun ParentLandingScreen(
             }
             Column(
                 modifier = Modifier
-                    .padding(top = 85.dp),
+                    .padding(top = 48.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -68,17 +69,18 @@ fun ParentLandingScreen(
                 Image(
                     painter = painterResource(R.drawable.rpg_logo_parent),
                     contentDescription = "ParentLandingScreen.kt logo",
-                    modifier = modifier.padding(24.dp)
+                    //modifier = modifier.padding(24.dp)
                 )
                 //play button (Drawable place holder
                 //reroute from ChildHomeScreen.kt to parent equivalent once implemented)
                 Image(
-                    painter = painterResource(R.drawable.rpg_logo_parent),
+                    painter = painterResource(R.drawable.ic_launcher_foreground),
                     contentDescription = "Play button",
-                    modifier = modifier.padding(24.dp)
+                    modifier = modifier.padding(bottom = 48.dp)
                         .clickable {
                             navController.navigate(Routes.ChildHomeScreen.route)
                         }
+                        .size(2400.dp)
                 )
             }
         }
