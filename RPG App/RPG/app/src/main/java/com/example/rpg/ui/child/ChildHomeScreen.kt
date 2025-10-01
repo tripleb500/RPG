@@ -18,10 +18,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
 import com.example.rpg.ui.Routes
+import com.example.rpg.ui.theme.RPGTheme
 
 val quest = listOf(
           Quest("Dishes", "Game Time", 25),
@@ -93,5 +96,13 @@ fun CardView(quest: Quest) {
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewChildHomeScreen(){
+    RPGTheme {
+        ChildHomeScreen(navController = rememberNavController())
     }
 }
