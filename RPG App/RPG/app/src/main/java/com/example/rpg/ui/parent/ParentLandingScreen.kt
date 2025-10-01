@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -66,8 +67,18 @@ fun ParentLandingScreen(
                 //logo
                 Image(
                     painter = painterResource(R.drawable.rpg_logo_parent),
-                    contentDescription = null,
+                    contentDescription = "ParentLandingScreen.kt logo",
                     modifier = modifier.padding(24.dp)
+                )
+                //play button (Drawable place holder
+                //reroute from ChildHomeScreen.kt to parent equivalent once implemented)
+                Image(
+                    painter = painterResource(R.drawable.rpg_logo_parent),
+                    contentDescription = "Play button",
+                    modifier = modifier.padding(24.dp)
+                        .clickable {
+                            navController.navigate(Routes.ChildHomeScreen.route)
+                        }
                 )
             }
         }
