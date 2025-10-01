@@ -23,11 +23,10 @@ import androidx.navigation.NavHostController
 import com.example.rpg.R
 import com.example.rpg.ui.Routes
 
-val people = listOf(
-          Person("John", "Malone", 25),
-           Person("DJ", "Malone", 25),
-           Person("Louis", "Malone", 19),
-           Person("Sam", "Malone", 20),
+val quest = listOf(
+          Quest("Dishes", "Game Time", 25),
+           Quest("HW", "5 Dollars", 25),
+           Quest("Trash", "50 xp", 19),
         )
 
 @Composable
@@ -47,7 +46,7 @@ fun ChildHomeScreen(
             Text(text = "Child")
         }
         LazyColumn {
-            items(people){
+            items(quest){
                 CardView(it)
             }
         }
@@ -60,7 +59,7 @@ fun ChildHomeScreen(
     }
 }
 @Composable
-fun CardView(person: Person) {
+fun CardView(quest: Quest) {
     Card(
         modifier = Modifier
             .fillMaxSize()
@@ -69,21 +68,21 @@ fun CardView(person: Person) {
         Row {
             Image(
                 painter = painterResource(id = R.drawable.baseline_person_24),
-                contentDescription = "Photo  of person",
+                contentDescription = "Photo  of quest",
                 modifier = Modifier
                     .width(100.dp)
                     .height(100.dp)
             )
             Column {
                 Text(
-                    text = person.firstName,
+                    text = quest.questName,
                     modifier = Modifier.padding(top = 16.dp)
                 )
                 Text(
-                    text = person.lastName,
+                    text = "Reward: " + quest.Reward,
                 )
                 Text(
-                    text = "Age: " + person.age,
+                    text = "Due: " + quest.deadline,
                 )
             }
         }
