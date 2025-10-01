@@ -45,6 +45,13 @@ fun ChildHomeScreen(
             onClick = { navController.navigate(Routes.ParentLandingScreen.route) }) {
             Text(text = "Child")
         }
+        Image(
+            painter = painterResource(id = R.drawable.baseline_person_24),
+            contentDescription = "Photo  of Avatar",
+            modifier = Modifier
+                .width(100.dp)
+                .height(100.dp)
+        )
         LazyColumn {
             items(quest){
                 CardView(it)
@@ -67,7 +74,7 @@ fun CardView(quest: Quest) {
     ) {
         Row {
             Image(
-                painter = painterResource(id = R.drawable.baseline_person_24),
+                painter = painterResource(id = R.drawable.outline_photo_camera_back_24),
                 contentDescription = "Photo  of quest",
                 modifier = Modifier
                     .width(100.dp)
