@@ -38,19 +38,21 @@ fun ParentLandingScreen(
     Box(
         modifier = Modifier
         .fillMaxSize()
-            .background(brush = Brush.linearGradient(
-                //change once we set up material theming
-                colors = listOf(Color(0xFF4782B2), Color(0xFF5F7F93)),
-                start = Offset(0f,0f),
-                end = Offset(0f,3000f)
-            ))
+            //color tuple needs to be updated once material theming implemented
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(Color(0xFF4782B2), Color(0xFF5F7F93))
+                )
+            )
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth()
-                    .padding(top = 48.dp, bottom = 80.dp),
+                    .padding(top = 48.dp),
                 horizontalArrangement = Arrangement.End,
             ) {
                 //switch button
@@ -59,29 +61,25 @@ fun ParentLandingScreen(
                     Text(text = "Parent")
                 }
             }
-            Column(
-                modifier = Modifier
-                    .padding(top = 48.dp),
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                //logo
-                Image(
-                    painter = painterResource(R.drawable.rpg_logo_parent),
-                    contentDescription = "ParentLandingScreen.kt logo",
-                )
-                //play button (Drawable place holder)
-                //reroute from ChildHomeScreen.kt to parent equivalent once implemented)
-                Image(
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
-                    contentDescription = "Play button",
-                    modifier = modifier.padding(bottom = 48.dp)
-                        .size(2400.dp)
-                        .clickable {
-                            navController.navigate(Routes.ChildHomeScreen.route)
-                        }
-                )
-            }
+            //logo
+            Image(
+                painter = painterResource(R.drawable.rpg_logo_parent),
+                contentDescription = "ParentLandingScreen.kt logo",
+                modifier = modifier
+                    .padding(top = 128.dp)
+                    .size(320.dp)
+            )
+            //play button
+            //reroute from ChildHomeScreen.kt to parent equivalent once implemented)
+            Image(
+                painter = painterResource(R.drawable.play_button_parent),
+                contentDescription = "Play button",
+                modifier = modifier.padding(top = 64.dp)
+                    .size(128.dp)
+                    .clickable {
+                        navController.navigate(Routes.ChildHomeScreen.route)
+                    }
+            )
         }
     }
 }

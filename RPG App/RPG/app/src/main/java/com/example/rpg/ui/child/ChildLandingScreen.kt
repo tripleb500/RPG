@@ -37,19 +37,21 @@ fun ChildLandingScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            //color tuple needs to be updated once material theming implemented
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(Color(0xFF798B6A), Color(0xFF6c7d5f)
-                )
+                    colors = listOf(Color(0xFF798B6A), Color(0xFF6c7d5f))
                 )
             )
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth()
-                    .padding(top = 48.dp, bottom = 80.dp),
+                    .padding(top = 48.dp),
                 horizontalArrangement = Arrangement.End,
             ) {
                 //switch button
@@ -58,31 +60,28 @@ fun ChildLandingScreen(
                     Text(text = "Child")
                 }
             }
-            Column(
-                modifier = Modifier
-                    .padding(top = 48.dp),
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                //logo
-                Image(
-                    painter = painterResource(R.drawable.rpg_logo_child),
-                    contentDescription = "ChildLandingScreen.kt logo",
-                )
-                //play button (Drawable place holder)
-                Image(
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
-                    contentDescription = "Play button",
-                    modifier = modifier.padding(bottom = 48.dp)
-                        .size(2400.dp)
-                        .clickable {
-                            navController.navigate(Routes.ChildHomeScreen.route)
-                        }
-                )
-            }
+            //logo
+            Image(
+                painter = painterResource(R.drawable.rpg_logo_child),
+                contentDescription = "ChildLandingScreen.kt logo",
+                modifier = modifier
+                    .padding(top = 128.dp)
+                    .size(320.dp)
+            )
+            //play button
+            Image(
+                painter = painterResource(R.drawable.play_button_child),
+                contentDescription = "Play button",
+                modifier = modifier.padding(top = 64.dp)
+                    .size(128.dp)
+                    .clickable {
+                        navController.navigate(Routes.ChildHomeScreen.route)
+                    }
+            )
         }
     }
 }
+
 
 @Preview
 @Composable
