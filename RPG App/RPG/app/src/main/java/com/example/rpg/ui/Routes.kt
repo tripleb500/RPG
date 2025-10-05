@@ -8,6 +8,10 @@ sealed class Routes(val route: String) {
 
     object ChildProfileScreen :Routes("childProfile")
 
+    object ChildLeaderboardScreen :Routes("childLeaderboard")
+
+    object ChildQuestScreen :Routes("childQuest")
+
     object ParentHomeScreen : Routes(route = "parentHome")
 
 }
