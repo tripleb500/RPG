@@ -14,6 +14,6 @@ sealed class Routes(val route: String) {
 
     object ChildQuestScreen :Routes("childQuest")
 
-    object ParentHomeScreen : Routes(route = "parentHome")
+    object ParentHomeScreen : Routes("parentHome")
 
 }
