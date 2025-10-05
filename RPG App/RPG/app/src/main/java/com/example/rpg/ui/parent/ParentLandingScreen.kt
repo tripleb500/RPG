@@ -18,12 +18,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
 import com.example.rpg.ScreenMain
@@ -57,9 +60,19 @@ fun ParentLandingScreen(
             ) {
                 //switch button
                 Button(
-                    onClick = { navController.navigate(Routes.ChildLandingScreen.route) }) {
-                    Text(text = "Parent")
-                }
+                    onClick = { navController.navigate(Routes.ChildLandingScreen.route) },
+                    modifier = Modifier.size(width = 200.dp, height = 60.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        //background
+                        containerColor = Color(0xFF7EB3F5),
+                        //text
+                        contentColor = Color.White)
+                ) {
+                    Text(
+                        text = "Parent",
+                        fontSize = 24.sp
+                    ) }
             }
             //logo
             Image(
