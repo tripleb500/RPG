@@ -4,6 +4,7 @@ sealed class Routes(val route: String) {
     // routes for parent screens
     object ParentLandingScreen : Routes("parentLanding")
     object ParentHomeScreen : Routes("parentHome")
+    object ParentAddChildDialog : Routes("parentAddChild")
     object ParentQuestOverviewScreen : Routes("parentQuestOverview")
     object ParentQuestAssignScreen : Routes("parentQuestAssign")
     object ParentQuestOngoingScreen : Routes("parentQuestOngoing")
