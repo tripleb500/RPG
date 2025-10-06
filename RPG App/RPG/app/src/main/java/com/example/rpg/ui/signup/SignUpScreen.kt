@@ -94,7 +94,7 @@ fun SignUpScreen (
          * User inputs family role; either "parent" or "child"
          * Option should dictate which homepage user is directed to when signing up.
          */
-        Text(text = "Select a family role", fontSize = 16.sp)
+        Text(text = "Select a family role:", fontSize = 16.sp)
 
         Row(modifier = Modifier) {
             val radioOptions = listOf("Parent", "Child")
