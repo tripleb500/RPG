@@ -1,19 +1,25 @@
 package com.example.rpg.ui
 
 sealed class Routes(val route: String) {
+    // routes for parent screens
     object ParentLandingScreen : Routes("parentLanding")
-    object ChildLandingScreen : Routes("childLanding")
-
-    object ChildHomeScreen : Routes("childHome")
-
-    object ChildGameScreen :Routes("childGame")
-
-    object ChildProfileScreen :Routes("childProfile")
-
-    object ChildLeaderboardScreen :Routes("childLeaderboard")
-
-    object ChildQuestScreen :Routes("childQuest")
-
     object ParentHomeScreen : Routes("parentHome")
+    object ParentQuestOverviewScreen : Routes("parentQuestOverview")
+    object ParentQuestAssignScreen : Routes("parentQuestAssign")
+    object ParentQuestOngoingScreen : Routes("parentQuestOngoing")
+    object ParentQuestPendingScreen : Routes("parentQuestPending")
+    object ParentQuestCompletedScreen : Routes("parentQuestPending")
+    object ParentStatisticsScreen : Routes("parentStatistics")
+    object ParentModerationMainScreen : Routes("parentModerationMain")
+    object ParentScreentimeScreen : Routes("parentScreentime")
+    object ParentAccountScreen : Routes("parentAccount")
 
+
+    // routes for child screens
+    object ChildLandingScreen : Routes("childLanding")
+    object ChildHomeScreen : Routes("childHome")
+    object ChildGameScreen :Routes("childGame")
+    object ChildProfileScreen :Routes("childProfile")
+    object ChildLeaderboardScreen :Routes("childLeaderboard")
+    object ChildQuestScreen :Routes("childQuest")
 }
