@@ -7,14 +7,14 @@ import kotlinx.coroutines.tasks.await
 
 class ParentRepository {
     private val db = Firebase.firestore
-    private val parentsCollection = db.collection("parents")
+    private val parentCollection = db.collection("parents")
 
     suspend fun addParent(parent: Parent) {
-        val parentRef = parentsCollection.document()
+        val parentRef = parentCollection.document()
         parentRef.set(parent.copy(id = parentRef.id)).await()
     }
     suspend fun addChildToParent(parentId: String, child: Child) {
-        parentsCollection.document(parentId)
+        parentCollection.document(parentId)
             .collection("children")
             .add(child)
             .await()
