@@ -39,8 +39,7 @@ fun ChildLandingScreen(
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(Color(0xFF798B6A), Color(0xFF6c7d5f)
-                )
+                    colors = listOf(Color(0xFF798B6A), Color(0xFF6c7d5f))
                 )
             )
     ) {
