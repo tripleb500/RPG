@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RPGTheme {
-                //SignUpScreen() Used to quickly check textfield and radio button
+                //SignUpScreen() //Used to quickly check textfield and radio button
                 RPGNavGraph()
             }
         }

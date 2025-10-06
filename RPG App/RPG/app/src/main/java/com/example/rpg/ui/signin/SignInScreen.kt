@@ -21,6 +21,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.theme.RPGTheme
 
 
@@ -31,7 +33,10 @@ import com.example.rpg.ui.theme.RPGTheme
  * Stylize the screen when time is available
  */
 @Composable
-fun SignInScreen (modifier: Modifier = Modifier) {
+fun SignInScreen (
+    modifier: Modifier = Modifier,
+    navController: NavHostController
+) {
 
     var email by remember { mutableStateOf("") }
     var password by remember {mutableStateOf("")}
@@ -86,6 +91,6 @@ fun SignInScreen (modifier: Modifier = Modifier) {
 @Composable
 fun PreviewSignInScreen () {
     RPGTheme {
-        SignInScreen()
+        SignInScreen(navController = rememberNavController())
     }
 }
