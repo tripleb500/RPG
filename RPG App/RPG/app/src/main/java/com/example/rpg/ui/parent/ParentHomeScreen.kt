@@ -1,5 +1,11 @@
-package com.example.rpg.ui.child
+package com.example.rpg.ui.parent
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.rpg.ui.child.ChildHomeScreen
+import com.example.rpg.ui.parent.ParentLandingScreen
+import com.example.rpg.ui.theme.RPGTheme
 import android.widget.ImageButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -13,40 +19,43 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
 import com.example.rpg.ui.Routes
+import com.example.rpg.ui.child.CardView
+import com.example.rpg.ui.child.Quest
 import com.example.rpg.ui.theme.RPGTheme
 
-val quest = listOf(
-          Quest("Dishes", "Game Time", 25),
-           Quest("HW", "5 Dollars", 25),
-           Quest("Trash", "50 xp", 19),
-        )
+//Placeholder data until ViewModel implemented
+val family = listOf(
+    Family("Timmy", 3, 0.1F),
+    Family("John", 2, 0.5F),
+    Family("Bradford", 1, 0.1F)
+)
 
+//Displays each family member below the image of the parent
 @Composable
-fun ChildHomeScreen(
+fun ParentHomeScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController
-) {
+){
     Column(
         modifier = Modifier.padding(top = 85.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        //switch button
         Button(
             modifier = Modifier.padding(top = 85.dp),
             onClick = { navController.navigate(Routes.ParentLandingScreen.route) }) {
-            Text(text = "Child")
+            Text(text = "Landing Page")
         }
         Image(
             painter = painterResource(id = R.drawable.baseline_person_24),
@@ -55,15 +64,17 @@ fun ChildHomeScreen(
                 .width(100.dp)
                 .height(100.dp)
         )
-        LazyColumn {
-            items(quest){
+        LazyColumn{
+            items(family){
                 CardView(it)
             }
         }
     }
 }
+
+//This function takes the members information and displays it in card view
 @Composable
-fun CardView(quest: Quest) {
+fun CardView(family: Family) {
     Card(
         modifier = Modifier
             .fillMaxSize()
@@ -71,32 +82,44 @@ fun CardView(quest: Quest) {
     ) {
         Row {
             Image(
-                painter = painterResource(id = R.drawable.outline_photo_camera_back_24),
-                contentDescription = "Photo  of quest",
+                painter = painterResource(id = R.drawable.baseline_person_24),
+                contentDescription = "Photo of child avatar",
                 modifier = Modifier
                     .width(100.dp)
                     .height(100.dp)
             )
             Column {
+
                 Text(
-                    text = quest.questName,
-                    modifier = Modifier.padding(top = 16.dp)
+                    text = family.childName,
+                    modifier = Modifier.padding(top = 16.dp, bottom = 20.dp)
                 )
-                Text(
-                    text = "Reward: " + quest.Reward,
+
+                ProgressIndicator(
+                    progress = family.lvlProgress
                 )
-                Text(
-                    text = "Due: " + quest.deadline,
-                )
+
             }
         }
     }
 }
 
+//Progress bar displays current level progress
+@Composable
+fun ProgressIndicator(
+    progress: Float,
+    modifier: Modifier = Modifier
+){
+    LinearProgressIndicator(
+    progress = { progress },
+    modifier = modifier,
+    )
+}
+
 @Preview
 @Composable
-fun PreviewChildHomeScreen(){
+fun PreviewParentHomeScreen(){
     RPGTheme {
-        ChildHomeScreen(navController = rememberNavController())
+        ParentHomeScreen(navController = rememberNavController())
     }
 }
