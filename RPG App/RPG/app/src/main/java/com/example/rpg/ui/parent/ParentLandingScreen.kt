@@ -29,7 +29,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
-import com.example.rpg.ScreenMain
 import com.example.rpg.ui.Routes
 import com.example.rpg.ui.theme.RPGTheme
 
