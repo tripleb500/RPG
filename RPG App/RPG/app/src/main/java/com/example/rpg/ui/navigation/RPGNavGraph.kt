@@ -11,6 +11,7 @@ import com.example.rpg.ui.parent.ParentLandingScreen
 import com.example.rpg.ui.signin.SignInScreen
 import com.example.rpg.ui.theme.RPGTheme
 
+//RPGNavGraph handles navigation between screens without NavBar
 @Composable
 fun RPGNavGraph() {
     val navController = rememberNavController()
