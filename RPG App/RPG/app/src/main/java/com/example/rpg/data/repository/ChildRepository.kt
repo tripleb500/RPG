@@ -1,4 +1,5 @@
 package com.example.rpg.data.repository
+import com.example.rpg.data.model.Child
 
 import com.example.rpg.data.model.Parent
 import com.google.firebase.Firebase
@@ -10,8 +11,8 @@ class ChildRepository {
 
     private val childCollection = db.collection("child")
 
-    suspend fun addParent(parent: Parent) {
-        val parentRef = childCollection.document()
-        parentRef.set(parent.copy(id = parentRef.id)).await()
+    suspend fun addChild(child: Child) {
+        val childRef = childCollection.document()
+        childRef.set(child.copy(id = childRef.id)).await()
     }
 }
