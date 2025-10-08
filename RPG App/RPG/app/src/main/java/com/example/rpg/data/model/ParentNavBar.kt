@@ -3,6 +3,7 @@ package com.example.rpg.data.model
 import com.example.rpg.R
 import com.example.rpg.ui.Routes
 
+//class that holds data for the buttons in the parent's bottom nav bar, add here to add buttons to bottom bar
 enum class ParentNavBar(val route: String, val title: String, val icon: Int, ) {
     parentHome(Routes.ParentHomeScreen.route, "Home", R.drawable.baseline_person_24),
     //testing purposes delete later:

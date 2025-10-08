@@ -41,6 +41,9 @@ val family = listOf(
     Family("Bradford", 1, 0.1F)
 )
 
+//In screens with a NavBar that need to be able to navigate to both types of screens (with and without bar)
+//you need to add both navController and overlayNavController to the parameters
+
 //Displays each family member below the image of the parent
 @Composable
 fun ParentHomeScreen(

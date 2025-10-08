@@ -13,6 +13,7 @@ import com.example.rpg.ui.child.ChildHomeScreen
 import com.example.rpg.ui.parent.ParentBottomBar
 import com.example.rpg.ui.parent.ParentHomeScreen
 
+//ParentNavGraph handles navigation between screens with the parent version of a bottom NavBar
 @Composable
 fun ParentNavGraph(navController: NavHostController) {
     val overlayNavController = rememberNavController()
