@@ -60,9 +60,14 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("androidx.navigation:navigation-compose:2.9.0")
 
+    // Adds dependency for google font support
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.9.2")
+
     // Import the BoM (Bill of Materials) for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
 
     // Adds the dependency for the Firebase Authentication Library
     implementation("com.google.firebase:firebase-auth")
+
+
 }
