@@ -45,7 +45,8 @@ val family = listOf(
 @Composable
 fun ParentHomeScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    overlayNavController: NavHostController
 ){
     Column(
         modifier = Modifier.padding(top = 85.dp),
@@ -120,6 +121,6 @@ fun ProgressIndicator(
 @Composable
 fun PreviewParentHomeScreen(){
     RPGTheme {
-        ParentHomeScreen(navController = rememberNavController())
+        ParentHomeScreen(navController = rememberNavController(), overlayNavController = rememberNavController())
     }
 }
