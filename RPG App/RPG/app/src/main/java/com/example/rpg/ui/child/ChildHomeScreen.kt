@@ -35,7 +35,8 @@ val quest = listOf(
 @Composable
 fun ChildHomeScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    overlayNavController: NavHostController
 ) {
     Column(
         modifier = Modifier.padding(top = 85.dp),
@@ -45,7 +46,7 @@ fun ChildHomeScreen(
         //switch button
         Button(
             modifier = Modifier.padding(top = 85.dp),
-            onClick = { navController.navigate(Routes.ParentLandingScreen.route) }) {
+            onClick = { navController.navigate(Routes.ChildLandingScreen.route) }) {
             Text(text = "Child")
         }
         Image(
@@ -97,6 +98,6 @@ fun CardView(quest: Quest) {
 @Composable
 fun PreviewChildHomeScreen(){
     RPGTheme {
-        ChildHomeScreen(navController = rememberNavController())
+        ChildHomeScreen(navController = rememberNavController(), overlayNavController = rememberNavController())
     }
 }

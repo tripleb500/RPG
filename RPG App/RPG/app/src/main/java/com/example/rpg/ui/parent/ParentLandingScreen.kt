@@ -88,7 +88,7 @@ fun ParentLandingScreen(
                 modifier = modifier.padding(top = 64.dp)
                     .size(128.dp)
                     .clickable {
-                        navController.navigate(Routes.ParentNavBarOverlay.route)
+                        navController.navigate(Routes.ParentNavGraph.route)
                     }
             )
         }
