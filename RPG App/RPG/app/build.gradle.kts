@@ -61,8 +61,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("androidx.navigation:navigation-compose:2.9.0")
-<<<<<<< Updated upstream
-=======
 
     implementation("com.google.dagger:hilt-android:2.57.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
@@ -73,5 +71,4 @@ dependencies {
 
     // Adds the dependency for the Firebase Authentication Library
     implementation("com.google.firebase:firebase-auth")
->>>>>>> Stashed changes
 }
