@@ -82,14 +82,13 @@ fun ParentLandingScreen(
                     .size(320.dp)
             )
             //play button
-            //reroute from ChildHomeScreen.kt to parent equivalent once implemented)
             Image(
                 painter = painterResource(R.drawable.play_button_parent),
                 contentDescription = "Play button",
                 modifier = modifier.padding(top = 64.dp)
                     .size(128.dp)
                     .clickable {
-                        navController.navigate(Routes.ParentHomeScreen.route)
+                        navController.navigate(Routes.ParentNavGraph.route)
                     }
             )
         }
