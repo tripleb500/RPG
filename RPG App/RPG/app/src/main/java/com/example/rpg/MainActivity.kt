@@ -30,12 +30,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RPGTheme {
-<<<<<<< Updated upstream
                 ScreenMain()
-=======
                 //SignUpScreen() //Used to quickly check textfield and radio button
                 //ScreenMain()
->>>>>>> Stashed changes
             }
         }
     }
