@@ -17,7 +17,7 @@ sealed class Routes(val route: String) {
     object ParentModerationMainScreen : Routes("parentModerationMain")
     object ParentScreentimeScreen : Routes("parentScreentime")
     object ParentAccountScreen : Routes("parentAccount")
-
+    object ParentNavBarOverlay : Routes("ParentNavBarOverlay")
 
     // routes for child screens
     object ChildLandingScreen : Routes("childLanding")

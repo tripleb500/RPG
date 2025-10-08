@@ -10,14 +10,15 @@ import com.example.rpg.ui.child.ChildHomeScreen
 import com.example.rpg.ui.child.ChildLandingScreen
 import com.example.rpg.ui.parent.ParentHomeScreen
 import com.example.rpg.ui.parent.ParentLandingScreen
+import com.example.rpg.ui.parent.ParentNavBarOverlay
 import com.example.rpg.ui.signin.SignInScreen
 import com.example.rpg.ui.theme.RPGTheme
 
 @Composable
 fun RPGNavGraph() {
     val navController = rememberNavController()
-    // Start Destination: signInScreen
-    NavHost(navController = navController, startDestination = Routes.SignInScreen.route) {
+    // Start Destination: parentLandingScreen
+    NavHost(navController = navController, startDestination = Routes.ParentLandingScreen.route) {
         // Account Management Route : signInScreen
         composable(Routes.SignInScreen.route) {
             SignInScreen(navController = navController)
@@ -37,6 +38,10 @@ fun RPGNavGraph() {
         // Parent Routes : parentHome
         composable(Routes.ParentHomeScreen.route) {
             ParentHomeScreen(navController = navController)
+        }
+        // Parent Routes : parentNavBarOverlay
+        composable(Routes.ParentNavBarOverlay.route) {
+            ParentNavBarOverlay()
         }
     }
 }
