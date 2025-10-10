@@ -1,4 +1,4 @@
-package com.example.rpg.ui.parent
+package com.example.rpg.ui.parent.home
 
 data class Family(
     val childName: String = "",

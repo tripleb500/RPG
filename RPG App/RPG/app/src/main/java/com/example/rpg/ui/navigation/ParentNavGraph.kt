@@ -9,9 +9,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
-import com.example.rpg.ui.child.ChildHomeScreen
+import com.example.rpg.ui.child.home.ChildHomeScreen
 import com.example.rpg.ui.parent.ParentBottomBar
-import com.example.rpg.ui.parent.ParentHomeScreen
+import com.example.rpg.ui.parent.home.ParentHomeScreen
 
 //ParentNavGraph handles navigation between screens with the parent version of a bottom NavBar
 @Composable
