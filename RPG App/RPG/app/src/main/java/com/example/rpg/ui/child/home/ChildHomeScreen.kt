@@ -19,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
@@ -26,18 +28,16 @@ import com.example.rpg.ui.Routes
 import com.example.rpg.ui.child.quest.Quest
 import com.example.rpg.ui.theme.RPGTheme
 
-val quest = listOf(
-    Quest("Dishes", "Game Time", 25),
-    Quest("HW", "5 Dollars", 25),
-    Quest("Trash", "50 xp", 19),
-        )
 
 @Composable
 fun ChildHomeScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    overlayNavController: NavHostController
+    overlayNavController: NavHostController,
+    viewModel: ChildHomeViewModel = viewModel()
 ) {
+    val childQuestList = viewModel.quests
+
     Column(
         modifier = Modifier.padding(top = 85.dp),
         verticalArrangement = Arrangement.Top,
@@ -57,8 +57,8 @@ fun ChildHomeScreen(
                 .height(100.dp)
         )
         LazyColumn {
-            items(quest){
-                CardView(it)
+            items(childQuestList){ quest ->
+                CardView(quest)
             }
         }
     }
