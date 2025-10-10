@@ -1,6 +1,5 @@
-package com.example.rpg.ui.child
+package com.example.rpg.ui.child.home
 
-import android.widget.ImageButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,12 +23,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
 import com.example.rpg.ui.Routes
+import com.example.rpg.ui.child.quest.Quest
 import com.example.rpg.ui.theme.RPGTheme
 
 val quest = listOf(
-          Quest("Dishes", "Game Time", 25),
-           Quest("HW", "5 Dollars", 25),
-           Quest("Trash", "50 xp", 19),
+    Quest("Dishes", "Game Time", 25),
+    Quest("HW", "5 Dollars", 25),
+    Quest("Trash", "50 xp", 19),
         )
 
 @Composable
