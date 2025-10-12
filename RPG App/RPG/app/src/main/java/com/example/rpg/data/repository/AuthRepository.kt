@@ -13,33 +13,16 @@ import javax.inject.Inject
  */
 class AuthRepository @Inject constructor(
     private val authRemoteDataSource: AuthRemoteDataSource,
-    private val firestore: FirebaseFirestore
 ) {
 
     val currentUser: FirebaseUser? = authRemoteDataSource.currentUser
     val currentUserIdFlow: Flow<String?> = authRemoteDataSource.currentUserIdFlow
 
-    suspend fun signUp(email:String, password: String, username: String, familyRole: String):Result<FirebaseUser?> {
+    suspend fun signUp(email:String, password: String): Result<Unit> {
         return try {
-            val user = authRemoteDataSource.signUp(email, password) ?:
-            return Result.failure(Exception("User null after sign-up"))
-
-            val uid = user.uid
-
-            user?.uid?.let { uid ->
-                val userProfile = mapOf(
-                    "uid" to uid,
-                    "email" to email,
-                    "username" to username,
-                    "familyRole" to familyRole
-                )
-                firestore.collection("users")
-                    .document(uid)
-                    .set(userProfile)
-                    .await()
-            }
-            Result.success(user)
-        } catch(e: Exception) {
+            authRemoteDataSource.signUp(email, password)
+            Result.success(Unit)
+        } catch (e: Exception) {
             Result.failure(e)
         }
     }

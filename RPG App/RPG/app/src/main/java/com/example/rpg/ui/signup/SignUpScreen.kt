@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.rpg.ui.theme.RPGTheme
 import kotlin.math.sign
 
@@ -41,18 +42,23 @@ import kotlin.math.sign
  */
 
 @Composable
-fun SignUpScreen( viewModel: SignUpViewModel = hiltViewModel()
+fun SignUpScreen(viewModel: SignUpViewModel = hiltViewModel()
 ) {
-    SignUpScreenContent (signUp = viewModel::signUp)
+    val shouldRestartApp by viewModel.shouldRestartApp.collectAsStateWithLifecycle()
+    SignUpScreenContent(
+        signUp = { email, password ->
+            viewModel.signUp(email, password)
+        }
+
+    )
 }
 @Composable
-fun SignUpScreenContent (
-    signUp: (String, String, String, String) -> Unit
+fun SignUpScreenContent(
+    signUp: (String, String,) -> Unit
 ) {
-    var username by remember {mutableStateOf("")}
     var email by remember {mutableStateOf("")}
     var password by remember {mutableStateOf("")}
-    var familyRole by remember {mutableStateOf("")}
+
 
 
     Column(
@@ -65,14 +71,6 @@ fun SignUpScreenContent (
 
         Spacer(Modifier.height(16.dp))
 
-        // Username input field
-        OutlinedTextField(
-            value = username,
-            onValueChange = {username = it},
-            label = {Text (text = "Username")},
-            )
-
-        Spacer(Modifier.height(8.dp))
 
         // Email input field
         OutlinedTextField(
@@ -94,54 +92,11 @@ fun SignUpScreenContent (
         Spacer(Modifier.height(16.dp))
 
 
-        /**
-         * RADIO BUTTON Functionality
-         * User inputs family role; either "parent" or "child"
-         * Option should dictate which homepage user is directed to when signing up.
-         */
-        Text(text = "Select a family role:", fontSize = 16.sp)
-
-        Row(modifier = Modifier) {
-            val radioOptions = listOf("Parent", "Child")
-            var selectedOption by remember {mutableStateOf(radioOptions[0])}
-            familyRole = selectedOption
-
-            Column(Modifier.selectableGroup()) {
-                radioOptions.forEach {text ->
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .selectable(
-                                selected = (text == selectedOption),
-                                onClick = {selectedOption = text
-                                    familyRole = text },
-                                role = Role.RadioButton
-                            )
-                            .padding(horizontal = 32.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = (text == selectedOption),
-                            onClick = null
-                        )
-                        Text(
-                            text = text
-                        )
-                    }
-                }
-            }
-        }
-
-
-        Spacer(Modifier.height(16.dp))
-
         Button(onClick = {
             // Add Firebase auth logic when completed
             signUp(
-                username,
                 email,
                 password,
-                familyRole
             )
         }) {
             Text(text = "Sign Up")
@@ -164,7 +119,7 @@ fun SignUpScreenContent (
 fun PreviewSignUpScreen(){
     RPGTheme {
         SignUpScreenContent(
-            signUp = {_,_,_,_ ->}
+            signUp = {_,_, ->}
         )
     }
 }

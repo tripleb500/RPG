@@ -17,6 +17,8 @@ class AuthRemoteDataSource @Inject constructor(private val auth: FirebaseAuth) {
 
     val currentUser: FirebaseUser? get() = auth.currentUser  // Get access to currently signed-in Firebase user, if any.
 
+
+    // Tells whether user is signed in or logged out
     val currentUserIdFlow: Flow<String?>
         get() = callbackFlow {
             val listener = FirebaseAuth.AuthStateListener{_-> this.trySend(currentUser?.uid) }
