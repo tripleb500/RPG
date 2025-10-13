@@ -18,13 +18,31 @@ class SignUpViewModel @Inject constructor(
     val shouldRestartApp: StateFlow<Boolean>
         get() = _shouldRestartApp.asStateFlow()
 
-    fun signUp(email: String, password: String, ) {
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
+
+    fun errorCleared () {
+        _errorMessage.value = null
+    }
+
+    fun signUp(email: String, password: String ) {
+
+        if (email.isBlank() ) {
+            _errorMessage.value = "Please enter a email"
+            return
+        }
+
+        if (password.isBlank() ) {
+            _errorMessage.value = "Please enter a password"
+            return
+        }
+
         viewModelScope.launch {
             try {
                 authRepository.signUp(email, password)
                 _shouldRestartApp.value = true
             } catch (e: Exception) {
-                print(e)
+                _errorMessage.value = e.message ?: "An unknown error occurred"
             }
         }
     }

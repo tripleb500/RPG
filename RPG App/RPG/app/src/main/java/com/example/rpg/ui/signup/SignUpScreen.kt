@@ -13,6 +13,9 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -22,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,16 +49,19 @@ import kotlin.math.sign
 fun SignUpScreen(viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val shouldRestartApp by viewModel.shouldRestartApp.collectAsStateWithLifecycle()
+    val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
+
     SignUpScreenContent(
         signUp = { email, password ->
             viewModel.signUp(email, password)
-        }
-
+        },
+        errorMessage = errorMessage
     )
 }
 @Composable
 fun SignUpScreenContent(
-    signUp: (String, String,) -> Unit
+    signUp: (String, String,) -> Unit,
+    errorMessage: String?
 ) {
     var email by remember {mutableStateOf("")}
     var password by remember {mutableStateOf("")}
@@ -89,6 +96,15 @@ fun SignUpScreenContent(
             label = {Text ("Password")}
         )
 
+        Spacer (Modifier.height(8.dp))
+        errorMessage?.let {
+            Text(
+                text = it,
+                color = Color.Red,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
+
         Spacer(Modifier.height(16.dp))
 
 
@@ -119,7 +135,7 @@ fun SignUpScreenContent(
 fun PreviewSignUpScreen(){
     RPGTheme {
         SignUpScreenContent(
-            signUp = {_,_, ->}
+            signUp = {_,_, ->}, errorMessage = null
         )
     }
 }
