@@ -12,7 +12,6 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -23,31 +22,46 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAbsoluteAlignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.theme.RPGTheme
 
 /**
  * TODO:
- * Fix alignment of family role options; Overall fix formatting.
- * Implement Viewmodel (Ask group about potential use of HiltViewModel?)
- * Add firebase logic for signup button
+ * Overall fix formatting.
  * Add nav logic to correct landing page
  * Add nav logic to sign-in screen
  */
 
+// "Container", connects to viewmodel; defines what logic to pass down to UI
 @Composable
-fun SignUpScreen (
+fun SignUpScreen(viewModel: SignUpViewModel = hiltViewModel() ) {
+    val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
+
+    SignUpScreenContent(
+        signUp = {email, password ->
+            viewModel.signUp(email, password)
+        },
+        errorMessage = errorMessage
+    )
+}
+
+// Pure UI, builds screen layout, responds to user input.
+@Composable
+fun SignUpScreenContent (
+    signUp: (String, String) -> Unit,
+    errorMessage: String?,
     modifier: Modifier = Modifier
 ) {
-    var username by remember {mutableStateOf("")}
     var email by remember {mutableStateOf("")}
     var password by remember {mutableStateOf("")}
-    var selectedFamilyRole by remember {mutableStateOf("")}
 
 
     Column(
@@ -60,14 +74,6 @@ fun SignUpScreen (
 
         Spacer(Modifier.height(16.dp))
 
-        // Username input field
-        OutlinedTextField(
-            value = username,
-            onValueChange = {username = it},
-            label = {Text (text = "Username")},
-            )
-
-        Spacer(Modifier.height(8.dp))
 
         // Email input field
         OutlinedTextField(
@@ -86,50 +92,26 @@ fun SignUpScreen (
             label = {Text ("Password")}
         )
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(8.dp))
 
-
-        /**
-         * RADIO BUTTON Functionality
-         * User inputs family role; either "parent" or "child"
-         * Option should dictate which homepage user is directed to when signing up.
-         */
-        Text(text = "Select a family role:", fontSize = 16.sp)
-
-        Row(modifier = Modifier) {
-            val radioOptions = listOf("Parent", "Child")
-            val (selectedOption, onOptionSelected) = remember {mutableStateOf(radioOptions[0])}
-
-            Column(Modifier.selectableGroup()) {
-                radioOptions.forEach {text ->
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .selectable(
-                                selected = (text == selectedOption),
-                                onClick = {onOptionSelected(text)  },
-                                role = Role.RadioButton
-                            )
-                            .padding(horizontal = 32.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = (text == selectedOption),
-                            onClick = null
-                        )
-                        Text(
-                            text = text
-                        )
-                    }
-                }
-            }
+        // If there is error with text fields error will display.
+        errorMessage?.let {
+            Text(
+                text = it,
+                color = Color.Red,
+                modifier = Modifier.padding(top = 8.dp)
+            )
         }
 
 
         Spacer(Modifier.height(16.dp))
 
+        // Creates user's account, info is sent to Firebase Authentication if successful.
         Button(onClick = {
-            // Add Firebase auth logic when completed
+            signUp (
+                email,
+                password
+            )
         }) {
             Text(text = "Sign Up")
         }
@@ -150,6 +132,8 @@ fun SignUpScreen (
 @Composable
 fun PreviewSignUpScreen(){
     RPGTheme {
-        SignUpScreen()
+        SignUpScreenContent(
+            signUp = {_,_, ->}, errorMessage = null
+        )
     }
 }

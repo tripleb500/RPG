@@ -6,8 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.rpg.ui.navigation.RPGNavGraph
+import com.example.rpg.ui.signup.SignUpScreen
 import com.example.rpg.ui.theme.RPGTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
