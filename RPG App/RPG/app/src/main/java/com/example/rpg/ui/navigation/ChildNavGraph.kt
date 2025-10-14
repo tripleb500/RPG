@@ -9,27 +9,33 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
-import com.example.rpg.ui.parent.ParentBottomBar
-import com.example.rpg.ui.parent.home.ParentHomeScreen
+import com.example.rpg.ui.child.ChildBottomBar
+import com.example.rpg.ui.child.home.ChildHomeScreen
+import com.example.rpg.ui.child.profile.ChildProfileScreen
 
-//ParentNavGraph handles navigation between screens with the parent version of a bottom NavBar
+//ChildNavGraph handles navigation between screens with the Child version of a bottom NavBar
 @Composable
-fun ParentNavGraph(navController: NavHostController) {
+fun ChildNavGraph(navController: NavHostController) {
     val overlayNavController = rememberNavController()
 //Scaffold holding navGraph of screens with bottom bars and the actual bottom bar
     Scaffold(
-        bottomBar = { ParentBottomBar(overlayNavController) }
+        bottomBar = { ChildBottomBar(overlayNavController) }
     ) { innerPadding ->
         NavHost(
             navController = overlayNavController,
-            startDestination = Routes.ParentHomeScreen.route,
+            startDestination = Routes.ChildHomeScreen.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            // Parent Routes : parentHome
-            composable(Routes.ParentHomeScreen.route) {
-                ParentHomeScreen(navController = navController, overlayNavController = overlayNavController)
+            // Child Routes : ChildHome
+            composable(Routes.ChildHomeScreen.route) {
+                ChildHomeScreen(navController = navController, overlayNavController = overlayNavController)
             }
-            //testing purposes delete/swap out with parent screens later:
+
+            // Child Routes : ChildProfile
+            composable(Routes.ChildProfileScreen.route) {
+                ChildProfileScreen(navController = navController, overlayNavController = overlayNavController)
+            }
+            //testing purposes delete/swap out with Child screens later:
             //create ChildNavBarOverlay next
 
 //            // Child Routes : childHome

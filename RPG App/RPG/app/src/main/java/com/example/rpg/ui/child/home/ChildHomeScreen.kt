@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -47,7 +46,7 @@ fun ChildHomeScreen(
         Button(
             modifier = Modifier.padding(top = 85.dp),
             onClick = { navController.navigate(Routes.ChildLandingScreen.route) }) {
-            Text(text = "Child")
+            Text(text = "Landing Page")
         }
         Image(
             painter = painterResource(id = R.drawable.baseline_person_24),
@@ -73,7 +72,7 @@ fun CardView(quest: Quest) {
         Row {
             Image(
                 painter = painterResource(id = R.drawable.outline_photo_camera_back_24),
-                contentDescription = "Photo  of quest",
+                contentDescription = "Photo of quest",
                 modifier = Modifier
                     .width(100.dp)
                     .height(100.dp)

@@ -30,15 +30,20 @@ fun RPGNavGraph() {
         composable(Routes.ChildLandingScreen.route) {
             ChildLandingScreen(navController = navController)
         }
+
         // Parent Routes : parentNavBarOverlay
         composable(Routes.ParentNavGraph.route) {
             ParentNavGraph(navController = navController)
         }
+        // Child Routes : childNavBarOverlay
+        composable(Routes.ChildNavGraph.route) {
+            ChildNavGraph(navController = navController)
+        }
 
         // Child Routes : childHome
-        composable(Routes.ChildHomeScreen.route) {
-            ChildHomeScreen(navController = navController, overlayNavController = navController)
-        }
+//        composable(Routes.ChildHomeScreen.route) {
+//            ChildHomeScreen(navController = navController, overlayNavController = navController)
+//        }
     }
 }
 

@@ -1,4 +1,4 @@
-package com.example.rpg.ui.child.leaderboard
+package com.example.rpg.ui.child.social
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.theme.RPGTheme
 
 @Composable
-fun ChildLeaderboardScreen(
+fun ChildSocialScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
@@ -28,8 +28,8 @@ fun ChildLeaderboardScreen(
 
 @Preview
 @Composable
-fun PreviewChildLeaderboardScreen(){
+fun PreviewChildSocialScreen(){
     RPGTheme {
-        ChildLeaderboardScreen(navController = rememberNavController())
+        ChildSocialScreen(navController = rememberNavController())
     }
 }

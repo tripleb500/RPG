@@ -24,6 +24,7 @@ sealed class Routes(val route: String) {
     object ChildHomeScreen : Routes("childHome")
     object ChildGameScreen :Routes("childGame")
     object ChildProfileScreen :Routes("childProfile")
-    object ChildLeaderboardScreen :Routes("childLeaderboard")
+    object ChildSocialScreen :Routes("childSocial")
     object ChildQuestScreen :Routes("childQuest")
+    object ChildNavGraph : Routes("ChildNavGraph")
 }
