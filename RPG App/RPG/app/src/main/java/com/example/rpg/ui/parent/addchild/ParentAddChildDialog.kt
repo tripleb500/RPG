@@ -32,55 +32,55 @@ fun ParentAddChildDialog(
     modifier: Modifier = Modifier
 ) {
     //Dialog(onDismissRequest = { onDismissRequest() }) {
-        Card(
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        shape = RoundedCornerShape(16.dp),
+    ) {
+        var username by remember { mutableStateOf("") }
+        var accessCode by remember { mutableStateOf("") }
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            shape = RoundedCornerShape(16.dp),
+                .padding(16.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            var username by remember { mutableStateOf("") }
-            var accessCode by remember { mutableStateOf("") }
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+            Text(
+                text = "Add Member",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = username,
+                onValueChange = { username = it },
+                label = { Text("Username") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = accessCode,
+                onValueChange = { accessCode = it },
+                label = { Text("Access Code") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
             ) {
-                Text(
-                    text = "Add Member",
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                OutlinedTextField(
-                    value = username,
-                    onValueChange = { username = it },
-                    label = { Text("Username") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                OutlinedTextField(
-                    value = accessCode,
-                    onValueChange = { accessCode = it },
-                    label = { Text("Access Code") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = { onDismissRequest() }) {
-                        Text("Cancel")
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Button(onClick = {
-                        //viewModel.addChildButtonClicked(username, accessCode) // TODO
-                        onDismissRequest()
-                    }) {
-                        Text("Add")
-                    }
+                TextButton(onClick = { onDismissRequest() }) {
+                    Text("Cancel")
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(onClick = {
+                    viewModel.onAddChildButtonClicked(username)
+                    onDismissRequest()
+                }) {
+                    Text("Add")
                 }
             }
+        }
         //}
     }
 }
