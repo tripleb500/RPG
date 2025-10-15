@@ -1,6 +1,5 @@
-package com.example.rpg.ui.child
+package com.example.rpg.ui.child.home
 
-import android.widget.ImageButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,23 +19,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
 import com.example.rpg.ui.Routes
+import com.example.rpg.ui.child.quest.Quest
 import com.example.rpg.ui.theme.RPGTheme
 
-val quest = listOf(
-          Quest("Dishes", "Game Time", 25),
-           Quest("HW", "5 Dollars", 25),
-           Quest("Trash", "50 xp", 19),
-        )
 
 @Composable
 fun ChildHomeScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    overlayNavController: NavHostController,
+    viewModel: ChildHomeViewModel = viewModel()
 ) {
+    val childQuestList = viewModel.quests
+
     Column(
         modifier = Modifier.padding(top = 85.dp),
         verticalArrangement = Arrangement.Top,
@@ -45,8 +45,8 @@ fun ChildHomeScreen(
         //switch button
         Button(
             modifier = Modifier.padding(top = 85.dp),
-            onClick = { navController.navigate(Routes.ParentLandingScreen.route) }) {
-            Text(text = "Child")
+            onClick = { navController.navigate(Routes.ChildLandingScreen.route) }) {
+            Text(text = "Landing Page")
         }
         Image(
             painter = painterResource(id = R.drawable.baseline_person_24),
@@ -56,8 +56,8 @@ fun ChildHomeScreen(
                 .height(100.dp)
         )
         LazyColumn {
-            items(quest){
-                CardView(it)
+            items(childQuestList){ quest ->
+                CardView(quest)
             }
         }
     }
@@ -72,7 +72,7 @@ fun CardView(quest: Quest) {
         Row {
             Image(
                 painter = painterResource(id = R.drawable.outline_photo_camera_back_24),
-                contentDescription = "Photo  of quest",
+                contentDescription = "Photo of quest",
                 modifier = Modifier
                     .width(100.dp)
                     .height(100.dp)
@@ -97,6 +97,6 @@ fun CardView(quest: Quest) {
 @Composable
 fun PreviewChildHomeScreen(){
     RPGTheme {
-        ChildHomeScreen(navController = rememberNavController())
+        ChildHomeScreen(navController = rememberNavController(), overlayNavController = rememberNavController())
     }
 }

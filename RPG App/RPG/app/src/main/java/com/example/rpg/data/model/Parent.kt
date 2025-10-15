@@ -7,4 +7,5 @@ data class Parent(
     val lastname: String = "",
     val age: Int = 0,
     val children: List<Child> = emptyList()
-)
+) {
+}

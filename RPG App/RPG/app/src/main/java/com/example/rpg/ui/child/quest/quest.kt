@@ -1,4 +1,4 @@
-package com.example.rpg.ui.child
+package com.example.rpg.ui.child.quest
 
 data class Quest(
     val questName: String,
