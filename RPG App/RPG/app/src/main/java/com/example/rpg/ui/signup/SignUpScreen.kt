@@ -48,7 +48,6 @@ import com.example.rpg.ui.theme.RPGTheme
 @Composable
 fun SignUpScreen(viewModel: SignUpViewModel = hiltViewModel()
 ) {
-    val shouldRestartApp by viewModel.shouldRestartApp.collectAsStateWithLifecycle()
     val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
 
     SignUpScreenContent(
