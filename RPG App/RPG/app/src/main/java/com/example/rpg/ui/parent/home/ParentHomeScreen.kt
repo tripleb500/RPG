@@ -1,12 +1,5 @@
-package com.example.rpg.ui.parent
+package com.example.rpg.ui.parent.home
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
-import com.example.rpg.ui.child.ChildHomeScreen
-import com.example.rpg.ui.parent.ParentLandingScreen
-import com.example.rpg.ui.theme.RPGTheme
-import android.widget.ImageButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,18 +13,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
 import com.example.rpg.ui.Routes
-import com.example.rpg.ui.child.CardView
-import com.example.rpg.ui.child.Quest
 import com.example.rpg.ui.theme.RPGTheme
 
 //Placeholder data until ViewModel implemented
@@ -41,11 +33,15 @@ val family = listOf(
     Family("Bradford", 1, 0.1F)
 )
 
+//In screens with a NavBar that need to be able to navigate to both types of screens (with and without bar)
+//you need to add both navController and overlayNavController to the parameters
+
 //Displays each family member below the image of the parent
 @Composable
 fun ParentHomeScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    overlayNavController: NavHostController
 ){
     Column(
         modifier = Modifier.padding(top = 85.dp),
@@ -120,6 +116,6 @@ fun ProgressIndicator(
 @Composable
 fun PreviewParentHomeScreen(){
     RPGTheme {
-        ParentHomeScreen(navController = rememberNavController())
+        ParentHomeScreen(navController = rememberNavController(), overlayNavController = rememberNavController())
     }
 }

@@ -4,4 +4,11 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.google.gms.google.services) apply false
+
+    /**
+     *  First plugin, enables hilt, Dependency Injection library
+     *  Second plugin, KSP (Kotlin Symbol Processing), used by libraries such as hilt
+     */
+    id("com.google.dagger.hilt.android") version "2.57.2" apply false
+    id("com.google.devtools.ksp") version "2.0.21-1.0.28" apply false
 }
