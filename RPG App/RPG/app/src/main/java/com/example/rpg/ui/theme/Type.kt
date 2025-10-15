@@ -17,13 +17,28 @@ val dynaPuffFontFamily = FontFamily(
 
 // Set of Material typography styles to start with
 val Typography = Typography(
+    //this changes default font for text items
     bodyLarge = TextStyle(
         fontFamily = klopFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
-    )
+    ),
+    // This changes default font for button labels
+    labelLarge = TextStyle(
+        fontFamily = klopFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 11.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp
+    ),
+    //This changes default font for nav bar labels
+    labelMedium = TextStyle(
+        fontFamily = klopFontFamily,
+        fontWeight = FontWeight.Normal,
+    ),
+
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
@@ -32,12 +47,6 @@ val Typography = Typography(
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
-    )
+
     */
 )
