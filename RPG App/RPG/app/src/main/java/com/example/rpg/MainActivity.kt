@@ -23,14 +23,16 @@ import com.example.rpg.ui.parent.ParentHomeScreen
 import com.example.rpg.ui.parent.ParentLandingScreen
 import com.example.rpg.ui.signup.SignUpScreen
 import com.example.rpg.ui.theme.RPGTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             RPGTheme {
                 //SignUpScreen() Used to quickly check textfield and radio button
-                ScreenMain()
+                //ScreenMain()
             }
         }
     }

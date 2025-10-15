@@ -1,4 +1,9 @@
 package com.example.rpg.data.model
 
-class Child {
-}
+data class Child(
+    val id : String = "",
+    val username : String = "",
+    val firstname : String = "",
+    val lastname : String = "",
+    val level : Int = 0
+)

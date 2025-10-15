@@ -29,7 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.ViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.rpg.ui.theme.RPGTheme
+import kotlin.math.sign
 
 /**
  * TODO:
@@ -41,13 +45,25 @@ import com.example.rpg.ui.theme.RPGTheme
  */
 
 @Composable
-fun SignUpScreen (
-    modifier: Modifier = Modifier
+fun SignUpScreen(viewModel: SignUpViewModel = hiltViewModel()
+) {
+    val shouldRestartApp by viewModel.shouldRestartApp.collectAsStateWithLifecycle()
+    SignUpScreenContent(
+        signUp = { email, password ->
+            viewModel.signUp(email, password)
+        }
+
+    )
+}
+@Composable
+fun SignUpScreenContent(
+    signUp: (String, String,) -> Unit
 ) {
     var username by remember {mutableStateOf("")}
     var email by remember {mutableStateOf("")}
     var password by remember {mutableStateOf("")}
     var selectedFamilyRole by remember {mutableStateOf("")}
+
 
 
     Column(
@@ -130,6 +146,10 @@ fun SignUpScreen (
 
         Button(onClick = {
             // Add Firebase auth logic when completed
+            signUp(
+                email,
+                password,
+            )
         }) {
             Text(text = "Sign Up")
         }
@@ -150,6 +170,8 @@ fun SignUpScreen (
 @Composable
 fun PreviewSignUpScreen(){
     RPGTheme {
-        SignUpScreen()
+        SignUpScreenContent(
+            signUp = {_,_, ->}
+        )
     }
 }
