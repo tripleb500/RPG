@@ -37,6 +37,7 @@ val Typography = Typography(
     labelMedium = TextStyle(
         fontFamily = klopFontFamily,
         fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
     ),
 
     /* Other default text styles to override

@@ -1,4 +1,4 @@
-package com.example.rpg.ui.child.social
+package com.example.rpg.ui.parent.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,11 +15,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.theme.RPGTheme
 
 @Composable
-fun ChildSocialScreen(
+fun ParentSettingsScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     overlayNavController: NavHostController,
-    viewModel: ChildSocialViewModel = viewModel()
+    viewModel: ParentSettingsViewModel = viewModel()
 ) {
     Column(
         modifier = Modifier.padding(top = 85.dp),
@@ -27,15 +27,15 @@ fun ChildSocialScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Child Social Screen"
+            text = "Parent Settings Screen"
         )
     }
 }
 
 @Preview
 @Composable
-fun PreviewChildSocialScreen(){
+fun PreviewParentQuestScreen(){
     RPGTheme {
-        ChildSocialScreen(navController = rememberNavController(), overlayNavController = rememberNavController())
+        ParentSettingsScreen(navController = rememberNavController(), overlayNavController = rememberNavController())
     }
 }

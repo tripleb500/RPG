@@ -26,7 +26,8 @@ fun ChildBottomBar(overlayNavController: NavHostController) {
                         popUpTo(overlayNavController.graph.startDestinationId)
                     }
                 },
-                icon = { Icon(painterResource(item.icon), contentDescription = item.title) },
+                icon = {
+                    Icon(painterResource(item.icon), contentDescription = item.title) },
                 label = { Text(item.title) }
             )
         }

@@ -10,8 +10,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
 import com.example.rpg.ui.child.ChildBottomBar
+import com.example.rpg.ui.child.game.ChildGameScreen
 import com.example.rpg.ui.child.home.ChildHomeScreen
-import com.example.rpg.ui.child.profile.ChildProfileScreen
+import com.example.rpg.ui.child.quest.ChildQuestScreen
+import com.example.rpg.ui.child.settings.ChildSettingsScreen
+import com.example.rpg.ui.child.social.ChildSocialScreen
 
 //ChildNavGraph handles navigation between screens with the Child version of a bottom NavBar
 @Composable
@@ -24,24 +27,33 @@ fun ChildNavGraph(navController: NavHostController) {
         NavHost(
             navController = overlayNavController,
             startDestination = Routes.ChildHomeScreen.route,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(innerPadding)
         ) {
+            // Child Routes : ChildGame
+            composable(Routes.ChildGameScreen.route) {
+                ChildGameScreen(navController = navController, overlayNavController = overlayNavController)
+            }
+
+            // Child Routes : ChildQuest
+            composable(Routes.ChildQuestScreen.route) {
+                ChildQuestScreen(navController = navController, overlayNavController = overlayNavController)
+            }
+
             // Child Routes : ChildHome
             composable(Routes.ChildHomeScreen.route) {
                 ChildHomeScreen(navController = navController, overlayNavController = overlayNavController)
             }
 
-            // Child Routes : ChildProfile
-            composable(Routes.ChildProfileScreen.route) {
-                ChildProfileScreen(navController = navController, overlayNavController = overlayNavController)
+            // Child Routes : ChildSocial
+            composable(Routes.ChildSocialScreen.route) {
+                ChildSocialScreen(navController = navController, overlayNavController = overlayNavController)
             }
-            //testing purposes delete/swap out with Child screens later:
-            //create ChildNavBarOverlay next
 
-//            // Child Routes : childHome
-//            composable(Routes.ChildHomeScreen.route) {
-//                ChildHomeScreen(navController = navController, overlayNavController = overlayNavController)
-//            }
+            // Child Routes : ChildSettings
+            composable(Routes.ChildSettingsScreen.route) {
+                ChildSettingsScreen(navController = navController, overlayNavController = overlayNavController)
+            }
         }
     }
 }
