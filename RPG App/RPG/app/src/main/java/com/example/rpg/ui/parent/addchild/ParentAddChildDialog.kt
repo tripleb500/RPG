@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 
 @Composable
 fun ParentAddChildDialog(
@@ -29,7 +30,7 @@ fun ParentAddChildDialog(
     onAdd: (username: String, accessCode: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    //Dialog(onDismissRequest = { onDismissRequest() }) {
+    Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -79,19 +80,19 @@ fun ParentAddChildDialog(
                     }
                 }
             }
-        //}
+        }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ParentAddChildDialogPreview() {
-    // Simulate showing the dialog
-    ParentAddChildDialog(
-        onDismissRequest = { /* Do nothing for preview */ },
-        onAdd = { username, accessCode ->
-            // Print to log for preview (won't actually show in UI)
-            println("Added: $username / $accessCode")
-        }
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun ParentAddChildDialogPreview() {
+//    // Simulate showing the dialog
+//    ParentAddChildDialog(
+//        onDismissRequest = { /* Do nothing for preview */ },
+//        onAdd = { username, accessCode ->
+//            // Print to log for preview (won't actually show in UI)
+//            println("Added: $username / $accessCode")
+//        }
+//    )
+//}

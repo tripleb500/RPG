@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
 import com.example.rpg.ui.child.home.ChildHomeScreen
@@ -14,6 +15,7 @@ import com.example.rpg.ui.child.quest.ChildQuestScreen
 import com.example.rpg.ui.child.settings.ChildSettingsScreen
 import com.example.rpg.ui.child.social.ChildSocialScreen
 import com.example.rpg.ui.parent.ParentBottomBar
+import com.example.rpg.ui.parent.addchild.ParentAddChildDialog
 import com.example.rpg.ui.parent.home.ParentHomeScreen
 import com.example.rpg.ui.parent.quest.ParentQuestScreen
 import com.example.rpg.ui.parent.settings.ParentSettingsScreen
@@ -32,11 +34,6 @@ fun ParentNavGraph(navController: NavHostController) {
             startDestination = Routes.ParentHomeScreen.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            // Parent Routes : addChild TODO
-//            composable(Routes.ParentAddChildDialog.route) {
-//                ParentAddChildDialog(navController = navController, overlayNavController = overlayNavController)
-//            }
-
             // Parent Routes : ParentQuest
             composable(Routes.ParentQuestScreen.route) {
                 ParentQuestScreen(navController = navController, overlayNavController = overlayNavController)
@@ -55,6 +52,18 @@ fun ParentNavGraph(navController: NavHostController) {
             // Parent Routes : ParentSettings
             composable(Routes.ParentSettingsScreen.route) {
                 ParentSettingsScreen(navController = navController, overlayNavController = overlayNavController)
+            }
+
+            //this is an overlay so it doesn't have the bottom bar but it's still being called by the bar that's why it belongs here
+            // Parent Routes : parentAddChildDialog
+            dialog(Routes.ParentAddChildDialog.route) {
+                ParentAddChildDialog(
+                    onDismissRequest = {overlayNavController.popBackStack()},
+                    onAdd = { username, accessCode ->
+                        // TODO: handle adding the child here once we have viewmodel setup
+                        overlayNavController.popBackStack()
+                    }
+                )
             }
         }
     }
