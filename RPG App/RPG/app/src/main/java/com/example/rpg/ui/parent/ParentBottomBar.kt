@@ -22,8 +22,17 @@ fun ParentBottomBar(overlayNavController: NavHostController) {
             NavigationBarItem(
                 selected = currentRoute?.endsWith(item.route) == true,
                 onClick = {
-                    overlayNavController.navigate(item.route) {
-                        popUpTo(overlayNavController.graph.startDestinationId)
+                    //if dialog don't reset backstack
+                    if (item == ParentNavBar.ParentAdd) {
+                        overlayNavController.navigate(item.route) {
+                            launchSingleTop = true
+                        }
+                    }
+                    else {
+                        //normal
+                        overlayNavController.navigate(item.route) {
+                            popUpTo(overlayNavController.graph.startDestinationId)
+                        }
                     }
                 },
                 icon = { Icon(painterResource(item.icon), contentDescription = item.title) },
