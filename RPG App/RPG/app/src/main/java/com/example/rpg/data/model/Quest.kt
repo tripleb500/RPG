@@ -1,6 +1,6 @@
 package com.example.rpg.data.model
 import com.google.firebase.firestore.DocumentId
-import com.google.type.Date
+import java.util.Date
 
 data class Quest(
     @DocumentId val id: String = "",
