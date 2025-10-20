@@ -1,5 +1,7 @@
 package com.example.rpg.data.repository
 import com.example.rpg.data.datasource.AuthRemoteDataSource
+import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -10,7 +12,8 @@ import javax.inject.Inject
 class AuthRepository @Inject constructor(
     private val authRemoteDataSource: AuthRemoteDataSource
 ) {
-
+    val currentUser: FirebaseUser? = authRemoteDataSource.currentUser
+    val currentUserIdFlow: Flow<String?> = authRemoteDataSource.currentUserIdFlow
     suspend fun signUp(email: String, password: String) {
         authRemoteDataSource.signUp(email, password )
     }
