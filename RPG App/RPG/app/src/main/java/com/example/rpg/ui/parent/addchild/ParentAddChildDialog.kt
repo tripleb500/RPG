@@ -27,7 +27,7 @@ import androidx.compose.ui.window.Dialog
 @Composable
 fun ParentAddChildDialog(
     onDismissRequest: () -> Unit,
-    onAdd: (username: String, accessCode: String) -> Unit,
+    onAdd: (username: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -73,7 +73,9 @@ fun ParentAddChildDialog(
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Button(onClick = {
-                        // onAdd(username, accessCode) // TODO
+                        if (username.isNotBlank()) {
+                            onAdd(username)  // call ViewModel
+                        }
                         onDismissRequest()
                     }) {
                         Text("Add")

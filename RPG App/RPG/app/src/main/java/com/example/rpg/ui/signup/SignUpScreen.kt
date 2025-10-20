@@ -41,8 +41,10 @@ fun SignUpScreen(viewModel: SignUpViewModel = hiltViewModel(),
     val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
 
     SignUpScreenContent(
-        signUp = {email, password, username, role ->  // Defines what happens when user submits sign-up.
+        signUp = {firstname, lastname, email, password, username, role ->  // Defines what happens when user submits sign-up.
             viewModel.signUp(  // Calls SignUpViewModel signUp function.
+                firstname,
+                lastname,
                 email,
                 password,
                 username = username,
@@ -70,11 +72,14 @@ fun SignUpScreen(viewModel: SignUpViewModel = hiltViewModel(),
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreenContent (
-    signUp: (String, String, String, String) -> Unit,
+    signUp: (String, String, String, String, String, String) -> Unit,
     errorMessage: String?,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
+    var firstname by remember {mutableStateOf("")}
+    var lastname by remember {mutableStateOf("")}
+
     var email by remember {mutableStateOf("")}
     var password by remember {mutableStateOf("")}
     var username by remember {mutableStateOf("")}
@@ -82,7 +87,6 @@ fun SignUpScreenContent (
     val roleOptions = listOf("Parent", "Child")
     var expanded by remember { mutableStateOf(false) }  // Whether the dropdown menu is open.
     var selectedRole by remember {mutableStateOf(roleOptions[0])}  // Selected dropdown role.
-
 
     Column(
         modifier = Modifier
@@ -94,12 +98,24 @@ fun SignUpScreenContent (
 
         Spacer(Modifier.height(16.dp))
 
+        // Firstname input field
+        OutlinedTextField(
+            value = firstname,
+            onValueChange = {firstname = it},
+            label = {Text ("First Name")}
+        )
+
+        // Lastname input field
+        OutlinedTextField(
+            value = lastname,
+            onValueChange = {lastname = it},
+            label = {Text ("Last Name")}
+        )
         // Email input field
         OutlinedTextField(
             value = email,
             onValueChange = {email = it},
             label = {Text ("Email")}
-
         )
 
         Spacer(Modifier.height(8.dp))
@@ -152,8 +168,6 @@ fun SignUpScreenContent (
             }
         }
 
-
-
         // If there is error with text fields error will display.
         errorMessage?.let {
             Text(
@@ -163,12 +177,13 @@ fun SignUpScreenContent (
             )
         }
 
-
         Spacer(Modifier.height(16.dp))
 
         // Creates user's account, info is sent to Firebase Authentication if successful.
         Button(onClick = {
             signUp (
+                firstname,
+                lastname,
                 email,
                 password,
                 username,
@@ -186,7 +201,6 @@ fun SignUpScreenContent (
     }
 }
 
-
 @Preview(
     showBackground = true,
     showSystemUi = true
@@ -195,7 +209,7 @@ fun SignUpScreenContent (
 fun PreviewSignUpScreen(){
     RPGTheme {
         SignUpScreenContent(
-            signUp = {_,_,_,_ ->}, errorMessage = null,
+            signUp = {_,_,_,_,_,_ ->}, errorMessage = null,
             navController = rememberNavController()
         )
     }

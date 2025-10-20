@@ -24,16 +24,24 @@ class SignUpViewModel @Inject constructor(
 
 
     // Signup function called from SignUpScreen. Takes user's email, password, username, and family role (parent or child).
-    fun signUp(email: String, password: String, username: String, role: String, onSuccess: (Boolean, String?) -> Unit) {
-
+    fun signUp(firstname: String, lastname: String, email: String, password: String, username: String, role: String, onSuccess: (Boolean, String?) -> Unit) {
+        if (firstname.isBlank() ) {
+            _errorMessage.value = "First Name empty, Please enter your first name."
+            return
+        }
+        if (lastname.isBlank() ) {
+            _errorMessage.value = "Last Name empty, Please enter your last name."
+            return
+        }
         if (email.isBlank() ) {
-            _errorMessage.value = "Email empty, Please enter a email."
+            _errorMessage.value = "Email empty, Please enter an email."
             return
         }
         if (password.isBlank() ) {
             _errorMessage.value = "Password empty, Please enter a password."
             return
         }
+
 
         viewModelScope.launch {
             try {
@@ -42,6 +50,8 @@ class SignUpViewModel @Inject constructor(
 
                 val user = User(  // Construct a User data class object
                     id = userId,
+                    firstname = firstname,
+                    lastname = lastname,
                     username = username,
                     email = email,
                     familyRole = role

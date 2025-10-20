@@ -11,7 +11,10 @@ import com.google.firebase.firestore.DocumentId
  */
 data class User (
     @DocumentId val id: String = "",
-    val username : String = "",
+    val username: String = "",
+    val firstname: String = "",
+    val lastname: String = "",
     val familyRole: String = "",
-    val email: String = ""
+    val email: String = "",
+    val childrenIds: List<String> = emptyList()
 )
