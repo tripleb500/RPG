@@ -12,4 +12,8 @@ class UserRepository @Inject constructor(
     suspend fun createProfile(user: User) {
         return remoteDataSource.createProfile(user)
     }
+
+    suspend fun getProfile(id: String): User? {
+        return remoteDataSource.getProfile(id)
+    }
 }

@@ -3,6 +3,7 @@ package com.example.rpg.data.datasource
 
 import com.example.rpg.data.model.User
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -16,6 +17,14 @@ class UserRemoteDataSource @Inject constructor(private val firestore: FirebaseFi
             .document(user.id) // Specifies document ID is equal to user's ID.
             .set(user)  // Saves user object as document
             .await()
+    }
+
+    suspend fun getProfile (id: String): User? {
+        return firestore.collection(USERS_COLLECTION)
+            .document(id)
+            .get()
+            .await()
+            .toObject()
     }
 
 
