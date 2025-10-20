@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.rpg.ui.Routes
 import com.example.rpg.ui.theme.RPGTheme
 
 
@@ -77,7 +79,7 @@ fun SignInScreen (
         }
 
         TextButton(onClick = {
-            // Add nav logic to Sign-Up
+            navController.navigate(Routes.SignUpScreen.route)
         }) {
             Text(text = "Don't have an account? Sign-up here")
         }

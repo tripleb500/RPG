@@ -2,40 +2,56 @@ package com.example.rpg.ui.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.rpg.data.model.User
 import com.example.rpg.data.repository.AuthRepository
+import com.example.rpg.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ): ViewModel() {
 
+    //  Holds string; current user error if necessary, when signing up.
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
-    fun signUp(email: String, password: String) {
+
+    // Signup function called from SignUpScreen. Takes user's email, password, username, and family role (parent or child).
+    fun signUp(email: String, password: String, username: String, role: String, onSuccess: (Boolean, String?) -> Unit) {
 
         if (email.isBlank() ) {
             _errorMessage.value = "Email empty, Please enter a email."
             return
         }
-
         if (password.isBlank() ) {
-            _errorMessage.value = "Password Empty, Please enter a password."
+            _errorMessage.value = "Password empty, Please enter a password."
             return
         }
 
         viewModelScope.launch {
             try {
-                authRepository.signUp(email, password)
+                authRepository.signUp(email, password)  // Calls AuthRepository to create user in Firebase Auth.
+                val userId = authRepository.currentUser?.uid ?: return@launch  // After signup, get current Firebase user's UID (unique ID).
+
+                val user = User(  // Construct a User data class object
+                    id = userId,
+                    username = username,
+                    email = email,
+                    familyRole = role
+                )
+                userRepository.createProfile(user)  // Calls UserRepository to save the profile to Firestore database. Ensures that we have a user profile instead of just user authentication.
+                onSuccess(true, role)  // Tells UI that signup was successful. Role is passed so UI can navigate to Parent or Child screen based upon selection.
+
             } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "An unknown error occurred"
+                _errorMessage.value = e.message ?: "An error occurred"
+                onSuccess(false, null)
             }
         }
     }

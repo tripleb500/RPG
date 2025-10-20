@@ -10,6 +10,7 @@ import com.example.rpg.ui.child.home.ChildHomeScreen
 import com.example.rpg.ui.child.landing.ChildLandingScreen
 import com.example.rpg.ui.parent.landing.ParentLandingScreen
 import com.example.rpg.ui.signin.SignInScreen
+import com.example.rpg.ui.signup.SignUpScreen
 import com.example.rpg.ui.theme.RPGTheme
 
 //RPGNavGraph handles navigation between screens without NavBar
@@ -17,15 +18,21 @@ import com.example.rpg.ui.theme.RPGTheme
 fun RPGNavGraph() {
     val navController = rememberNavController()
     // Start Destination: parentLandingScreen
-    NavHost(navController = navController, startDestination = Routes.ParentLandingScreen.route) {
+    NavHost(navController = navController, startDestination = Routes.SignUpScreen.route) {
+
         // Account Management Route : signInScreen
+        composable(Routes.SignUpScreen.route) {
+            SignUpScreen(navController = navController)
+        }
         composable(Routes.SignInScreen.route) {
             SignInScreen(navController = navController)
         }
+
         // Landing Page Route : parentLanding
         composable(Routes.ParentLandingScreen.route) {
             ParentLandingScreen(navController = navController)
         }
+
         // Landing Page Route : childLanding
         composable(Routes.ChildLandingScreen.route) {
             ChildLandingScreen(navController = navController)

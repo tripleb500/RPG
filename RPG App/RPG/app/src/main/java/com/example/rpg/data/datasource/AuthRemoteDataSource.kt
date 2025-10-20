@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
+
 /**
  * Communicates directly with Firebase for authentication.
  * Handles operations such as: signing up, signing in, and signing out.
@@ -16,10 +17,9 @@ import javax.inject.Inject
 
 class AuthRemoteDataSource @Inject constructor(private val auth: FirebaseAuth) {
     val currentUser: FirebaseUser? get() = auth.currentUser
-
-    val currentUserIdFlow: Flow<String?>
+    val currentIdFlow: Flow<String?>
         get() = callbackFlow {
-            val listener = FirebaseAuth.AuthStateListener { _ -> this.trySend(currentUser?.uid) }
+            val listener = FirebaseAuth.AuthStateListener {_ -> this.trySend(currentUser?.uid) }
             auth.addAuthStateListener(listener)
             awaitClose { auth.removeAuthStateListener(listener) }
         }

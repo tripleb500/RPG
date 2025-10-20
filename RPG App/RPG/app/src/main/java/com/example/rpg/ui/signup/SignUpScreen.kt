@@ -2,15 +2,15 @@ package com.example.rpg.ui.signup
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -20,48 +20,68 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.BiasAbsoluteAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.rpg.ui.Routes
 import com.example.rpg.ui.theme.RPGTheme
 
-/**
- * TODO:
- * Overall fix formatting.
- * Add nav logic to correct landing page
- * Add nav logic to sign-in screen
- */
 
 // "Container", connects to viewmodel; defines what logic to pass down to UI
 @Composable
-fun SignUpScreen(viewModel: SignUpViewModel = hiltViewModel() ) {
+fun SignUpScreen(viewModel: SignUpViewModel = hiltViewModel(),
+                 navController: NavController) {
+
     val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
 
     SignUpScreenContent(
-        signUp = {email, password ->
-            viewModel.signUp(email, password)
+        signUp = {email, password, username, role ->  // Defines what happens when user submits sign-up.
+            viewModel.signUp(  // Calls SignUpViewModel signUp function.
+                email,
+                password,
+                username = username,
+                role = role,
+                onSuccess = { success, userRole ->  // Post Sign-up behavior.
+                    if(success && userRole != null) {  // Navigate user to correct homepage and functionalities based on the family role they selected.
+                        when(userRole.lowercase()) {
+                            "parent" -> navController.navigate(Routes.ParentLandingScreen.route) {
+                                popUpTo(Routes.SignUpScreen.route) { inclusive = true }  // Ensures that user cannot come back to sign-up screen
+                            }
+                            "child" -> navController.navigate(Routes.ChildLandingScreen.route) {
+                                popUpTo(Routes.SignUpScreen.route) { inclusive = true }
+                            }
+                        }
+
+                    }
+                })
         },
-        errorMessage = errorMessage
+        errorMessage = errorMessage,
+        navController = navController
     )
 }
 
 // Pure UI, builds screen layout, responds to user input.
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreenContent (
-    signUp: (String, String) -> Unit,
+    signUp: (String, String, String, String) -> Unit,
     errorMessage: String?,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     var email by remember {mutableStateOf("")}
     var password by remember {mutableStateOf("")}
+    var username by remember {mutableStateOf("")}
+    
+    val roleOptions = listOf("Parent", "Child")
+    var expanded by remember { mutableStateOf(false) }  // Whether the dropdown menu is open.
+    var selectedRole by remember {mutableStateOf(roleOptions[0])}  // Selected dropdown role.
 
 
     Column(
@@ -73,7 +93,6 @@ fun SignUpScreenContent (
         Text(text = "Create Account", fontSize = 32.sp)
 
         Spacer(Modifier.height(16.dp))
-
 
         // Email input field
         OutlinedTextField(
@@ -94,6 +113,47 @@ fun SignUpScreenContent (
 
         Spacer(Modifier.height(8.dp))
 
+        // Username input field.
+        OutlinedTextField(
+            value = username,
+            onValueChange = {username = it},
+            label = {Text ("Username")}
+        )
+
+        Spacer(Modifier.height(8.dp))
+
+        // Dropdown menu for family roles (parent and child).
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded }
+
+        ) {
+            OutlinedTextField(
+                value = selectedRole,
+                onValueChange = {},
+                label = {Text("Select Role" ) },
+                readOnly = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded)},
+                modifier = Modifier.menuAnchor()
+            )
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                roleOptions.forEach {role ->
+                    DropdownMenuItem(
+                        text = { Text(role) },
+                        onClick = {
+                            selectedRole = role
+                            expanded = false }
+
+                    )
+                }
+            }
+        }
+
+
+
         // If there is error with text fields error will display.
         errorMessage?.let {
             Text(
@@ -110,14 +170,16 @@ fun SignUpScreenContent (
         Button(onClick = {
             signUp (
                 email,
-                password
+                password,
+                username,
+                selectedRole
             )
         }) {
             Text(text = "Sign Up")
         }
 
         TextButton(onClick = {
-            // Add nav logic to login page
+            navController.navigate(Routes.SignInScreen.route)
         }) {
             Text(text = "Have an account? Sign-in here")
         }
@@ -133,7 +195,8 @@ fun SignUpScreenContent (
 fun PreviewSignUpScreen(){
     RPGTheme {
         SignUpScreenContent(
-            signUp = {_,_, ->}, errorMessage = null
+            signUp = {_,_,_,_ ->}, errorMessage = null,
+            navController = rememberNavController()
         )
     }
 }
