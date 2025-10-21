@@ -17,6 +17,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -25,13 +27,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
+import com.example.rpg.data.model.Quest
 import com.example.rpg.ui.Routes
 import com.example.rpg.ui.child.home.CardView
-import com.example.rpg.ui.child.quest.Quest
 import com.example.rpg.ui.child.home.child
 import com.example.rpg.ui.parent.home.Family
 import com.example.rpg.ui.parent.home.ProgressIndicator
@@ -46,7 +47,7 @@ fun ChildQuestScreen(
     overlayNavController: NavHostController,
     viewModel: ChildQuestViewModel = hiltViewModel()
 ) {
-    val childQuestList = viewModel.quests
+    val questList by viewModel.quests.collectAsState(initial = emptyList())
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -95,7 +96,7 @@ fun ChildQuestScreen(
             }
 
             LazyColumn {
-                items(childQuestList) { quest ->
+                items(questList) { quest ->
                     CardView(quest)
                 }
             }
@@ -120,14 +121,14 @@ fun CardView(quest: Quest) {
             )
             Column {
                 Text(
-                    text = quest.questName,
+                    text = quest.title,
                     modifier = Modifier.padding(top = 16.dp)
                 )
                 Text(
-                    text = "Reward: " + quest.Reward,
+                    text = "Reward: " + quest.rewardType,
                 )
                 Text(
-                    text = "Due: " + quest.deadline,
+                    text = "Due: " + quest.deadlineDate,
                 )
             }
         }
