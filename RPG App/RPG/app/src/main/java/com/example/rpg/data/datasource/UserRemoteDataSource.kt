@@ -25,7 +25,7 @@ class UserRemoteDataSource @Inject constructor(private val firestore: FirebaseFi
             .document(id)
             .get()
             .await()
-            .toObject()
+            .toObject(User::class.java)
     }
 
     suspend fun addChild(parentId: String, childId: String) {

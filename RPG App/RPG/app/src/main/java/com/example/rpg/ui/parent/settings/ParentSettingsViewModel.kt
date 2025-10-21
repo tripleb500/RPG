@@ -1,6 +1,17 @@
 package com.example.rpg.ui.parent.settings
 
 import androidx.lifecycle.ViewModel
+import com.example.rpg.data.repository.AuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ParentSettingsViewModel : ViewModel() {
+@HiltViewModel
+class ParentSettingsViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : ViewModel() {
+
+    fun signOut() {
+        authRepository.signOut()
+    }
+
 }
