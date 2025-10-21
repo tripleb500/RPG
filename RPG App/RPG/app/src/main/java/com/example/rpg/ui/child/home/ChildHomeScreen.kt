@@ -1,7 +1,9 @@
 package com.example.rpg.ui.child.home
-
+// TODO: button for stats; achievements
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +18,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,8 +31,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
 import com.example.rpg.ui.Routes
 import com.example.rpg.ui.child.quest.Quest
+import com.example.rpg.ui.parent.home.Family
+import com.example.rpg.ui.parent.home.ProgressIndicator
 import com.example.rpg.ui.theme.RPGTheme
 
+val child = Family("Bradford", 1, 0.1F)
 
 @Composable
 fun ChildHomeScreen(
@@ -36,28 +45,57 @@ fun ChildHomeScreen(
     viewModel: ChildHomeViewModel = viewModel()
 ) {
     val childQuestList = viewModel.quests
-
-    Column(
-        modifier = Modifier.padding(top = 85.dp),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            //color tuple needs to be updated once material theming implemented
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(Color(0xFF798B6A), Color(0xFF6c7d5f))
+                )
+            )
     ) {
-        //switch button
-        Button(
-            modifier = Modifier.padding(top = 85.dp),
-            onClick = { navController.navigate(Routes.ChildLandingScreen.route) }) {
-            Text(text = "Landing Page")
+        Row {
+            Image(
+                painter = painterResource(id = R.drawable.baseline_person_24),
+                contentDescription = "Photo of Avatar",
+                modifier = Modifier.padding(top = 45.dp)
+                    .width(100.dp)
+                    .height(100.dp)
+            )
+            Column(
+                modifier = Modifier.padding(top = 50.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.Start
+            ) {
+
+                Text(
+                    text = child.childName,
+                    modifier = Modifier.padding(top = 16.dp, bottom = 20.dp)
+                )
+
+                ProgressIndicator(
+                    progress = child.lvlProgress
+                )
+            }
         }
-        Image(
-            painter = painterResource(id = R.drawable.baseline_person_24),
-            contentDescription = "Photo of Avatar",
-            modifier = Modifier
-                .width(100.dp)
-                .height(100.dp)
-        )
-        LazyColumn {
-            items(childQuestList){ quest ->
-                CardView(quest)
+
+        Column(
+            modifier = Modifier.padding(top = 85.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            //switch button
+            Button(
+                modifier = Modifier.padding(top = 85.dp),
+                onClick = { navController.navigate(Routes.ChildLandingScreen.route) }) {
+                Text(text = "Landing Page")
+            }
+
+            LazyColumn {
+                items(childQuestList) { quest ->
+                    CardView(quest)
+                }
             }
         }
     }
@@ -91,6 +129,17 @@ fun CardView(quest: Quest) {
             }
         }
     }
+}
+
+@Composable
+fun ProgressIndicator(
+    progress: Float,
+    modifier: Modifier = Modifier
+){
+    LinearProgressIndicator(
+        progress = { progress },
+        modifier = modifier,
+    )
 }
 
 @Preview
