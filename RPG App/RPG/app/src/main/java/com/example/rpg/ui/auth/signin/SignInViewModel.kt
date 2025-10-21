@@ -1,4 +1,4 @@
-package com.example.rpg.ui.signin
+package com.example.rpg.ui.auth.signin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -32,9 +32,12 @@ class UserRemoteDataSource @Inject constructor(private val firestore: FirebaseFi
         val parentRef = firestore.collection(USERS_COLLECTION).document(parentId)
         firestore.runTransaction { transaction ->
             val snapshot = transaction.get(parentRef)
-            val currentList = snapshot.toObject(User::class.java)?.childrenIds ?: emptyList()
-            val updatedList = if (childId in currentList) currentList else currentList + childId
-            transaction.update(parentRef, "childrenIds", updatedList)
+            val currentList = (snapshot.get("childrenIds") as? List<*>)   // Use star projection
+                ?.mapNotNull { it as? String } ?: emptyList()            // Safely map to String
+
+            if (childId !in currentList) {
+                transaction.update(parentRef, "childrenIds", currentList + childId)
+            }
         }.await()
     }
 

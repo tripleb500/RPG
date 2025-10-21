@@ -1,4 +1,4 @@
-package com.example.rpg.ui.signin
+package com.example.rpg.ui.auth.signin
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -53,18 +53,6 @@ fun ParentNavGraph(navController: NavHostController) {
             composable(Routes.ParentSettingsScreen.route) {
                 ParentSettingsScreen(navController = navController, overlayNavController = overlayNavController)
             }
-
-            //this is an overlay so it doesn't have the bottom bar but it's still being called by the bar that's why it belongs here
-            // Parent Routes : parentAddChildDialog
-            dialog(Routes.ParentAddChildDialog.route) {
-                ParentAddChildDialog(
-                    onDismissRequest = {overlayNavController.popBackStack()},
-                    onAdd = { username, accessCode ->
-                        // TODO: handle adding the child here once we have viewmodel setup
-                        overlayNavController.popBackStack()
-                    }
-                )
-            }
         }
     }
 }

@@ -6,11 +6,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
-import com.example.rpg.ui.child.home.ChildHomeScreen
 import com.example.rpg.ui.child.landing.ChildLandingScreen
 import com.example.rpg.ui.parent.landing.ParentLandingScreen
-import com.example.rpg.ui.signin.SignInScreen
-import com.example.rpg.ui.signup.SignUpScreen
+import com.example.rpg.ui.auth.signin.SignInScreen
+import com.example.rpg.ui.auth.signup.SignUpScreen
 import com.example.rpg.ui.theme.RPGTheme
 
 //RPGNavGraph handles navigation between screens without NavBar
