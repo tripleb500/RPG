@@ -19,7 +19,7 @@ val dynaPuffFontFamily = FontFamily(
 val Typography = Typography(
     //this changes default font for text items
     bodyLarge = TextStyle(
-        fontFamily = klopFontFamily,
+        fontFamily = dynaPuffFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
@@ -27,7 +27,7 @@ val Typography = Typography(
     ),
     // This changes default font for button labels
     labelLarge = TextStyle(
-        fontFamily = klopFontFamily,
+        fontFamily = dynaPuffFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 11.sp,
         lineHeight = 16.sp,
@@ -35,7 +35,7 @@ val Typography = Typography(
     ),
     //This changes default font for nav bar labels
     labelMedium = TextStyle(
-        fontFamily = klopFontFamily,
+        fontFamily = dynaPuffFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp
     ),

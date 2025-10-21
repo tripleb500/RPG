@@ -12,6 +12,10 @@ class QuestRepository @Inject constructor(
         return questRemoteDataSource.getUserQuests(currentUserIdFlow)
     }
 
+    fun getAllQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>>{
+        return questRemoteDataSource.getAllQuests(currentUserIdFlow)
+    }
+
     suspend fun getQuestItem(questId: String): Quest? {
         return questRemoteDataSource.getQuestItem(questId)
     }

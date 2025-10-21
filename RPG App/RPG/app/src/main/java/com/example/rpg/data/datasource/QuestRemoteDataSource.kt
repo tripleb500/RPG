@@ -23,6 +23,17 @@ class QuestRemoteDataSource @Inject constructor(
         }
     }
 
+    //This function is useful for parents to view all their children's quests
+    //Also useful for test purposes
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getAllQuests(currentUserIdFlow : Flow<String?>): Flow<List<Quest>>{
+        return currentUserIdFlow.flatMapLatest { ownerId ->
+            firestore
+                .collection(QUEST_ITEMS_COLLECTION)
+                .dataObjects()
+        }
+    }
+
     suspend fun getQuestItem(questId: String): Quest? {
         return firestore.collection(QUEST_ITEMS_COLLECTION).document(questId).get().await().toObject()
     }
