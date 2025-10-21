@@ -43,10 +43,10 @@ fun SignUpScreen(viewModel: SignUpViewModel = hiltViewModel(),
     SignUpScreenContent(
         signUp = {firstname, lastname, email, password, username, role ->  // Defines what happens when user submits sign-up.
             viewModel.signUp(  // Calls SignUpViewModel signUp function.
-                firstname,
-                lastname,
-                email,
-                password,
+                firstname = firstname,
+                lastname = lastname,
+                email = email,
+                password = password,
                 username = username,
                 role = role,
                 onSuccess = { success, userRole ->  // Post Sign-up behavior.

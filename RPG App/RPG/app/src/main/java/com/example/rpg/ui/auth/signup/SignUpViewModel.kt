@@ -42,7 +42,6 @@ class SignUpViewModel @Inject constructor(
             return
         }
 
-
         viewModelScope.launch {
             try {
                 authRepository.signUp(email, password)  // Calls AuthRepository to create user in Firebase Auth.
