@@ -1,5 +1,5 @@
 package com.example.rpg.ui.child.home
-// TODO: button for stats; achievements
+// TODO: button for stats; achievements, list of main quests
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
 import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.child.achievements.ChildAchievementsDialog
+import com.example.rpg.ui.child.stats.ChildStatsDialog
 import com.example.rpg.ui.parent.home.Family
 import com.example.rpg.ui.parent.home.ProgressIndicator
 import com.example.rpg.ui.theme.RPGTheme
@@ -47,8 +48,8 @@ fun ChildHomeScreen(
     viewModel: ChildHomeViewModel = viewModel(),
     authViewModel: AuthViewModel = hiltViewModel(),
     ) {
-    var showDialog by remember { mutableStateOf(false) }
-    val childQuestList = viewModel.quests
+    var showDialogAchievements by remember { mutableStateOf(false) }
+    var showDialogStats by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -92,12 +93,12 @@ fun ChildHomeScreen(
             // Entire card is now the tap target
             Card(
                 modifier = Modifier.padding(48.dp),
-                onClick = { showDialog = true }, // open dialog on card tap
+                onClick = { showDialogAchievements = true }, // open dialog on card tap
             ) {
                 Row(Modifier.padding(16.dp)) {
                     Image(
                         painter = painterResource(id = R.drawable.outline_photo_camera_back_24),
-                        contentDescription = "Photo of quest",
+                        contentDescription = "Photo of achievement symbol",
                         modifier = Modifier
                             .width(100.dp)
                             .height(100.dp)
@@ -109,9 +110,36 @@ fun ChildHomeScreen(
                     }
                 }
             }
-            if (showDialog) {
+            Card(
+                modifier = Modifier.padding(48.dp),
+                onClick = { showDialogStats = true }, // open dialog on card tap
+            ) {
+                Row(Modifier.padding(16.dp)) {
+                    Image(
+                        painter = painterResource(id = R.drawable.outline_photo_camera_back_24),
+                        contentDescription = "Photo of stat symbol",
+                        modifier = Modifier
+                            .width(100.dp)
+                            .height(100.dp)
+                    )
+                    Column(Modifier.padding(start = 16.dp)) {
+                        Text(
+                            text = "Stats",
+                        )
+                    }
+                }
+            }
+            if (showDialogAchievements) {
                 ChildAchievementsDialog(
-                    onDismissRequest = { showDialog = false },
+                    onDismissRequest = { showDialogAchievements = false },
+                    viewModel = viewModel,
+                    authViewModel = authViewModel
+                )
+            }
+
+            if (showDialogStats) {
+                ChildAchievementsDialog(
+                    onDismissRequest = { showDialogStats = false },
                     viewModel = viewModel,
                     authViewModel = authViewModel
                 )

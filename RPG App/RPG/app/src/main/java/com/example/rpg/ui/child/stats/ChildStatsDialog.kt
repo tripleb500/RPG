@@ -1,4 +1,4 @@
-package com.example.rpg.ui.child.achievements
+package com.example.rpg.ui.child.stats
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -6,12 +6,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -31,14 +28,14 @@ import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.child.home.ChildHomeViewModel
 
 @Composable
-fun ChildAchievementsDialog(
+fun ChildStatsDialog(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
     viewModel: ChildHomeViewModel = hiltViewModel(),
     authViewModel: AuthViewModel = hiltViewModel(),
 ) {
-    val isLoadingAchievements by remember { derivedStateOf { viewModel.isLoadingAchievements } }
-    val errorMessagesAchievements by remember { derivedStateOf { viewModel.errorMessageAchievements } }
+    val isLoadingStats by remember { derivedStateOf { viewModel.isLoadingStats } }
+    val errorMessagesStats by remember { derivedStateOf { viewModel.errorMessageStats } }
 
     var username by remember { mutableStateOf("") }
 
@@ -56,7 +53,7 @@ fun ChildAchievementsDialog(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
-                    text = "Achievements",
+                    text = "Stats",
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth(),
                     style = MaterialTheme.typography.titleLarge
@@ -67,11 +64,11 @@ fun ChildAchievementsDialog(
                     label = { Text("Child Username") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = !isLoadingAchievements
+                    enabled = !isLoadingStats
                 )
-                if (errorMessagesAchievements != null) {
+                if (errorMessagesStats != null) {
                     Text(
-                        text = errorMessagesAchievements ?: "",
+                        text = errorMessagesStats ?: "",
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodyMedium
                     )

@@ -35,12 +35,17 @@ class ChildHomeViewModel : ViewModel() {
             null, null, 20,
             Reward.OTHER, false, true, false, ""),
     )
-    var isLoading by mutableStateOf(false)
+    var isLoadingAchievements by mutableStateOf(false)
         private set
 
-    var errorMessage by mutableStateOf<String?>(null)
+    var errorMessageAchievements by mutableStateOf<String?>(null)
         private set
 
+    var isLoadingStats by mutableStateOf(false)
+        private set
+
+    var errorMessageStats by mutableStateOf<String?>(null)
+        private set
 
     val quests: SnapshotStateList<Quest> = _quests
 }
