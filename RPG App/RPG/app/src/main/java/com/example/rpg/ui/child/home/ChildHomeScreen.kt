@@ -10,11 +10,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,25 +34,35 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
+import com.example.rpg.data.model.Quest
+import com.example.rpg.data.model.Reward
 import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.child.achievements.ChildAchievementsDialog
+import com.example.rpg.ui.child.quest.CardView
+import com.example.rpg.ui.child.quest.ChildQuestViewModel
 import com.example.rpg.ui.child.stats.ChildStatsDialog
 import com.example.rpg.ui.parent.home.Family
 import com.example.rpg.ui.parent.home.ProgressIndicator
 import com.example.rpg.ui.theme.RPGTheme
 
 val child = Family("Bradford", 1, 0.1F)
-
+val questList = mutableStateListOf(
+    Quest("", "Dishes", "Wash the dishes", null,
+        null, null, 20,
+        Reward.OTHER, false, true, false, ""),
+)
 @Composable
 fun ChildHomeScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     overlayNavController: NavHostController,
-    viewModel: ChildHomeScreenViewModel = viewModel(),
-    authViewModel: AuthViewModel = hiltViewModel()
-) {
+    viewModel: ChildHomeScreenViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel(),
+    ) {
     var showDialogAchievements by remember { mutableStateOf(false) }
     var showDialogStats by remember { mutableStateOf(false) }
+    //val questList by viewModel.quests.collectAsState(initial = emptyList())
+
 
     Box(
         modifier = Modifier
@@ -64,8 +78,7 @@ fun ChildHomeScreen(
             Image(
                 painter = painterResource(id = R.drawable.baseline_person_24),
                 contentDescription = "Photo of Avatar",
-                modifier = Modifier
-                    .padding(top = 45.dp)
+                modifier = Modifier.padding(top = 45.dp)
                     .width(100.dp)
                     .height(100.dp)
             )
@@ -143,6 +156,11 @@ fun ChildHomeScreen(
                     authViewModel = authViewModel
                 )
             }
+            LazyColumn {
+                items(questList) { quest ->
+                    CardView(quest)
+                }
+            }
         }
     }
 }
@@ -152,20 +170,48 @@ fun ChildHomeScreen(
 fun ProgressIndicator(
     progress: Float,
     modifier: Modifier = Modifier
-) {
+){
     LinearProgressIndicator(
         progress = { progress },
         modifier = modifier,
     )
 }
 
+@Composable
+fun CardView(quest: Quest) {
+    Card(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(12.dp)
+    ) {
+        Row {
+            Image(
+                painter = painterResource(id = R.drawable.outline_photo_camera_back_24),
+                contentDescription = "Photo of quest",
+                modifier = Modifier
+                    .width(100.dp)
+                    .height(100.dp)
+            )
+            Column {
+                Text(
+                    text = quest.title,
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+                Text(
+                    text = "Reward: " + quest.rewardType,
+                )
+                Text(
+                    text = "Due: " + quest.deadlineDate,
+                )
+            }
+        }
+    }
+}
+
 @Preview
 @Composable
-fun PreviewChildHomeScreen() {
+fun PreviewChildHomeScreen(){
     RPGTheme {
-        ChildHomeScreen(
-            navController = rememberNavController(),
-            overlayNavController = rememberNavController()
-        )
+        ChildHomeScreen(navController = rememberNavController(), overlayNavController = rememberNavController())
     }
 }
