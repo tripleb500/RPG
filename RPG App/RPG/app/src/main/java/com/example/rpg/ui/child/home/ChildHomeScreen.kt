@@ -30,7 +30,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
 import com.example.rpg.ui.Routes
-import com.example.rpg.ui.child.quest.Quest
+import com.example.rpg.data.model.Quest
 import com.example.rpg.ui.parent.home.Family
 import com.example.rpg.ui.parent.home.ProgressIndicator
 import com.example.rpg.ui.theme.RPGTheme
@@ -92,11 +92,13 @@ fun ChildHomeScreen(
                 Text(text = "Landing Page")
             }
 
+
             LazyColumn {
                 items(childQuestList) { quest ->
                     CardView(quest)
                 }
             }
+
         }
     }
 }
@@ -117,14 +119,14 @@ fun CardView(quest: Quest) {
             )
             Column {
                 Text(
-                    text = quest.questName,
+                    text = quest.title,
                     modifier = Modifier.padding(top = 16.dp)
                 )
                 Text(
-                    text = "Reward: " + quest.Reward,
+                    text = "Reward: " + quest.rewardAmount,
                 )
                 Text(
-                    text = "Due: " + quest.deadline,
+                    text = "Due: " + quest.deadlineDate,
                 )
             }
         }

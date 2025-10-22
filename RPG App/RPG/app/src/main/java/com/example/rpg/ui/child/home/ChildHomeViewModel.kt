@@ -3,8 +3,9 @@ package com.example.rpg.ui.child.home
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
-import com.example.rpg.ui.child.quest.Quest
+import com.example.rpg.data.model.Quest
 import androidx.lifecycle.viewModelScope
+import com.example.rpg.data.model.Reward
 import com.example.rpg.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,9 +28,9 @@ class ChildHomeViewModel @Inject constructor(
 class ChildHomeViewModel : ViewModel() {
 
     private val _quests = mutableStateListOf(
-        Quest("Dishes", "Game Time", 25),
-        Quest("HW", "5 Dollars", 25),
-        Quest("Trash", "50 xp", 19)
+        Quest("", "Dishes", "Wash the dishes", null,
+            null, null, 20,
+            Reward.OTHER, false, true, false, ""),
     )
 
     val quests: SnapshotStateList<Quest> = _quests
