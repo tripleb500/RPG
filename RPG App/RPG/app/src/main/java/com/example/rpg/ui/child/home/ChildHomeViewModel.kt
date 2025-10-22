@@ -1,6 +1,9 @@
 package com.example.rpg.ui.child.home
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import com.example.rpg.data.model.Quest
@@ -32,6 +35,12 @@ class ChildHomeViewModel : ViewModel() {
             null, null, 20,
             Reward.OTHER, false, true, false, ""),
     )
+    var isLoading by mutableStateOf(false)
+        private set
+
+    var errorMessage by mutableStateOf<String?>(null)
+        private set
+
 
     val quests: SnapshotStateList<Quest> = _quests
 }
