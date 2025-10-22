@@ -10,7 +10,7 @@ class ParentSettingsViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    fun signOut() {
+    fun onCardClicked(id: Int) {
         authRepository.signOut()
     }
 
