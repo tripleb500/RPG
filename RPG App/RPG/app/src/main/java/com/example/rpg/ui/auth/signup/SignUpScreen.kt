@@ -102,6 +102,7 @@ fun SignUpScreenContent (
         OutlinedTextField(
             value = firstname,
             onValueChange = {firstname = it},
+            singleLine = true,
             label = {Text ("First Name")}
         )
 
@@ -109,12 +110,14 @@ fun SignUpScreenContent (
         OutlinedTextField(
             value = lastname,
             onValueChange = {lastname = it},
+            singleLine = true,
             label = {Text ("Last Name")}
         )
         // Email input field
         OutlinedTextField(
             value = email,
             onValueChange = {email = it},
+            singleLine = true,
             label = {Text ("Email")}
         )
 
@@ -124,6 +127,7 @@ fun SignUpScreenContent (
         OutlinedTextField(
             value = password,
             onValueChange = {password = it},
+            singleLine = true,
             label = {Text ("Password")}
         )
 
@@ -133,6 +137,7 @@ fun SignUpScreenContent (
         OutlinedTextField(
             value = username,
             onValueChange = {username = it},
+            singleLine = true,
             label = {Text ("Username")}
         )
 
