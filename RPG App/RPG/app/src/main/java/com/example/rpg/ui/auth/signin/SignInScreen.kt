@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -18,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -79,8 +82,10 @@ fun SignInScreenContent(
         // Email text input
         OutlinedTextField(
             value = email,
-            onValueChange = { email = it },
-            label = { Text(text = "Email") }
+            onValueChange = {email = it},
+            // Prevents new line
+            singleLine = true,
+            label = {Text (text = "Email")}
         )
 
         Spacer(Modifier.height(8.dp))
@@ -88,8 +93,13 @@ fun SignInScreenContent(
         // Password text input
         OutlinedTextField(
             value = password,
-            onValueChange = { password = it },
-            label = { Text(text = "Password") }
+            onValueChange = {password = it},
+            // Prevents new line
+            singleLine = true,
+            // Changes enter button function to work the same as clicking the sign in button
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Go),
+            keyboardActions = KeyboardActions(onGo = {signIn(email, password)}),
+            label = {Text (text = "Password")}
         )
 
         Spacer(Modifier.height(8.dp))

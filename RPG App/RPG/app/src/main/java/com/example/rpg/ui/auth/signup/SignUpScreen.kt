@@ -107,21 +107,24 @@ fun SignUpScreenContent(
         // Firstname input field
         OutlinedTextField(
             value = firstname,
-            onValueChange = { firstname = it },
-            label = { Text("First Name") }
+            onValueChange = {firstname = it},
+            singleLine = true,
+            label = {Text ("First Name")}
         )
 
         // Lastname input field
         OutlinedTextField(
             value = lastname,
-            onValueChange = { lastname = it },
-            label = { Text("Last Name") }
+            onValueChange = {lastname = it},
+            singleLine = true,
+            label = {Text ("Last Name")}
         )
         // Email input field
         OutlinedTextField(
             value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") }
+            onValueChange = {email = it},
+            singleLine = true,
+            label = {Text ("Email")}
         )
 
         Spacer(Modifier.height(8.dp))
@@ -129,8 +132,9 @@ fun SignUpScreenContent(
         // Password  input field
         OutlinedTextField(
             value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") }
+            onValueChange = {password = it},
+            singleLine = true,
+            label = {Text ("Password")}
         )
 
         Spacer(Modifier.height(8.dp))
@@ -138,8 +142,9 @@ fun SignUpScreenContent(
         // Username input field.
         OutlinedTextField(
             value = username,
-            onValueChange = { username = it },
-            label = { Text("Username") }
+            onValueChange = {username = it},
+            singleLine = true,
+            label = {Text ("Username")}
         )
 
         Spacer(Modifier.height(8.dp))
