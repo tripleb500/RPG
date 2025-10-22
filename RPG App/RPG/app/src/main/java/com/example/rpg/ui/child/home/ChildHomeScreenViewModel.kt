@@ -12,18 +12,19 @@ import com.example.rpg.data.model.Reward
 /**
 @HiltViewModel
 class ChildHomeViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+private val authRepository: AuthRepository
 ) : ViewModel(){
 
 }
-**/
-
+ **/
 
 class ChildHomeScreenViewModel : ViewModel() {
     private val _quests = mutableStateListOf(
-        Quest("", "Dishes", "Wash the dishes", null,
+        Quest(
+            "", "Dishes", "Wash the dishes", null,
             null, null, 20,
-            Reward.OTHER, false, true, false, ""),
+            Reward.OTHER, repeat = false, allDay = true, completed = false, ""
+        ),
     )
     var isLoadingAchievements by mutableStateOf(false)
         private set

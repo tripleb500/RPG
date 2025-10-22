@@ -9,7 +9,8 @@ import com.google.firebase.firestore.DocumentId
  * familyRole - represents user's role in app; either parent or child.
  * email - represents users inputted email when signing up.
  */
-data class User (
+
+data class User(
     @DocumentId val id: String = "",
     val username: String = "",
     val firstname: String = "",

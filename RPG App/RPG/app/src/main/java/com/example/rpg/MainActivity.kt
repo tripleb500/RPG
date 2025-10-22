@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
 
 @Preview
 @Composable
-fun PreviewLandingPage(){
+fun PreviewLandingPage() {
     RPGTheme {
         RPGNavGraph()
     }

@@ -10,23 +10,29 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.tasks.await
 
+/**
+ * Communicates directly with Firebase for quest collection.
+ * Handles operations such as: getting quests, creating, updating, deleting(?).
+ * Keeps Firebase-specific logic in one place.
+ */
+
 class QuestRemoteDataSource @Inject constructor(
-    private val firestore : FirebaseFirestore
-){
+    private val firestore: FirebaseFirestore
+) {
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun getUserQuests(currentUserIdFlow : Flow<String?>): Flow<List<Quest>>{
+    fun getUserQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> {
         return currentUserIdFlow.flatMapLatest { ownerId ->
             firestore
                 .collection(QUEST_ITEMS_COLLECTION)
-                .whereEqualTo(com.example.rpg.data.datasource.QuestRemoteDataSource.Companion.OWNER_ID_FIELD, ownerId)
+                .whereEqualTo(ASSIGNED_TO_ID_FIELD, ownerId)
                 .dataObjects()
         }
     }
 
-    //This function is useful for parents to view all their children's quests
-    //Also useful for test purposes
+    // This function is useful for parents to view all their children's quests
+    // Also useful for test purposes
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun getAllQuests(currentUserIdFlow : Flow<String?>): Flow<List<Quest>>{
+    fun getAllQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> {
         return currentUserIdFlow.flatMapLatest { ownerId ->
             firestore
                 .collection(QUEST_ITEMS_COLLECTION)
@@ -35,7 +41,8 @@ class QuestRemoteDataSource @Inject constructor(
     }
 
     suspend fun getQuestItem(questId: String): Quest? {
-        return firestore.collection(QUEST_ITEMS_COLLECTION).document(questId).get().await().toObject()
+        return firestore.collection(QUEST_ITEMS_COLLECTION).document(questId).get().await()
+            .toObject()
     }
 
     suspend fun create(questItem: Quest): String {
@@ -49,8 +56,10 @@ class QuestRemoteDataSource @Inject constructor(
     suspend fun delete(itemId: String) {
         firestore.collection(QUEST_ITEMS_COLLECTION).document(itemId).delete().await()
     }
+
     companion object {
-        private const val OWNER_ID_FIELD = "ownerId"
+//        private const val OWNER_ID_FIELD = "ownerId"
+        private const val ASSIGNED_TO_ID_FIELD = "assignedTo"
         private const val QUEST_ITEMS_COLLECTION = "quests" //Name of the collection for quest items
     }
 }

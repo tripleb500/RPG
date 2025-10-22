@@ -11,7 +11,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.rpg.data.model.ParentNavBar
 
-
 @Composable
 fun ParentBottomBar(overlayNavController: NavHostController) {
     val backStackEntry by overlayNavController.currentBackStackEntryAsState()
@@ -27,8 +26,7 @@ fun ParentBottomBar(overlayNavController: NavHostController) {
                     }
                 },
                 icon = { Icon(painterResource(item.icon), contentDescription = item.title) },
-                label = { Text(item.title) }
-            )
+                label = { Text(item.title) })
         }
     }
 }

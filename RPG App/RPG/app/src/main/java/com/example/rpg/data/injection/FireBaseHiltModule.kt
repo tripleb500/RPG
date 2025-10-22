@@ -23,7 +23,9 @@ import dagger.hilt.components.SingletonComponent
 @Module  // @Module in Dagger, is responsible for providing objects that can be injected into other classes.
 @InstallIn(SingletonComponent::class)  // Creates the Firebase services once and shares throughout the entire app.
 object FireBaseHiltModule {  // Object Declaration, only one instance of this object exists.
-    @Provides fun auth(): FirebaseAuth = Firebase.auth
+    @Provides
+    fun auth(): FirebaseAuth = Firebase.auth
 
-    @Provides fun firestore(): FirebaseFirestore = Firebase.firestore
+    @Provides
+    fun firestore(): FirebaseFirestore = Firebase.firestore
 }

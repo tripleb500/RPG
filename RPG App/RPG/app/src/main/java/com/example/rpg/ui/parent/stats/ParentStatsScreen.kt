@@ -1,6 +1,5 @@
 package com.example.rpg.ui.parent.stats
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -9,12 +8,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -29,7 +26,7 @@ fun ParentStatsScreen(
     overlayNavController: NavHostController,
     viewModel: ParentStatsViewModel = viewModel()
 ) {
-    Scaffold (
+    Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -48,10 +45,9 @@ fun ParentStatsScreen(
             )
         },
     ) { paddingValues ->
-        Column (
-            modifier = Modifier
-                .padding(paddingValues)
-        ){
+        Column(
+            modifier = Modifier.padding(paddingValues)
+        ) {
 
         }
     }
@@ -59,8 +55,10 @@ fun ParentStatsScreen(
 
 @Preview
 @Composable
-fun PreviewParentQuestScreen(){
+fun PreviewParentQuestScreen() {
     RPGTheme {
-        ParentStatsScreen(navController = rememberNavController(), overlayNavController = rememberNavController())
+        ParentStatsScreen(
+            navController = rememberNavController(), overlayNavController = rememberNavController()
+        )
     }
 }

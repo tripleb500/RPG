@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.rpg.data.model.Child
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.User
 import com.example.rpg.data.repository.AuthRepository
-import com.example.rpg.data.repository.ParentRepository
 import com.example.rpg.data.repository.QuestRepository
 import com.example.rpg.data.repository.UserRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -22,10 +20,10 @@ import javax.inject.Inject
 @HiltViewModel
 class ParentAddQuestViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val questRepository : QuestRepository,
-    private val userRepository : UserRepository
+    private val questRepository: QuestRepository,
+    private val userRepository: UserRepository
 
-) : ViewModel(){
+) : ViewModel() {
     private val _children = MutableStateFlow<List<User>>(emptyList())
     val children = _children.asStateFlow()
 
@@ -62,18 +60,15 @@ class ParentAddQuestViewModel @Inject constructor(
         }
     }
 
-
-
-    fun setQuestTitle(newTitle: String)
-    {
+    fun setQuestTitle(newTitle: String) {
         _quest.value = _quest.value.copy(title = newTitle)
     }
-    fun setQuestDescription(newDescription: String)
-    {
+
+    fun setQuestDescription(newDescription: String) {
         _quest.value = _quest.value.copy(description = newDescription)
     }
-    fun setQuestRewardAmount(newAmount: Int)
-    {
+
+    fun setQuestRewardAmount(newAmount: Int) {
         try {
             val amount = newAmount.toInt()
             _quest.value = _quest.value.copy(rewardAmount = amount)
@@ -81,13 +76,13 @@ class ParentAddQuestViewModel @Inject constructor(
             _error.value = e.message
         }
     }
-    fun setDeadlineDate(newDate : Date)
-    {
+
+    fun setDeadlineDate(newDate: Date) {
         _dueDate.value = newDate
         _quest.value = _quest.value.copy(deadlineDate = newDate)
     }
-    fun setChild(newChild : User)
-    {
+
+    fun setChild(newChild: User) {
         _selectedChild.value = newChild
         _quest.value = _quest.value.copy(assignedTo = newChild.id)
         _quest.value = _quest.value.copy(assignee = parentId.toString())
@@ -96,9 +91,9 @@ class ParentAddQuestViewModel @Inject constructor(
     fun addQuest() {
         val current = _quest.value
 
-        if(current.title != "" && current.description != "" && current.deadlineDate != null) {
+        if (current.title != "" && current.description != "" && current.deadlineDate != null) {
             viewModelScope.launch {
-            questRepository.create(current)
+                questRepository.create(current)
             }
         }
     }

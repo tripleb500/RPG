@@ -9,7 +9,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ChildQuestViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val questRepository : QuestRepository
-) : ViewModel(){
+    private val questRepository: QuestRepository
+) : ViewModel() {
     val quests = questRepository.getUserQuests(authRepository.currentUserIdFlow)
 }

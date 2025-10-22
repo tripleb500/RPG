@@ -32,27 +32,42 @@ fun ChildNavGraph(navController: NavHostController) {
         ) {
             // Child Routes : ChildGame
             composable(Routes.ChildGameScreen.route) {
-                ChildGameScreen(navController = navController, overlayNavController = overlayNavController)
+                ChildGameScreen(
+                    navController = navController,
+                    overlayNavController = overlayNavController
+                )
             }
 
             // Child Routes : ChildQuest
             composable(Routes.ChildQuestScreen.route) {
-                ChildQuestScreen(navController = navController, overlayNavController = overlayNavController)
+                ChildQuestScreen(
+                    navController = navController,
+                    overlayNavController = overlayNavController
+                )
             }
 
             // Child Routes : ChildHome
             composable(Routes.ChildHomeScreen.route) {
-                ChildHomeScreen(navController = navController, overlayNavController = overlayNavController)
+                ChildHomeScreen(
+                    navController = navController,
+                    overlayNavController = overlayNavController
+                )
             }
 
             // Child Routes : ChildSocial
             composable(Routes.ChildSocialScreen.route) {
-                ChildSocialScreen(navController = navController, overlayNavController = overlayNavController)
+                ChildSocialScreen(
+                    navController = navController,
+                    overlayNavController = overlayNavController
+                )
             }
 
             // Child Routes : ChildSettings
             composable(Routes.ChildSettingsScreen.route) {
-                ChildSettingsScreen(navController = navController, overlayNavController = overlayNavController)
+                ChildSettingsScreen(
+                    navController = navController,
+                    overlayNavController = overlayNavController
+                )
             }
         }
     }

@@ -27,7 +27,8 @@ fun ChildBottomBar(overlayNavController: NavHostController) {
                     }
                 },
                 icon = {
-                    Icon(painterResource(item.icon), contentDescription = item.title) },
+                    Icon(painterResource(item.icon), contentDescription = item.title)
+                },
                 label = { Text(item.title) }
             )
         }

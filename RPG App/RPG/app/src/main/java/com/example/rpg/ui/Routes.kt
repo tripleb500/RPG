@@ -3,7 +3,7 @@ package com.example.rpg.ui
 sealed class Routes(val route: String) {
     // routes for account management
     object SignUpScreen : Routes("signUpScreen")
-    object SignInScreen : Routes ("signInScreen")
+    object SignInScreen : Routes("signInScreen")
 
     // routes for parent screens
     object ParentLandingScreen : Routes("parentLanding")
@@ -31,9 +31,9 @@ sealed class Routes(val route: String) {
     // routes for child screens
     object ChildLandingScreen : Routes("childLanding")
     object ChildHomeScreen : Routes("childHome")
-    object ChildGameScreen :Routes("childGame")
-    object ChildSettingsScreen :Routes("childSettings")
-    object ChildSocialScreen :Routes("childSocial")
-    object ChildQuestScreen :Routes("childQuest")
+    object ChildGameScreen : Routes("childGame")
+    object ChildSettingsScreen : Routes("childSettings")
+    object ChildSocialScreen : Routes("childSocial")
+    object ChildQuestScreen : Routes("childQuest")
     object ChildNavGraph : Routes("ChildNavGraph")
 }

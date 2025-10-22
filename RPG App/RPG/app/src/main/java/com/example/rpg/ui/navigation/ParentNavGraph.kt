@@ -7,15 +7,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
-import com.example.rpg.ui.child.home.ChildHomeScreen
-import com.example.rpg.ui.child.quest.ChildQuestScreen
-import com.example.rpg.ui.child.settings.ChildSettingsScreen
-import com.example.rpg.ui.child.social.ChildSocialScreen
 import com.example.rpg.ui.parent.ParentBottomBar
-import com.example.rpg.ui.parent.addchild.ParentAddChildDialog
 import com.example.rpg.ui.parent.addquest.ParentAddQuestScreen
 import com.example.rpg.ui.parent.home.ParentHomeScreen
 import com.example.rpg.ui.parent.quest.ParentQuestScreen
@@ -26,7 +20,7 @@ import com.example.rpg.ui.parent.stats.ParentStatsScreen
 @Composable
 fun ParentNavGraph(navController: NavHostController) {
     val overlayNavController = rememberNavController()
-//Scaffold holding navGraph of screens with bottom bars and the actual bottom bar
+    // Scaffold holding navGraph of screens with bottom bars and the actual bottom bar
     Scaffold(
         bottomBar = { ParentBottomBar(overlayNavController) }
     ) { innerPadding ->
@@ -37,29 +31,43 @@ fun ParentNavGraph(navController: NavHostController) {
         ) {
             // Parent Routes : ParentQuest
             composable(Routes.ParentQuestScreen.route) {
-                ParentQuestScreen(navController = navController, overlayNavController = overlayNavController)
+                ParentQuestScreen(
+                    navController = navController,
+                    overlayNavController = overlayNavController
+                )
             }
 
             // Parent Routes : ParentAddQuest
             composable(Routes.ParentAddQuestScreen.route) {
-                ParentAddQuestScreen(navController = navController, overlayNavController = overlayNavController)
+                ParentAddQuestScreen(
+                    navController = navController,
+                    overlayNavController = overlayNavController
+                )
             }
 
             // Parent Routes : ParentHome
             composable(Routes.ParentHomeScreen.route) {
-                ParentHomeScreen(navController = navController, overlayNavController = overlayNavController)
+                ParentHomeScreen(
+                    navController = navController,
+                    overlayNavController = overlayNavController
+                )
             }
 
             // Parent Routes : ParentStats
             composable(Routes.ParentStatsScreen.route) {
-                ParentStatsScreen(navController = navController, overlayNavController = overlayNavController)
+                ParentStatsScreen(
+                    navController = navController,
+                    overlayNavController = overlayNavController
+                )
             }
 
             // Parent Routes : ParentSettings
             composable(Routes.ParentSettingsScreen.route) {
-                ParentSettingsScreen(navController = navController, overlayNavController = overlayNavController)
+                ParentSettingsScreen(
+                    navController = navController,
+                    overlayNavController = overlayNavController
+                )
             }
-
         }
     }
 }

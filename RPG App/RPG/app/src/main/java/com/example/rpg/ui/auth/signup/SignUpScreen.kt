@@ -35,13 +35,15 @@ import com.example.rpg.ui.theme.RPGTheme
 
 // "Container", connects to viewmodel; defines what logic to pass down to UI
 @Composable
-fun SignUpScreen(viewModel: SignUpViewModel = hiltViewModel(),
-                 navController: NavController) {
+fun SignUpScreen(
+    viewModel: SignUpViewModel = hiltViewModel(),
+    navController: NavController
+) {
 
     val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
 
     SignUpScreenContent(
-        signUp = {firstname, lastname, email, password, username, role ->  // Defines what happens when user submits sign-up.
+        signUp = { firstname, lastname, email, password, username, role ->  // Defines what happens when user submits sign-up.
             viewModel.signUp(  // Calls SignUpViewModel signUp function.
                 firstname = firstname,
                 lastname = lastname,
@@ -50,11 +52,14 @@ fun SignUpScreen(viewModel: SignUpViewModel = hiltViewModel(),
                 username = username,
                 role = role,
                 onSuccess = { success, userRole ->  // Post Sign-up behavior.
-                    if(success && userRole != null) {  // Navigate user to correct homepage and functionalities based on the family role they selected.
-                        when(userRole.lowercase()) {
+                    if (success && userRole != null) {  // Navigate user to correct homepage and functionalities based on the family role they selected.
+                        when (userRole.lowercase()) {
                             "parent" -> navController.navigate(Routes.ParentLandingScreen.route) {
-                                popUpTo(Routes.SignUpScreen.route) { inclusive = true }  // Ensures that user cannot come back to sign-up screen
+                                popUpTo(Routes.SignUpScreen.route) {
+                                    inclusive = true
+                                }  // Ensures that user cannot come back to sign-up screen
                             }
+
                             "child" -> navController.navigate(Routes.ChildLandingScreen.route) {
                                 popUpTo(Routes.SignUpScreen.route) { inclusive = true }
                             }
@@ -71,28 +76,29 @@ fun SignUpScreen(viewModel: SignUpViewModel = hiltViewModel(),
 // Pure UI, builds screen layout, responds to user input.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpScreenContent (
+fun SignUpScreenContent(
     signUp: (String, String, String, String, String, String) -> Unit,
     errorMessage: String?,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
-    var firstname by remember {mutableStateOf("")}
-    var lastname by remember {mutableStateOf("")}
+    var firstname by remember { mutableStateOf("") }
+    var lastname by remember { mutableStateOf("") }
 
-    var email by remember {mutableStateOf("")}
-    var password by remember {mutableStateOf("")}
-    var username by remember {mutableStateOf("")}
-    
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
+
     val roleOptions = listOf("Parent", "Child")
     var expanded by remember { mutableStateOf(false) }  // Whether the dropdown menu is open.
-    var selectedRole by remember {mutableStateOf(roleOptions[0])}  // Selected dropdown role.
+    var selectedRole by remember { mutableStateOf(roleOptions[0]) }  // Selected dropdown role.
 
     Column(
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center ) {
+        verticalArrangement = Arrangement.Center
+    ) {
 
         Text(text = "Create Account", fontSize = 32.sp)
 
@@ -101,21 +107,21 @@ fun SignUpScreenContent (
         // Firstname input field
         OutlinedTextField(
             value = firstname,
-            onValueChange = {firstname = it},
-            label = {Text ("First Name")}
+            onValueChange = { firstname = it },
+            label = { Text("First Name") }
         )
 
         // Lastname input field
         OutlinedTextField(
             value = lastname,
-            onValueChange = {lastname = it},
-            label = {Text ("Last Name")}
+            onValueChange = { lastname = it },
+            label = { Text("Last Name") }
         )
         // Email input field
         OutlinedTextField(
             value = email,
-            onValueChange = {email = it},
-            label = {Text ("Email")}
+            onValueChange = { email = it },
+            label = { Text("Email") }
         )
 
         Spacer(Modifier.height(8.dp))
@@ -123,8 +129,8 @@ fun SignUpScreenContent (
         // Password  input field
         OutlinedTextField(
             value = password,
-            onValueChange = {password = it},
-            label = {Text ("Password")}
+            onValueChange = { password = it },
+            label = { Text("Password") }
         )
 
         Spacer(Modifier.height(8.dp))
@@ -132,8 +138,8 @@ fun SignUpScreenContent (
         // Username input field.
         OutlinedTextField(
             value = username,
-            onValueChange = {username = it},
-            label = {Text ("Username")}
+            onValueChange = { username = it },
+            label = { Text("Username") }
         )
 
         Spacer(Modifier.height(8.dp))
@@ -147,21 +153,22 @@ fun SignUpScreenContent (
             OutlinedTextField(
                 value = selectedRole,
                 onValueChange = {},
-                label = {Text("Select Role" ) },
+                label = { Text("Select Role") },
                 readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded)},
-                modifier = Modifier.menuAnchor()
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+                modifier = Modifier.menuAnchor() // TODO: look into
             )
             ExposedDropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                roleOptions.forEach {role ->
+                roleOptions.forEach { role ->
                     DropdownMenuItem(
                         text = { Text(role) },
                         onClick = {
                             selectedRole = role
-                            expanded = false }
+                            expanded = false
+                        }
 
                     )
                 }
@@ -181,7 +188,7 @@ fun SignUpScreenContent (
 
         // Creates user's account, info is sent to Firebase Authentication if successful.
         Button(onClick = {
-            signUp (
+            signUp(
                 firstname,
                 lastname,
                 email,
@@ -206,10 +213,10 @@ fun SignUpScreenContent (
     showSystemUi = true
 )
 @Composable
-fun PreviewSignUpScreen(){
+fun PreviewSignUpScreen() {
     RPGTheme {
         SignUpScreenContent(
-            signUp = {_,_,_,_,_,_ ->}, errorMessage = null,
+            signUp = { _, _, _, _, _, _ -> }, errorMessage = null,
             navController = rememberNavController()
         )
     }

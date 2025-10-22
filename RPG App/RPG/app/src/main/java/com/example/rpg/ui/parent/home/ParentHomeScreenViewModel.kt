@@ -32,6 +32,7 @@ class ParentHomeScreenViewModel @Inject constructor(
             _children.value = result
         }
     }
+
     fun addChildByUsername(parentId: String, username: String, onSuccess: () -> Unit) {
         viewModelScope.launch {
             isLoading = true

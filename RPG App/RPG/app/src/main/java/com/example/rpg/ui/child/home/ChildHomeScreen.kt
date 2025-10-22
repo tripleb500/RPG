@@ -45,8 +45,8 @@ fun ChildHomeScreen(
     navController: NavHostController,
     overlayNavController: NavHostController,
     viewModel: ChildHomeScreenViewModel = viewModel(),
-    authViewModel: AuthViewModel = hiltViewModel(),
-    ) {
+    authViewModel: AuthViewModel = hiltViewModel()
+) {
     var showDialogAchievements by remember { mutableStateOf(false) }
     var showDialogStats by remember { mutableStateOf(false) }
 
@@ -64,7 +64,8 @@ fun ChildHomeScreen(
             Image(
                 painter = painterResource(id = R.drawable.baseline_person_24),
                 contentDescription = "Photo of Avatar",
-                modifier = Modifier.padding(top = 45.dp)
+                modifier = Modifier
+                    .padding(top = 45.dp)
                     .width(100.dp)
                     .height(100.dp)
             )
@@ -151,7 +152,7 @@ fun ChildHomeScreen(
 fun ProgressIndicator(
     progress: Float,
     modifier: Modifier = Modifier
-){
+) {
     LinearProgressIndicator(
         progress = { progress },
         modifier = modifier,
@@ -160,8 +161,11 @@ fun ProgressIndicator(
 
 @Preview
 @Composable
-fun PreviewChildHomeScreen(){
+fun PreviewChildHomeScreen() {
     RPGTheme {
-        ChildHomeScreen(navController = rememberNavController(), overlayNavController = rememberNavController())
+        ChildHomeScreen(
+            navController = rememberNavController(),
+            overlayNavController = rememberNavController()
+        )
     }
 }

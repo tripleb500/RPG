@@ -51,7 +51,8 @@ fun ChildLandingScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(top = 48.dp),
                 horizontalArrangement = Arrangement.End,
             ) {
@@ -64,12 +65,14 @@ fun ChildLandingScreen(
                         //background
                         containerColor = Color(0xFF91F57E),
                         //text
-                        contentColor = Color.White)
-                    ) {
+                        contentColor = Color.White
+                    )
+                ) {
                     Text(
                         text = "Child",
                         fontSize = 24.sp
-                    ) }
+                    )
+                }
             }
             //logo
             Image(
@@ -83,7 +86,8 @@ fun ChildLandingScreen(
             Image(
                 painter = painterResource(R.drawable.play_button_child),
                 contentDescription = "Play button",
-                modifier = modifier.padding(top = 64.dp)
+                modifier = modifier
+                    .padding(top = 64.dp)
                     .size(128.dp)
                     .clickable {
                         navController.navigate(Routes.ChildNavGraph.route)
@@ -93,10 +97,9 @@ fun ChildLandingScreen(
     }
 }
 
-
 @Preview
 @Composable
-fun PreviewChildLandingScreen(){
+fun PreviewChildLandingScreen() {
     RPGTheme {
         ChildLandingScreen(navController = rememberNavController())
     }

@@ -10,4 +10,4 @@ import dagger.hilt.android.HiltAndroidApp
  */
 
 @HiltAndroidApp
-class RPGApp: Application() {}
+class RPGApp : Application()

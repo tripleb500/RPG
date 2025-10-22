@@ -6,29 +6,19 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class QuestRepository @Inject constructor(
-    private val questRemoteDataSource : QuestRemoteDataSource
-){
-    fun getUserQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>>{
-        return questRemoteDataSource.getUserQuests(currentUserIdFlow)
-    }
+    private val questRemoteDataSource: QuestRemoteDataSource
+) {
+    fun getUserQuests(currentUserIdFlow: Flow<String?>) =
+        questRemoteDataSource.getUserQuests(currentUserIdFlow)
 
-    fun getAllQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>>{
-        return questRemoteDataSource.getAllQuests(currentUserIdFlow)
-    }
+    fun getAllQuests(currentUserIdFlow: Flow<String?>) =
+        questRemoteDataSource.getAllQuests(currentUserIdFlow)
 
-    suspend fun getQuestItem(questId: String): Quest? {
-        return questRemoteDataSource.getQuestItem(questId)
-    }
+//    suspend fun getQuestItem(questId: String) = questRemoteDataSource.getQuestItem(questId)
 
-    suspend fun create(questItem: Quest): String? {
-        return questRemoteDataSource.create(questItem)
-    }
+    suspend fun create(questItem: Quest) = questRemoteDataSource.create(questItem)
 
-    suspend fun update(questItem: Quest){
-        return questRemoteDataSource.update(questItem)
-    }
+//    suspend fun update(questItem: Quest) = questRemoteDataSource.update(questItem)
 
-    suspend fun delete(questId: String){
-        return questRemoteDataSource.delete(questId)
-    }
+//    suspend fun delete(questId: String) = questRemoteDataSource.delete(questId)
 }

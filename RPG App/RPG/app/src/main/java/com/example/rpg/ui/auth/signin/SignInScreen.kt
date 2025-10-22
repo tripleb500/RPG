@@ -28,22 +28,24 @@ import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
 import com.example.rpg.ui.theme.RPGTheme
 
-
 @Composable
-fun SignInScreen(viewModel: SignInViewModel = hiltViewModel(),
-                 navController: NavController) {
+fun SignInScreen(
+    viewModel: SignInViewModel = hiltViewModel(),
+    navController: NavController
+) {
     val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
 
     SignInScreenContent(
-        signIn = {email, password ->
-            viewModel.signIn(email, password) {success, role ->
+        signIn = { email, password ->
+            viewModel.signIn(email, password) { success, role ->
                 if (success && role != null) {
                     when (role.lowercase()) {
                         "parent" -> navController.navigate(Routes.ParentLandingScreen.route) {
-                            popUpTo(Routes.SignInScreen.route) {inclusive = true }
+                            popUpTo(Routes.SignInScreen.route) { inclusive = true }
                         }
-                        "child" ->  navController.navigate(Routes.ChildLandingScreen.route) {
-                            popUpTo(Routes.SignInScreen.route) {inclusive = true }
+
+                        "child" -> navController.navigate(Routes.ChildLandingScreen.route) {
+                            popUpTo(Routes.SignInScreen.route) { inclusive = true }
                         }
                     }
                 }
@@ -51,26 +53,25 @@ fun SignInScreen(viewModel: SignInViewModel = hiltViewModel(),
         },
         errorMessage = errorMessage,
         navController = navController
-        )
+    )
 }
+
 @Composable
-fun SignInScreenContent (
+fun SignInScreenContent(
     signIn: (String, String) -> Unit,
     errorMessage: String?,
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
-
     var email by remember { mutableStateOf("") }
-    var password by remember {mutableStateOf("")}
+    var password by remember { mutableStateOf("") }
 
-    Column (
+    Column(
         modifier = Modifier
-        .fillMaxSize(),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
-    )
-    {
+    ) {
         Text(text = "Sign-In", fontSize = 32.sp)
 
         Spacer(Modifier.height(16.dp))
@@ -78,8 +79,8 @@ fun SignInScreenContent (
         // Email text input
         OutlinedTextField(
             value = email,
-            onValueChange = {email = it},
-            label = {Text (text = "Email")}
+            onValueChange = { email = it },
+            label = { Text(text = "Email") }
         )
 
         Spacer(Modifier.height(8.dp))
@@ -87,44 +88,50 @@ fun SignInScreenContent (
         // Password text input
         OutlinedTextField(
             value = password,
-            onValueChange = {password = it},
-            label = {Text (text = "Password")}
+            onValueChange = { password = it },
+            label = { Text(text = "Password") }
         )
 
         Spacer(Modifier.height(8.dp))
 
         errorMessage?.let {
-            Text(text = it,
+            Text(
+                text = it,
                 color = Color.Red,
-                modifier = modifier.padding(top = 8.dp))
+                modifier = modifier.padding(top = 8.dp)
+            )
         }
 
         Spacer(Modifier.height(16.dp))
 
-        Button(onClick = {
-            // Add firebase logic
-            signIn(email,password)
-        }) {
+        Button(
+            onClick = {
+                // Add firebase logic
+                signIn(email, password)
+            }
+        ) {
             Text(text = "Sign in")
         }
 
-        TextButton(onClick = {
-            navController.navigate(Routes.SignUpScreen.route)
-        }) {
+        TextButton(
+            onClick = {
+                navController.navigate(Routes.SignUpScreen.route)
+            }
+        ) {
             Text(text = "Don't have an account? Sign-up here")
         }
     }
 }
 
-
-@Preview (
+@Preview(
     showBackground = true,
-    showSystemUi = true)
+    showSystemUi = true
+)
 @Composable
-fun PreviewSignInScreen () {
+fun PreviewSignInScreen() {
     RPGTheme {
         SignInScreenContent(
-            signIn = {_,_ ->}, errorMessage = null,
+            signIn = { _, _ -> }, errorMessage = null,
             navController = rememberNavController()
         )
     }

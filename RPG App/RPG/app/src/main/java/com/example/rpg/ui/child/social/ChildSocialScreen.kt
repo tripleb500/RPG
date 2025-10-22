@@ -34,8 +34,11 @@ fun ChildSocialScreen(
 
 @Preview
 @Composable
-fun PreviewChildSocialScreen(){
+fun PreviewChildSocialScreen() {
     RPGTheme {
-        ChildSocialScreen(navController = rememberNavController(), overlayNavController = rememberNavController())
+        ChildSocialScreen(
+            navController = rememberNavController(),
+            overlayNavController = rememberNavController()
+        )
     }
 }

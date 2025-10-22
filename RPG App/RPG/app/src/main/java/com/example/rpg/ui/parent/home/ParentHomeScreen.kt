@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,7 +40,6 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.rpg.R
 import com.example.rpg.data.model.User
-import com.example.rpg.ui.Routes
 import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.parent.addchild.ParentAddChildDialog
 
@@ -58,7 +56,7 @@ fun ParentHomeScreen(
     overlayNavController: NavHostController,
     viewModel: ParentHomeScreenViewModel = hiltViewModel(),
     authViewModel: AuthViewModel = hiltViewModel(),
-){
+) {
     val children by viewModel.children.collectAsState()
     val parentId = authViewModel.currentUser?.uid
 
@@ -85,7 +83,7 @@ fun ParentHomeScreen(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         color = Color.White,
-                        )
+                    )
                 }
             )
         },
@@ -177,9 +175,9 @@ fun CardView(user: User) {
 fun ProgressIndicator(
     progress: Float,
     modifier: Modifier = Modifier
-){
+) {
     LinearProgressIndicator(
-    progress = { progress },
-    modifier = modifier,
+        progress = { progress },
+        modifier = modifier,
     )
 }

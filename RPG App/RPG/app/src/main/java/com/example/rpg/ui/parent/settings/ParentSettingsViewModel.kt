@@ -9,9 +9,7 @@ import javax.inject.Inject
 class ParentSettingsViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-
     fun onCardClicked(id: Int) {
         authRepository.signOut()
     }
-
 }

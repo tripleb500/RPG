@@ -1,8 +1,8 @@
 package com.example.rpg.data.model
 
 enum class Reward {
-    INGAME,
-    CASH,
+//    INGAME,
+//    CASH,
     OTHER,
     NONE
 }

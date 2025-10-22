@@ -2,15 +2,15 @@ package com.example.rpg.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.font.Font
 import com.example.rpg.R
 
-val klopFontFamily = FontFamily(
-    Font(R.font.klop, FontWeight.Normal)
-)
+//val klopFontFamily = FontFamily(
+//    Font(R.font.klop, FontWeight.Normal)
+//)
 val dynaPuffFontFamily = FontFamily(
     Font(R.font.dynapuff, FontWeight.Normal)
 )

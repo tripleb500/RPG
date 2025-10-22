@@ -1,5 +1,5 @@
 package com.example.rpg.ui.child.quest
-// TODO: implement screen
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,7 +32,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.ui.Routes
-//import com.example.rpg.ui.child.home.CardView
 import com.example.rpg.ui.child.home.child
 import com.example.rpg.ui.parent.home.Family
 import com.example.rpg.ui.parent.home.ProgressIndicator
@@ -62,7 +61,8 @@ fun ChildQuestScreen(
             Image(
                 painter = painterResource(id = R.drawable.baseline_person_24),
                 contentDescription = "Photo of Avatar",
-                modifier = Modifier.padding(top = 45.dp)
+                modifier = Modifier
+                    .padding(top = 45.dp)
                     .width(100.dp)
                     .height(100.dp)
             )
@@ -139,7 +139,7 @@ fun CardView(quest: Quest) {
 fun ProgressIndicator(
     progress: Float,
     modifier: Modifier = Modifier
-){
+) {
     LinearProgressIndicator(
         progress = { progress },
         modifier = modifier,
@@ -148,8 +148,11 @@ fun ProgressIndicator(
 
 @Preview
 @Composable
-fun PreviewChildQuestScreen(){
+fun PreviewChildQuestScreen() {
     RPGTheme {
-        ChildQuestScreen(navController = rememberNavController(),  overlayNavController = rememberNavController())
+        ChildQuestScreen(
+            navController = rememberNavController(),
+            overlayNavController = rememberNavController()
+        )
     }
 }

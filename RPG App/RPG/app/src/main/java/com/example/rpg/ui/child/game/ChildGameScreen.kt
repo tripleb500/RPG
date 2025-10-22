@@ -34,8 +34,11 @@ fun ChildGameScreen(
 
 @Preview
 @Composable
-fun PreviewChildGameScreen(){
+fun PreviewChildGameScreen() {
     RPGTheme {
-        ChildGameScreen(navController = rememberNavController(), overlayNavController = rememberNavController())
+        ChildGameScreen(
+            navController = rememberNavController(),
+            overlayNavController = rememberNavController()
+        )
     }
 }

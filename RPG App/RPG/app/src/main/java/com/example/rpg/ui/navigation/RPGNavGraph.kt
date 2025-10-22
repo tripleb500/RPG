@@ -6,10 +6,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
-import com.example.rpg.ui.child.landing.ChildLandingScreen
-import com.example.rpg.ui.parent.landing.ParentLandingScreen
 import com.example.rpg.ui.auth.signin.SignInScreen
 import com.example.rpg.ui.auth.signup.SignUpScreen
+import com.example.rpg.ui.child.landing.ChildLandingScreen
+import com.example.rpg.ui.parent.landing.ParentLandingScreen
 import com.example.rpg.ui.theme.RPGTheme
 
 //RPGNavGraph handles navigation between screens without NavBar
@@ -18,7 +18,6 @@ fun RPGNavGraph() {
     val navController = rememberNavController()
     // Start Destination: parentLandingScreen
     NavHost(navController = navController, startDestination = Routes.SignUpScreen.route) {
-
         // Account Management Route : signInScreen
         composable(Routes.SignUpScreen.route) {
             SignUpScreen(navController = navController)
@@ -31,8 +30,6 @@ fun RPGNavGraph() {
         composable(Routes.ParentLandingScreen.route) {
             ParentLandingScreen(navController = navController)
         }
-
-
 
         // Landing Page Route : childLanding
         composable(Routes.ChildLandingScreen.route) {
@@ -57,7 +54,7 @@ fun RPGNavGraph() {
 
 @Preview
 @Composable
-fun PreviewScreenMain(){
+fun PreviewScreenMain() {
     RPGTheme {
         RPGNavGraph()
     }

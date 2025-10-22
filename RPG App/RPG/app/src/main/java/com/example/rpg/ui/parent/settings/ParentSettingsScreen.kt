@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,14 +23,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
-import com.example.rpg.ui.auth.signin.SignInScreen
-import com.example.rpg.ui.theme.RPGTheme
-import dagger.hilt.android.lifecycle.HiltViewModel
 import com.example.rpg.ui.Routes
+import com.example.rpg.ui.theme.RPGTheme
 
 
 @Composable
@@ -50,8 +46,7 @@ fun ParentSettingsScreen(
         6 to "Logout"
     )
     Column(
-        modifier = Modifier
-            .padding(top = 85.dp),
+        modifier = Modifier.padding(top = 85.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -68,12 +63,12 @@ fun ParentSettingsScreen(
         ) {
             items(settingsOptions) { (id, name) ->
                 ClickableCard(
-                    title = name,
-                    onClick = { viewModel.onCardClicked(id)
+                    title = name, onClick = {
+                        viewModel.onCardClicked(id)
                         navController.navigate(Routes.SignInScreen.route) {
-                            popUpTo(0) { inclusive = true  }
-                        } }
-                )
+                            popUpTo(0) { inclusive = true }
+                        }
+                    })
             }
         }
 
@@ -82,23 +77,21 @@ fun ParentSettingsScreen(
 
 @Composable
 fun ClickableCard(
-    title: String,
-    onClick: () -> Unit
+    title: String, onClick: () -> Unit
 ) {
     Card(
 
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 40.dp)
-            .padding(12.dp),
-        onClick = onClick
+            .padding(12.dp), onClick = onClick
     ) {
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.baseline_person_24),
                 contentDescription = "Photo of default avatar",
@@ -117,12 +110,13 @@ fun ClickableCard(
 }
 
 @Preview(
-    showBackground = true,
-    showSystemUi = true
+    showBackground = true, showSystemUi = true
 )
 @Composable
-fun PreviewParentQuestScreen(){
+fun PreviewParentQuestScreen() {
     RPGTheme {
-        ParentSettingsScreen(navController = rememberNavController(), overlayNavController = rememberNavController())
+        ParentSettingsScreen(
+            navController = rememberNavController(), overlayNavController = rememberNavController()
+        )
     }
 }

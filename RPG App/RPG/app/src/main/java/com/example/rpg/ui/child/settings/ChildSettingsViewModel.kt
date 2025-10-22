@@ -9,7 +9,6 @@ import javax.inject.Inject
 class ChildSettingsViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-
     fun signOut() {
         authRepository.signOut()
     }

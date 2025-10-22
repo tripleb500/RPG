@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
@@ -40,7 +39,7 @@ fun ChildSettingsScreen(
         Button(onClick = {
             viewModel.signOut()
             navController.navigate(Routes.SignInScreen.route) {
-                popUpTo(0) {inclusive = true}
+                popUpTo(0) { inclusive = true }
             }
         }) {
             Text(text = "Sign Out")
@@ -51,8 +50,11 @@ fun ChildSettingsScreen(
 
 @Preview
 @Composable
-fun PreviewChildSettingsScreen(){
+fun PreviewChildSettingsScreen() {
     RPGTheme {
-        ChildSettingsScreen(navController = rememberNavController(), overlayNavController = rememberNavController())
+        ChildSettingsScreen(
+            navController = rememberNavController(),
+            overlayNavController = rememberNavController()
+        )
     }
 }
