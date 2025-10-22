@@ -32,7 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.ui.Routes
-import com.example.rpg.ui.child.home.CardView
+//import com.example.rpg.ui.child.home.CardView
 import com.example.rpg.ui.child.home.child
 import com.example.rpg.ui.parent.home.Family
 import com.example.rpg.ui.parent.home.ProgressIndicator
