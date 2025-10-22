@@ -1,6 +1,7 @@
 package com.example.rpg.ui.parent.addquest
 
 import android.app.DatePickerDialog
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,31 +25,49 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.rpg.data.model.User
 import com.example.rpg.ui.Routes
+import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.parent.quest.ParentQuestScreen
 import com.example.rpg.ui.parent.addquest.ParentAddQuestViewModel
 import com.example.rpg.ui.theme.RPGTheme
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import kotlin.collections.forEach
 
 
 /**
@@ -69,18 +88,20 @@ fun ParentAddQuestScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     overlayNavController: NavHostController,
-    viewModel: ParentAddQuestViewModel = hiltViewModel()
+    viewModel: ParentAddQuestViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel(),
 ){
-    addQuestContent()
+    AddQuestContent()
 }
 
 @Composable
-fun addQuestContent(
+fun AddQuestContent(
+    viewModel: ParentAddQuestViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var selectedDate by remember { mutableStateOf<Date?>(null) }
+    val dueDate by viewModel.dueDate.collectAsState()
     var showDatePicker by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
@@ -89,6 +110,7 @@ fun addQuestContent(
     val month = calendar.get(Calendar.MONTH)
     val day = calendar.get(Calendar.DAY_OF_MONTH)
 
+    val quest by viewModel.quest.collectAsState()
 
     Column(
         modifier = modifier
@@ -102,8 +124,8 @@ fun addQuestContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = title,
-            onValueChange = { title = it },
+            value = quest.title,
+            onValueChange = { viewModel.setQuestTitle(it)},
             label = { Text(text = "Title") },
             modifier = Modifier
         )
@@ -111,8 +133,8 @@ fun addQuestContent(
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = description,
-            onValueChange = { description = it },
+            value = quest.description,
+            onValueChange = { viewModel.setQuestDescription(it) },
             label = { Text(text = "Description") },
             modifier = Modifier
         )
@@ -120,41 +142,55 @@ fun addQuestContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = { showDatePicker = true }) {
-            Text(selectedDate?.toString() ?: "Select Completion Date")
+            Text(text = dueDate?.let { SimpleDateFormat("dd MMM yyyy").format(it) }
+                ?: "Select Due Date")
         }
 
-        /*
-        var expanded by remember { mutableStateOf(false) }
-        var selectedChild by remember { mutableStateOf<Child?>(null) }
 
-        Button(onClick = { expanded = true }) {
-            Text(selectedChild?.name ?: "Select Child")
+
+        Button(
+            onClick = { viewModel.addQuest() }
+        ) {
+            Text("Assign Quest")
+
         }
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            childrenList.forEach { child ->
-                DropdownMenuItem(onClick = {
-                    selectedChild = child
-                    expanded = false
-                }) {
-                    Text(child.name)
+
+        val children by viewModel.children.collectAsState()
+        val selectedChild by viewModel.selectedChild.collectAsState()
+
+        //val children = listOf(User(firstname="Alice"), User(firstname="Bob"))
+        //var selectedChild by remember { mutableStateOf<User?>(children.firstOrNull()) }
+
+        LazyColumn {
+            items(children) { child ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clickable {
+                            viewModel.setChild(child)
+                        },
+                    colors = if (child == selectedChild)
+                        CardDefaults.cardColors(containerColor = Color.LightGray)
+                    else
+                        CardDefaults.cardColors()
+                ) {
+                    Text(
+                        text = child.firstname,
+                        modifier = Modifier.padding(16.dp)
+                    )
                 }
             }
-        }
-
-         */
-
-
-        Button(onClick = {  }) {
-            Text(selectedDate?.toString() ?: "Finish Assigning Quest")
         }
 
         if (showDatePicker) {
             DatePickerDialog(
                 context,
                 { _, selectedYear, selectedMonth, selectedDay ->
-                    selectedDate = Calendar.getInstance().apply {
+                    val selected = Calendar.getInstance().apply {
                         set(selectedYear, selectedMonth, selectedDay)
                     }.time
+                    viewModel.setDeadlineDate(selected)
                     showDatePicker = false
                 },
                 year,
@@ -162,13 +198,15 @@ fun addQuestContent(
                 day
             ).show()
         }
+
     }
 }
 
-@Preview
+
+/*@Preview
 @Composable
 fun PreviewParentAddQuestScreen(){
     RPGTheme {
-        ParentAddQuestScreen(navController = rememberNavController(), overlayNavController = rememberNavController())
+        ParentAddQuestScreen(modifier = modifier, overlayNavController = rememberNavController(), viewModel = hiltViewModel(), authViewModel = hiltViewModel())
     }
-}
+}*/
