@@ -50,30 +50,6 @@ fun ParentLandingScreen(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 48.dp),
-                horizontalArrangement = Arrangement.End,
-            ) {
-                //switch button
-                Button(
-                    onClick = { navController.navigate(Routes.ChildLandingScreen.route) },
-                    modifier = Modifier.size(width = 200.dp, height = 60.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        //background
-                        containerColor = Color(0xFF7EB3F5),
-                        //text
-                        contentColor = Color.White
-                    )
-                ) {
-                    Text(
-                        text = "Parent",
-                        fontSize = 24.sp
-                    )
-                }
-            }
             //logo
             Image(
                 painter = painterResource(R.drawable.rpg_logo_parent),
