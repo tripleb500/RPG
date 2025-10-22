@@ -16,6 +16,7 @@ import com.example.rpg.ui.child.settings.ChildSettingsScreen
 import com.example.rpg.ui.child.social.ChildSocialScreen
 import com.example.rpg.ui.parent.ParentBottomBar
 import com.example.rpg.ui.parent.addchild.ParentAddChildDialog
+import com.example.rpg.ui.parent.addquest.ParentAddQuestScreen
 import com.example.rpg.ui.parent.home.ParentHomeScreen
 import com.example.rpg.ui.parent.quest.ParentQuestScreen
 import com.example.rpg.ui.parent.settings.ParentSettingsScreen
@@ -39,6 +40,11 @@ fun ParentNavGraph(navController: NavHostController) {
                 ParentQuestScreen(navController = navController, overlayNavController = overlayNavController)
             }
 
+            // Parent Routes : ParentAddQuest
+            composable(Routes.ParentAddQuestScreen.route) {
+                ParentAddQuestScreen(navController = navController, overlayNavController = overlayNavController)
+            }
+
             // Parent Routes : ParentHome
             composable(Routes.ParentHomeScreen.route) {
                 ParentHomeScreen(navController = navController, overlayNavController = overlayNavController)
@@ -53,6 +59,7 @@ fun ParentNavGraph(navController: NavHostController) {
             composable(Routes.ParentSettingsScreen.route) {
                 ParentSettingsScreen(navController = navController, overlayNavController = overlayNavController)
             }
+
         }
     }
 }
