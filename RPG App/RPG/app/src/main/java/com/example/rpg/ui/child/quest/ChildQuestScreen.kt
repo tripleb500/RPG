@@ -128,7 +128,7 @@ fun CardView(quest: Quest) {
                     text = "Reward: " + quest.rewardType,
                 )
                 Text(
-                    text = "Due: " + quest.deadlineDate,
+                    text = "Due: " + quest.dueDate,
                 )
             }
         }
