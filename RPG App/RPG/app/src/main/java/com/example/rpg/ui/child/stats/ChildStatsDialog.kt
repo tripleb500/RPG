@@ -25,13 +25,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.rpg.ui.auth.AuthViewModel
-import com.example.rpg.ui.child.home.ChildHomeViewModel
+import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 
 @Composable
 fun ChildStatsDialog(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
-    viewModel: ChildHomeViewModel = hiltViewModel(),
+    viewModel: ChildHomeScreenViewModel = hiltViewModel(),
     authViewModel: AuthViewModel = hiltViewModel(),
 ) {
     val isLoadingStats by remember { derivedStateOf { viewModel.isLoadingStats } }

@@ -6,12 +6,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -28,13 +25,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.rpg.ui.auth.AuthViewModel
-import com.example.rpg.ui.child.home.ChildHomeViewModel
+import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 
 @Composable
 fun ChildAchievementsDialog(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
-    viewModel: ChildHomeViewModel = hiltViewModel(),
+    viewModel: ChildHomeScreenViewModel = hiltViewModel(),
     authViewModel: AuthViewModel = hiltViewModel(),
 ) {
     val isLoadingAchievements by remember { derivedStateOf { viewModel.isLoadingAchievements } }
