@@ -14,5 +14,4 @@ class ParentAddQuestViewModel @Inject constructor(
     private val parentRepository :  ParentRepository
 
 ) : ViewModel(){
-    private var children = parentRepository.
 }
