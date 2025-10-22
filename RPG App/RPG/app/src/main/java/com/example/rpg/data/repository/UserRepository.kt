@@ -13,4 +13,6 @@ class UserRepository @Inject constructor(
     suspend fun addChild(parentId: String, childId: String) = remoteDataSource.addChild(parentId, childId)
     suspend fun getUserByUsername(username: String): User? = remoteDataSource.getUserByUsername(username)
     suspend fun getChildren(parentId: String): List<User> = remoteDataSource.getChildren(parentId)
+
+    suspend fun getUserByUid(uid: String): User? = remoteDataSource.getUserByUid(uid)
 }

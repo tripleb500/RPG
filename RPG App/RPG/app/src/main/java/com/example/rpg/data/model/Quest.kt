@@ -14,5 +14,7 @@ data class Quest(
     val repeat : Boolean = false,
     val allDay : Boolean = false,
     val completed : Boolean = false,
-    val assignee : String = Child().id,
+    val assignee : String = User().id,
+    val assignedTo : String = User().id,
+    val status : String = "Pending"
 )

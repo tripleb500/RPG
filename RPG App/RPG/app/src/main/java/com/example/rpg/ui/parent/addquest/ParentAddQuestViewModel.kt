@@ -72,6 +72,15 @@ class ParentAddQuestViewModel @Inject constructor(
     {
         _quest.value = _quest.value.copy(description = newDescription)
     }
+    fun setQuestRewardAmount(newAmount: Int)
+    {
+        try {
+            val amount = newAmount.toInt()
+            _quest.value = _quest.value.copy(rewardAmount = amount)
+        } catch (e: Exception) {
+            _error.value = e.message
+        }
+    }
     fun setDeadlineDate(newDate : Date)
     {
         _dueDate.value = newDate
@@ -80,7 +89,8 @@ class ParentAddQuestViewModel @Inject constructor(
     fun setChild(newChild : User)
     {
         _selectedChild.value = newChild
-        _quest.value = _quest.value.copy(assignee = newChild.id)
+        _quest.value = _quest.value.copy(assignedTo = newChild.id)
+        _quest.value = _quest.value.copy(assignee = parentId.toString())
     }
 
     fun addQuest() {

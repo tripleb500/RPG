@@ -141,7 +141,7 @@ fun AddQuestContent(
             modifier = Modifier
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Button(onClick = { showDatePicker = true }) {
             Text(text = dueDate?.let { SimpleDateFormat("dd MMM yyyy").format(it) }
@@ -202,6 +202,16 @@ fun AddQuestContent(
         }
 
     }
+}
+
+@Composable
+fun IntInputField(
+    value: Int,
+    onValueChange: () -> Unit,
+    label: () -> Unit,
+    modifier: Modifier.Companion
+) {
+    TODO("Not yet implemented")
 }
 
 

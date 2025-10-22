@@ -53,6 +53,16 @@ class UserRemoteDataSource @Inject constructor(private val firestore: FirebaseFi
         }
     }
 
+    suspend fun getUserByUid(uid: String): User? {
+        val doc = FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(uid)
+            .get()
+            .await()  // from kotlinx-coroutines-play-services
+
+        return if (doc.exists()) doc.toObject(User::class.java) else null
+    }
+
     suspend fun getChildren(parentId: String): List<User> {
         val parent = getProfile(parentId)
         val childrenIds = parent?.childrenIds ?: emptyList()

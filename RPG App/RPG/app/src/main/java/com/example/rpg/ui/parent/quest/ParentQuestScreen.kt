@@ -1,16 +1,26 @@
 package com.example.rpg.ui.parent.quest
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -19,6 +29,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,9 +39,13 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.rpg.R
+import com.example.rpg.data.model.Quest
+import com.example.rpg.data.model.User
 import com.example.rpg.ui.Routes
 import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.parent.home.ParentHomeScreenViewModel
+import com.example.rpg.ui.parent.settings.ClickableCard
 import com.example.rpg.ui.theme.RPGTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,17 +94,53 @@ fun ParentQuestScreen(
             LazyColumn {
                 childQuestMap.value.forEach { (assigneeId, quests) ->
                     // Maybe display the child's name here using assigneeId
-                    item {
-                        Text("Quests for: $assigneeId")
-                    }
 
                     items(quests) { quest ->
-                        Text(quest.title)
+                        CardView(quest)
                     }
                 }
             }
         }
 
+    }
+}
+
+@Composable
+fun CardView(quest: Quest) {
+    Card(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(12.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.padding(start = 12.dp)) {
+                Image(
+                    painter = painterResource(id = R.drawable.baseline_person_24),
+                    contentDescription = "Child avatar",
+                    modifier = Modifier
+                        .width(100.dp)
+                        .height(100.dp)
+                )
+            }
+
+            Column(modifier = Modifier.padding(start = 12.dp)) {
+                Text(
+                    text = "Title: ${quest.title}",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = "Description: ${quest.title}",
+                )
+                Text(
+                    text = "Due Date: ${quest.deadlineDate}",
+                )
+
+
+            }
+        }
     }
 }
 
