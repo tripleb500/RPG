@@ -123,6 +123,7 @@ fun addQuestContent(
             Text(selectedDate?.toString() ?: "Select Completion Date")
         }
 
+        /*
         var expanded by remember { mutableStateOf(false) }
         var selectedChild by remember { mutableStateOf<Child?>(null) }
 
@@ -139,6 +140,8 @@ fun addQuestContent(
                 }
             }
         }
+
+         */
 
 
         Button(onClick = {  }) {

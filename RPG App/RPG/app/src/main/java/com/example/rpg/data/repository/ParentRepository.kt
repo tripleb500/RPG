@@ -1,4 +1,9 @@
 package com.example.rpg.data.repository
 
-class ParentRepository {
+import javax.inject.Inject
+
+
+class ParentRepository @Inject constructor(
+
+){
 }
