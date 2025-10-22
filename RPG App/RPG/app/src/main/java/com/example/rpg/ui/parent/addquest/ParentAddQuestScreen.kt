@@ -112,6 +112,8 @@ fun AddQuestContent(
 
     val quest by viewModel.quest.collectAsState()
 
+    viewModel.fetchChildren()
+
     Column(
         modifier = modifier
             .fillMaxSize()

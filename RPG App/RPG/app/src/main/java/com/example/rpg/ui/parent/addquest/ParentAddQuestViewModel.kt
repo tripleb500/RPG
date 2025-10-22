@@ -74,6 +74,7 @@ class ParentAddQuestViewModel @Inject constructor(
     }
     fun setDeadlineDate(newDate : Date)
     {
+        _dueDate.value = newDate
         _quest.value = _quest.value.copy(deadlineDate = newDate)
     }
     fun setChild(newChild : User)
