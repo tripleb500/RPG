@@ -219,7 +219,7 @@ private fun QuestTabBar(
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
     ) {
-        QuestTab.values().forEach { tab ->
+        QuestTab.entries.forEach { tab ->
             Button(onClick = { onSelect(tab) }) {
                 Text(text = tab.name)
             }
