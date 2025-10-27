@@ -2,7 +2,7 @@ package com.example.rpg.data.model
 
 enum class Status {
     INPROGRESS,
-    PENDING,
+    Pending,
     COMPLETED,
     INCOMPLETED
 }
