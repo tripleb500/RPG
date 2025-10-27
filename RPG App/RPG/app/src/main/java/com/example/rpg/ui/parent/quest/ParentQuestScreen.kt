@@ -44,7 +44,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
-import com.example.rpg.data.model.Quest_Status
+import com.example.rpg.data.model.Status
 import com.example.rpg.ui.Routes
 import com.example.rpg.ui.theme.RPGTheme
 
@@ -113,7 +113,7 @@ fun ParentQuestScreen(
                 QuestTab.Ongoing -> {
                     LazyColumn {
                         childQuestMap.value.forEach { (assigneeId, quests) ->
-                            items(quests.filter { it.status == Quest_Status.INPROGRESS }) { quest ->
+                            items(quests.filter { it.status == Status.INPROGRESS }) { quest ->
                                 CardView(quest)
                             }
                         }
@@ -123,7 +123,7 @@ fun ParentQuestScreen(
                 QuestTab.Pending -> {
                     LazyColumn {
                         childQuestMap.value.forEach { (assigneeId, quests) ->
-                            items(quests.filter { it.status == Quest_Status.Pending }) { quest ->
+                            items(quests.filter { it.status == Status.PENDING }) { quest ->
                                 CardView(quest)
 
                             }
@@ -134,7 +134,7 @@ fun ParentQuestScreen(
                 QuestTab.Completed -> {
                     LazyColumn {
                         childQuestMap.value.forEach { (assigneeId, quests) ->
-                            items(quests.filter { it.status == Quest_Status.COMPLETED }) { quest ->
+                            items(quests.filter { it.status == Status.COMPLETED }) { quest ->
                                 CardView(quest)
                             }
                         }
@@ -144,7 +144,7 @@ fun ParentQuestScreen(
                 QuestTab.Incompleted -> {
                     LazyColumn {
                         childQuestMap.value.forEach { (assigneeId, quests) ->
-                            items(quests.filter { it.status == Quest_Status.INCOMPLETED }) { quest ->
+                            items(quests.filter { it.status == Status.INCOMPLETED }) { quest ->
                                 CardView(quest)
                             }
                         }

@@ -33,7 +33,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
-import com.example.rpg.data.model.Quest_Reward
+import com.example.rpg.data.model.Reward
+import com.example.rpg.data.model.Status
 import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.child.achievements.ChildAchievementsDialog
 import com.example.rpg.ui.child.quest.CardView
@@ -46,7 +47,7 @@ val child = Family("Bradford", 1, 0.1F)
 val questList = mutableStateListOf(
     Quest("", "Dishes", "Wash the dishes", null,
         null, null, 20,
-        Quest_Reward.OTHER, false, true, false, ""),
+        Reward.OTHER, false, true, false, ""),
 )
 @Composable
 fun ChildHomeScreen(
