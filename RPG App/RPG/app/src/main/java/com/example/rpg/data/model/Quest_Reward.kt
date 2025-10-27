@@ -1,6 +1,6 @@
 package com.example.rpg.data.model
 
-enum class Reward {
+enum class Quest_Reward {
 //    INGAME,
 //    CASH,
     OTHER,

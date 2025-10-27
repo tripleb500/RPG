@@ -4,10 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import com.example.rpg.data.model.Quest
-import com.example.rpg.data.model.Reward
+import com.example.rpg.data.model.Quest_Reward
 import com.example.rpg.data.repository.AuthRepository
 import com.example.rpg.data.repository.QuestRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,7 +30,7 @@ class ChildHomeScreenViewModel @Inject constructor(
         Quest(
             "", "Dishes", "Wash the dishes", null,
             null, null, 20,
-            Reward.OTHER, repeat = false, allDay = true, completed = false, ""
+            Quest_Reward.OTHER, repeat = false, allDay = true, completed = false, ""
         ),
     )
     var isLoadingAchievements by mutableStateOf(false)

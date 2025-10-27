@@ -12,11 +12,11 @@ data class Quest(
     val deadlineDate: Date? = null,
     val completionDate: Date? = null,
     val rewardAmount: Int = 0,
-    val rewardType: Reward = Reward.NONE, // TODO
+    val rewardType: Quest_Reward = Quest_Reward.NONE, // TODO
     val repeat: Boolean = false,
     val allDay: Boolean = false,
     val completed: Boolean = false,
     val assignee: String = User().id,
     val assignedTo: String = User().id,
-    val status: Status = Status.INPROGRESS
+    val status: Quest_Status = Quest_Status.INPROGRESS
 )

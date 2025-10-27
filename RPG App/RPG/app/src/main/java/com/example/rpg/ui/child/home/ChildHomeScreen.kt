@@ -16,7 +16,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -30,16 +29,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
-import com.example.rpg.data.model.Reward
+import com.example.rpg.data.model.Quest_Reward
 import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.child.achievements.ChildAchievementsDialog
 import com.example.rpg.ui.child.quest.CardView
-import com.example.rpg.ui.child.quest.ChildQuestViewModel
 import com.example.rpg.ui.child.stats.ChildStatsDialog
 import com.example.rpg.ui.parent.home.Family
 import com.example.rpg.ui.parent.home.ProgressIndicator
@@ -49,7 +46,7 @@ val child = Family("Bradford", 1, 0.1F)
 val questList = mutableStateListOf(
     Quest("", "Dishes", "Wash the dishes", null,
         null, null, 20,
-        Reward.OTHER, false, true, false, ""),
+        Quest_Reward.OTHER, false, true, false, ""),
 )
 @Composable
 fun ChildHomeScreen(
