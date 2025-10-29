@@ -14,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
 
@@ -51,7 +52,8 @@ class ParentAddQuestViewModel @Inject constructor(
                     val childrenList = userRepository.getChildren(parentId) // suspend function
                     _children.value = childrenList
                     if (_selectedChild.value == null && childrenList.isNotEmpty()) {
-                        _selectedChild.value = childrenList.first()
+                        //_selectedChild.value = childrenList.first()
+                        setChild(childrenList.first())
                     }
                 } catch (e: Exception) {
                     _error.value = e.message
@@ -78,8 +80,37 @@ class ParentAddQuestViewModel @Inject constructor(
     }
 
     fun setDeadlineDate(newDate: Date) {
-        _dueDate.value = newDate
-        _quest.value = _quest.value.copy(deadlineDate = newDate)
+        // This is to avoid time resetting to current time if editing selected date
+        // Grab stored date/time, if null use current date/time
+        val previousDateTime = _dueDate.value ?: Date()
+        // Merge old time with new date, if null old time is set to current time
+        val tempCalendar = Calendar.getInstance().apply {
+            time = newDate
+            // Copy stored time h:m
+            val previousTime = Calendar.getInstance().apply { time = previousDateTime }
+            set(Calendar.HOUR_OF_DAY, previousTime.get(Calendar.HOUR_OF_DAY))
+            set(Calendar.MINUTE, previousTime.get(Calendar.MINUTE))
+        }
+        val newDateTime = tempCalendar.time
+        _dueDate.value = newDateTime
+        _quest.value = _quest.value.copy(deadlineDate = newDateTime)
+    }
+
+    fun setDeadlineTime(hour: Int, minute: Int) {
+        // Grab stored date/time, if null use current date/time
+        val date = _dueDate.value ?: Date()
+        // Update just the time
+        val tempCalendar = Calendar.getInstance().apply {
+            // Copy old date/time
+            time = date
+            // Set the selected time h:m
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute)
+        }
+        // Store copied date with new time
+        val newDateTime = tempCalendar.time
+        _dueDate.value = newDateTime
+        _quest.value = _quest.value.copy(deadlineDate = newDateTime)
     }
 
     fun setChild(newChild: User) {

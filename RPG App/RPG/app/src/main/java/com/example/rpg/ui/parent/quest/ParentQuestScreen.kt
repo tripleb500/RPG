@@ -183,7 +183,7 @@ fun CardView(quest: Quest) {
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = "Description: ${quest.title}",
+                    text = "Description: ${quest.description}",
                 )
                 Text(
                     text = "Due Date: ${quest.deadlineDate}",

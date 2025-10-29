@@ -1,6 +1,8 @@
 package com.example.rpg.ui.parent.addquest
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.text.format.DateFormat
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -56,23 +58,28 @@ fun ParentAddQuestScreen(
     viewModel: ParentAddQuestViewModel = hiltViewModel(),
     authViewModel: AuthViewModel = hiltViewModel(),
 ) {
-    AddQuestContent()
+    AddQuestContent(navController = overlayNavController)
 }
 
 @Composable
 fun AddQuestContent(
-    viewModel: ParentAddQuestViewModel = hiltViewModel(), modifier: Modifier = Modifier
+    viewModel: ParentAddQuestViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
+    navController: NavHostController
 ) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     val dueDate by viewModel.dueDate.collectAsState()
     var showDatePicker by remember { mutableStateOf(false) }
+    var showTimePicker by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
     val month = calendar.get(Calendar.MONTH)
     val day = calendar.get(Calendar.DAY_OF_MONTH)
+    val hour = calendar.get(Calendar.HOUR_OF_DAY)
+    val minute = calendar.get(Calendar.MINUTE)
 
     val quest by viewModel.quest.collectAsState()
 
@@ -112,12 +119,16 @@ fun AddQuestContent(
                 ?: "Select Due Date")
         }
 
-
+        Button(onClick = { showTimePicker = true }, enabled = dueDate != null) {
+            Text(text = dueDate?.let { SimpleDateFormat("h:mm a").format(it) }
+                    ?: "Select Time")
+        }
 
         Button(
-            onClick = { viewModel.addQuest() }) {
+            onClick = { viewModel.addQuest()
+                navController.popBackStack() },
+            enabled = dueDate != null && quest.title.isNotBlank() && quest.description.isNotBlank()) {
             Text("Assign Quest")
-
         }
 
         val children by viewModel.children.collectAsState()
@@ -146,7 +157,7 @@ fun AddQuestContent(
         }
 
         if (showDatePicker) {
-            DatePickerDialog(
+            val dialog = DatePickerDialog(
                 context, { _, selectedYear, selectedMonth, selectedDay ->
                     val selected = Calendar.getInstance().apply {
                         set(selectedYear, selectedMonth, selectedDay)
@@ -154,9 +165,22 @@ fun AddQuestContent(
                     viewModel.setDeadlineDate(selected)
                     showDatePicker = false
                 }, year, month, day
-            ).show()
+            )
+            dialog.setOnDismissListener { showDatePicker = false }
+            dialog.show()
         }
 
+        if (showTimePicker) {
+            val dialog = TimePickerDialog(
+                context, { _, selectedHour, selectedMinute ->
+                    viewModel.setDeadlineTime(selectedHour, selectedMinute)
+                    showTimePicker = false
+                },
+                hour, minute, DateFormat.is24HourFormat(context)
+            )
+            dialog.setOnDismissListener { showTimePicker = false }
+            dialog.show()
+        }
     }
 }
 
