@@ -58,7 +58,7 @@ fun ParentQuestScreen(
 ) {
     val childQuestMap = viewModel.questsByAssignee.collectAsState()
 
-    var selectedTab by rememberSaveable { mutableStateOf(QuestTab.Overview) }
+    var selectedTab by rememberSaveable { mutableStateOf(QuestTab.Ongoing) }
 
     Scaffold(
         // Topbar, visual signifier for users to know where they are.
@@ -97,17 +97,17 @@ fun ParentQuestScreen(
             QuestTabBar(selected = selectedTab, onSelect = { selectedTab = it })
             // Use when conditional to swap between what's being displayed
             when (selectedTab) {
-                QuestTab.Overview -> {
-                    LazyColumn {
-                        childQuestMap.value.forEach { (assigneeId, quests) ->
-                            // Maybe display the child's name here using assigneeId
-
-                            items(quests) { quest ->
-                                CardView(quest)
-                            }
-                        }
-                    }
-                }
+//                QuestTab.Overview -> {
+//                    LazyColumn {
+//                        childQuestMap.value.forEach { (assigneeId, quests) ->
+//                            // Maybe display the child's name here using assigneeId
+//
+//                            items(quests) { quest ->
+//                                CardView(quest)
+//                            }
+//                        }
+//                    }
+//                }
 
                 // quests with no status field in firebase currently defaults to inprogress tab (Quest.kt)
                 QuestTab.Ongoing -> {
@@ -207,7 +207,7 @@ fun PreviewParentQuestScreen() {
 }
 
 // Individual Tabs
-enum class QuestTab { Overview, Ongoing, Pending, Completed, Incompleted }
+enum class QuestTab { Ongoing, Pending, Completed, Incompleted }
 
 // Tab Bar
 @Composable

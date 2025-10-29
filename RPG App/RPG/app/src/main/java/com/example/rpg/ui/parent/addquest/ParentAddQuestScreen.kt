@@ -119,10 +119,14 @@ fun AddQuestContent(
                 ?: "Select Due Date")
         }
 
+        Spacer(modifier = Modifier.height(4.dp))
+
         Button(onClick = { showTimePicker = true }, enabled = dueDate != null) {
             Text(text = dueDate?.let { SimpleDateFormat("h:mm a").format(it) }
                     ?: "Select Time")
         }
+
+        Spacer(modifier = Modifier.height(4.dp))
 
         Button(
             onClick = { viewModel.addQuest()
