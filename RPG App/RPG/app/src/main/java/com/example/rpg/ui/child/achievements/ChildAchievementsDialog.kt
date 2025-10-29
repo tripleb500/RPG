@@ -70,7 +70,7 @@ fun ChildAchievementsDialog(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
-                    text = "Achievements",
+                    text = "Stats",
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth(),
                     style = MaterialTheme.typography.titleLarge
