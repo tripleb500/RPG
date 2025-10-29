@@ -7,9 +7,14 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Reward
+import com.example.rpg.data.model.User
 import com.example.rpg.data.repository.AuthRepository
 import com.example.rpg.data.repository.QuestRepository
+import com.example.rpg.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -24,6 +29,7 @@ private val authRepository: AuthRepository
 @HiltViewModel
 class ChildHomeScreenViewModel @Inject constructor(
     private val authRepository: AuthRepository,
+    private val userRepository: UserRepository,
     private val questRepository : QuestRepository
 ) : ViewModel(){
     private val _quests = mutableStateListOf(
@@ -46,7 +52,12 @@ class ChildHomeScreenViewModel @Inject constructor(
         private set
 
     //val quests: SnapshotStateList<Quest> = _quests
-    val quests = questRepository.getUserQuests(authRepository.currentUserIdFlow)
+    val quests = questRepository.getQuests(authRepository.currentUserIdFlow)
 
+    val currentUserFlow: Flow<User?> = authRepository.currentUserIdFlow
+        .filterNotNull() // skip nulls when user not logged in
+        .map { uid ->
+            userRepository.getUserByUid(uid)
+        }
 }
 

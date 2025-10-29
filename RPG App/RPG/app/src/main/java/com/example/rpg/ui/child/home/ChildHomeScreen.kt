@@ -17,6 +17,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -44,24 +45,27 @@ import com.example.rpg.ui.parent.home.Family
 import com.example.rpg.ui.parent.home.ProgressIndicator
 import com.example.rpg.ui.theme.RPGTheme
 
+// mock data
 val child = Family("Bradford", 1, 0.1F)
-val questList = mutableStateListOf(
-    Quest("", "Dishes", "Wash the dishes", null,
-        null, null, 20,
-        Reward.OTHER, false, true, false, ""),
-)
+//val questList = mutableStateListOf(
+//    Quest("", "Dishes", "Wash the dishes", null,
+//        null, null, 20,
+//        Reward.OTHER, false, true, false, ""),
+//)
+// mock data
+
 @Composable
 fun ChildHomeScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     overlayNavController: NavHostController,
     viewModel: ChildHomeScreenViewModel = hiltViewModel(),
-    authViewModel: AuthViewModel = hiltViewModel(),
-    ) {
+    authViewModel: AuthViewModel = hiltViewModel()
+) {
+    val user by viewModel.currentUserFlow.collectAsState(initial = null)
     var showDialogAchievements by remember { mutableStateOf(false) }
     var showDialogStats by remember { mutableStateOf(false) }
-    //val questList by viewModel.quests.collectAsState(initial = emptyList())
-
+    val questList by viewModel.quests.collectAsState(initial = emptyList())
 
     Box(
         modifier = Modifier
@@ -73,6 +77,9 @@ fun ChildHomeScreen(
                 )
             )
     ) {
+        // header of child, has profile picture, name, level/xp, streak
+        // 2 clickable cards: achievements and stats
+        // list of ongoing quests
         Column {
             Row {
                 Image(
@@ -88,7 +95,9 @@ fun ChildHomeScreen(
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = child.childName,
+                        user?.firstname
+                            ?.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+                            ?: "Loading...",
                         modifier = Modifier.padding(top = 16.dp, bottom = 20.dp)
                     )
                     ProgressIndicator(
@@ -104,7 +113,6 @@ fun ChildHomeScreen(
             ) {
                 // Entire card is now the tap target
                 Card(
-
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(12.dp),

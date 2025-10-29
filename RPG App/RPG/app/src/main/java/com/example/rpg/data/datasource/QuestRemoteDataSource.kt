@@ -19,18 +19,26 @@ import kotlinx.coroutines.tasks.await
 class QuestRemoteDataSource @Inject constructor(
     private val firestore: FirebaseFirestore
 ) {
+    // this function is used to get quests for a specified user, along with optional status filter
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun getUserQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> {
+    fun getQuests(
+        currentUserIdFlow: Flow<String?>,
+        status: String? = null // optional status filter
+    ): Flow<List<Quest>> {
         return currentUserIdFlow.flatMapLatest { ownerId ->
-            firestore
+            var query = firestore
                 .collection(QUEST_ITEMS_COLLECTION)
                 .whereEqualTo(ASSIGNED_TO_ID_FIELD, ownerId)
-                .dataObjects()
+
+            if (!status.isNullOrEmpty()) {
+                query = query.whereEqualTo("status", status)
+            }
+
+            query.dataObjects()
         }
     }
 
     // This function is useful for parents to view all their children's quests
-    // Also useful for test purposes
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getAllQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> {
         return currentUserIdFlow.flatMapLatest { ownerId ->

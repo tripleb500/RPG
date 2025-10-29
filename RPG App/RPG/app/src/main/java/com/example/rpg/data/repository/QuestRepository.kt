@@ -8,8 +8,10 @@ import javax.inject.Inject
 class QuestRepository @Inject constructor(
     private val questRemoteDataSource: QuestRemoteDataSource
 ) {
-    fun getUserQuests(currentUserIdFlow: Flow<String?>) =
-        questRemoteDataSource.getUserQuests(currentUserIdFlow)
+    fun getQuests(
+        currentUserIdFlow: Flow<String?>,
+        status: String? = null
+    ) = questRemoteDataSource.getQuests(currentUserIdFlow, status)
 
     fun getAllQuests(currentUserIdFlow: Flow<String?>) =
         questRemoteDataSource.getAllQuests(currentUserIdFlow)
