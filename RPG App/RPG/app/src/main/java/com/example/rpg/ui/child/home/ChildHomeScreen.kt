@@ -98,7 +98,7 @@ fun ChildHomeScreen(
             }
 
             Column(
-                modifier = Modifier.padding(top = 85.dp),
+                modifier = Modifier.padding(top = 45.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
