@@ -1,5 +1,6 @@
 package com.example.rpg.ui.child.achievements
 
+import android.icu.text.DateFormat
 import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -27,14 +29,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.rpg.data.model.Quest
+import com.example.rpg.data.model.Reward
 import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
+import com.example.rpg.ui.child.quest.CardView
+import com.example.rpg.ui.child.achievements.achievementItems
 import java.util.Date
 
 val sdf = SimpleDateFormat("dd/M/yyyy")
 val dateAch = sdf.format(Date())
-val AchievementList = mutableStateListOf(
-    achievementsItems("Go Getter", dateAch, "Get 10 Quests Completed"),
+val AchievementsList = mutableStateListOf(
+    achievementItems("Go Getter", dateAch, "Get 10 Quests Completed"),
 )
 
 @Composable
@@ -69,7 +75,7 @@ fun ChildAchievementsDialog(
                     style = MaterialTheme.typography.titleLarge
                 )
                 LazyColumn {
-                    items(AchievementList) { Achievement ->
+                    items(AchievementsList) { Achievement ->
                         Text(
                             text = Achievement.achName,
                             modifier = Modifier.padding(top = 16.dp)
