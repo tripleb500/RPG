@@ -2,6 +2,7 @@ package com.example.rpg.ui.child.home
 // TODO: button for stats; achievements, list of main quests
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,12 +15,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -28,22 +31,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
-import com.example.rpg.data.model.Reward
-import com.example.rpg.data.model.Status
 import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.child.achievements.ChildAchievementsDialog
-import com.example.rpg.ui.child.quest.CardView
+import com.example.rpg.ui.child.quest.QuestDialog
 import com.example.rpg.ui.child.stats.ChildStatsDialog
 import com.example.rpg.ui.parent.home.Family
 import com.example.rpg.ui.parent.home.ProgressIndicator
 import com.example.rpg.ui.theme.RPGTheme
+import kotlinx.coroutines.selects.select
 
 // mock data
 val child = Family("Bradford", 1, 0.1F)
@@ -54,6 +58,7 @@ val child = Family("Bradford", 1, 0.1F)
 //)
 // mock data
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChildHomeScreen(
     modifier: Modifier = Modifier,
@@ -66,6 +71,7 @@ fun ChildHomeScreen(
     var showDialogAchievements by remember { mutableStateOf(false) }
     var showDialogStats by remember { mutableStateOf(false) }
     val questList by viewModel.quests.collectAsState(initial = emptyList())
+    var selectedQuest by remember { mutableStateOf<Quest?>(null) }
 
     Box(
         modifier = Modifier
@@ -81,11 +87,26 @@ fun ChildHomeScreen(
         // 2 clickable cards: achievements and stats
         // list of ongoing quests
         Column {
+            CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFF1B2631)
+                ),
+
+                title = {
+                    Text(
+                        text = user?.username ?: "Loading...",
+                        fontSize = 32.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = Color.White,
+                    )
+                }
+            )
             Row {
                 Image(
                     painter = painterResource(id = R.drawable.baseline_person_24),
                     contentDescription = "Photo of Avatar",
-                    modifier = Modifier.padding(top = 45.dp)
+                    modifier = Modifier
                         .width(100.dp)
                         .height(100.dp)
                 )
@@ -94,12 +115,12 @@ fun ChildHomeScreen(
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.Start
                 ) {
-                    Text(
-                        user?.firstname
-                            ?.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
-                            ?: "Loading...",
-                        modifier = Modifier.padding(top = 16.dp, bottom = 20.dp)
-                    )
+//                    Text(
+//                        user?.firstname
+//                            ?.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+//                            ?: "Loading...",
+//                        modifier = Modifier.padding(top = 16.dp, bottom = 20.dp)
+//                    )
                     ProgressIndicator(
                         progress = child.lvlProgress
                     )
@@ -171,14 +192,27 @@ fun ChildHomeScreen(
                 }
                 LazyColumn {
                     items(questList) { quest ->
-                        CardView(quest)
+                        CardView(quest) { clickedQuest ->
+                            selectedQuest = clickedQuest
+                        }
                     }
                 }
             }
         }
+
+        // 🧠 Quest completion dialog
+        if (selectedQuest != null) {
+            QuestDialog(
+                quest = selectedQuest!!,
+                onDismissRequest = { selectedQuest = null },
+                onCompleteClicked = { completedQuest ->
+                    viewModel.markQuestAsPending(completedQuest)
+                    selectedQuest = null
+                }
+            )
+        }
     }
 }
-
 
 @Composable
 fun ProgressIndicator(
@@ -192,11 +226,15 @@ fun ProgressIndicator(
 }
 
 @Composable
-fun CardView(quest: Quest) {
+fun CardView(
+    quest: Quest,
+    onQuestClicked: (Quest) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxSize()
             .padding(12.dp)
+            .clickable { onQuestClicked(quest) }
     ) {
         Row {
             Image(
@@ -212,10 +250,10 @@ fun CardView(quest: Quest) {
                     modifier = Modifier.padding(top = 16.dp)
                 )
                 Text(
-                    text = "Reward: " + quest.rewardType,
+                    text = "Reward: ${quest.rewardType}",
                 )
                 Text(
-                    text = "Due: " + quest.deadlineDate,
+                    text = "Due: ${quest.deadlineDate}",
                 )
             }
         }

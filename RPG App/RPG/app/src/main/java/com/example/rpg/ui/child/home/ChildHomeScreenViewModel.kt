@@ -1,10 +1,12 @@
 package com.example.rpg.ui.child.home
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Reward
 import com.example.rpg.data.model.Status
@@ -16,6 +18,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -54,6 +57,17 @@ class ChildHomeScreenViewModel @Inject constructor(
 
     //val quests: SnapshotStateList<Quest> = _quests
     val quests = questRepository.getQuests(authRepository.currentUserIdFlow, Status.INPROGRESS)
+
+    fun markQuestAsPending(quest: Quest) {
+        viewModelScope.launch {
+            try {
+                questRepository.updateQuestStatus(quest.id, Status.COMPLETED)
+                Log.d("Quest", "Quest ${quest.title} marked as PENDING")
+            } catch (e: Exception) {
+                Log.e("Quest", "Error updating quest: ", e)
+            }
+        }
+    }
 
     val currentUserFlow: Flow<User?> = authRepository.currentUserIdFlow
         .filterNotNull() // skip nulls when user not logged in

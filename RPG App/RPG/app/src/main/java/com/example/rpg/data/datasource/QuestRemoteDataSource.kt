@@ -3,13 +3,16 @@ package com.example.rpg.data.datasource
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
+import java.util.Date
 
 /**
  * Communicates directly with Firebase for quest collection.
@@ -35,7 +38,16 @@ class QuestRemoteDataSource @Inject constructor(
                 query = query.whereEqualTo("status", status)
             }
 
-            query.dataObjects()
+            query = query.orderBy("deadlineDate", Query.Direction.ASCENDING)
+
+            val questsFlow: Flow<List<Quest>> = query.dataObjects<Quest>()
+
+            questsFlow.map { quests: List<Quest> ->
+                quests.sortedWith(
+                    compareBy<Quest> { it.deadlineDate == null } // nulls last
+                        .thenBy { it.deadlineDate ?: Date(Long.MAX_VALUE) } // ascending for non-null
+                )
+            }
         }
     }
 
@@ -47,6 +59,13 @@ class QuestRemoteDataSource @Inject constructor(
                 .collection(QUEST_ITEMS_COLLECTION)
                 .dataObjects()
         }
+    }
+
+    suspend fun updateQuestStatus(questId: String, newStatus: Status) {
+        firestore.collection(QUEST_ITEMS_COLLECTION)
+            .document(questId)
+            .update("status", newStatus.name)
+            .await()
     }
 
     suspend fun getQuestItem(questId: String): Quest? {
