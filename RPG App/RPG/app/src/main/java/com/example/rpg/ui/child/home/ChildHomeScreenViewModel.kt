@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Reward
+import com.example.rpg.data.model.Status
 import com.example.rpg.data.model.User
 import com.example.rpg.data.repository.AuthRepository
 import com.example.rpg.data.repository.QuestRepository
@@ -52,7 +53,7 @@ class ChildHomeScreenViewModel @Inject constructor(
         private set
 
     //val quests: SnapshotStateList<Quest> = _quests
-    val quests = questRepository.getQuests(authRepository.currentUserIdFlow)
+    val quests = questRepository.getQuests(authRepository.currentUserIdFlow, Status.INPROGRESS)
 
     val currentUserFlow: Flow<User?> = authRepository.currentUserIdFlow
         .filterNotNull() // skip nulls when user not logged in

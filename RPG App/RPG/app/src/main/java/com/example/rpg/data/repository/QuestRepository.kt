@@ -2,6 +2,7 @@ package com.example.rpg.data.repository
 
 import com.example.rpg.data.datasource.QuestRemoteDataSource
 import com.example.rpg.data.model.Quest
+import com.example.rpg.data.model.Status
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -10,7 +11,7 @@ class QuestRepository @Inject constructor(
 ) {
     fun getQuests(
         currentUserIdFlow: Flow<String?>,
-        status: String? = null
+        status: Status? = null
     ) = questRemoteDataSource.getQuests(currentUserIdFlow, status)
 
     fun getAllQuests(currentUserIdFlow: Flow<String?>) =

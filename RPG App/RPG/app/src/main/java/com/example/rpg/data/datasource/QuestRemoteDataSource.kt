@@ -1,6 +1,7 @@
 package com.example.rpg.data.datasource
 
 import com.example.rpg.data.model.Quest
+import com.example.rpg.data.model.Status
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
@@ -23,14 +24,14 @@ class QuestRemoteDataSource @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getQuests(
         currentUserIdFlow: Flow<String?>,
-        status: String? = null // optional status filter
+        status: Status? = null // optional status filter
     ): Flow<List<Quest>> {
         return currentUserIdFlow.flatMapLatest { ownerId ->
             var query = firestore
                 .collection(QUEST_ITEMS_COLLECTION)
                 .whereEqualTo(ASSIGNED_TO_ID_FIELD, ownerId)
 
-            if (!status.isNullOrEmpty()) {
+            if (status != null) {
                 query = query.whereEqualTo("status", status)
             }
 
