@@ -1,5 +1,6 @@
 package com.example.rpg.data.datasource
 
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.channels.awaitClose
@@ -35,5 +36,26 @@ class AuthRemoteDataSource @Inject constructor(private val auth: FirebaseAuth) {
 
     fun signOut() {
         auth.signOut()
+    }
+
+    /**
+     * The three functions below handles update operations for a user's email and password
+     */
+    suspend fun reauthenticate (email: String, password: String) {
+        val user = auth.currentUser ?: throw Exception("User not logged in")
+        val credential = EmailAuthProvider.getCredential(email, password)
+        user.reauthenticate(credential).await()
+
+    }
+
+    suspend fun updateEmail(newEmail: String) {
+        val user = auth.currentUser ?: throw Exception("user not logged in to update email")
+        user.updateEmail(newEmail).await()
+
+    }
+
+    suspend fun updatePassword(newPassword: String) {
+        val user = auth.currentUser ?: throw Exception("user not logged in to update password")
+        user.updatePassword(newPassword).await()
     }
 }

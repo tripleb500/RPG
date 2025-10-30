@@ -57,7 +57,6 @@ fun ParentSettingsScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF1B2631)
                 ),
 
                 title = {
@@ -85,11 +84,21 @@ fun ParentSettingsScreen(
             ) {
                 items(settingsOptions) { (id, name) ->
                     ClickableCard(
-                        title = name, onClick = {
-                            viewModel.onCardClicked(id)
-                            navController.navigate(Routes.SignInScreen.route) {
-                                popUpTo(0) { inclusive = true }
+                        title = name,
+                        onClick = {
+                            when (id) {
+                                1 -> overlayNavController.navigate(Routes.ParentAccountSettingsScreen.route)
+                                6 -> {
+                                    navController.navigate(Routes.SignInScreen.route) {
+                                        popUpTo(id = 0) {inclusive = true}
+                                    }
+                                }
                             }
+
+                            //viewModel.onCardClicked(id)
+                            //navController.navigate(Routes.SignInScreen.route) {
+                                //popUpTo(0) { inclusive = true }
+                            //}
                         })
                 }
             }

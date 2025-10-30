@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 /**
  * Acts as a middleman between Datasource's' and rest of app.
- * Handles data-fetching patters, so, viewmodel or components don't directly deal with datasource logic
+ * Handles data-fetching patterns, so, viewmodel or components don't directly deal with datasource logic
  */
 
 class AuthRepository @Inject constructor(
@@ -22,4 +22,13 @@ class AuthRepository @Inject constructor(
         authRemoteDataSource.signIn(email, password)
 
     fun signOut() = authRemoteDataSource.signOut()
+
+    suspend fun reauthenticate(email: String, password: String) =
+        authRemoteDataSource.reauthenticate(email, password)
+
+    suspend fun updateEmail(newEmail: String) =
+        authRemoteDataSource.updateEmail(newEmail)
+
+    suspend fun updatePassword(newPassword: String) =
+        authRemoteDataSource.updatePassword(newPassword)
 }
