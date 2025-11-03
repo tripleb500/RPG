@@ -35,7 +35,7 @@ class QuestRemoteDataSource @Inject constructor(
                 flowOf(emptyList())
             } else {
                 callbackFlow {
-                    println("🔥 Setting up Firestore listener for user: $ownerId")
+                    println("Setting up Firestore listener for user: $ownerId")
 
                     val query = firestore
                         .collection(QUEST_ITEMS_COLLECTION)
@@ -51,7 +51,7 @@ class QuestRemoteDataSource @Inject constructor(
                         }
 
                         val quests = snapshot?.toObjects(Quest::class.java) ?: emptyList()
-                        println("📥 Firestore update received: ${quests.size} quests")
+                        println("Firestore update received: ${quests.size} quests")
                         quests.forEach { quest ->
                             println("   - ${quest.title} (Status: ${quest.status})")
                         }
@@ -67,7 +67,7 @@ class QuestRemoteDataSource @Inject constructor(
                     }
 
                     awaitClose {
-                        println("🔴 Removing Firestore listener")
+                        println("Removing Firestore listener")
                         listener.remove()
                     }
                 }

@@ -17,7 +17,7 @@ class QuestRepository @Inject constructor(
         questRemoteDataSource.getQuests(currentUserIdFlow)
             .map { quests ->
                 val filteredQuests = quests.filter { it.status == status }
-                println("🎯 Filtering quests - Total: ${quests.size}, $status: ${filteredQuests.size}")
+                println("Filtering quests - Total: ${quests.size}, $status: ${filteredQuests.size}")
                 quests.forEach { quest ->
                     println("   - Quest: ${quest.title}, Status: ${quest.status}, ID: ${quest.id}")
                 }

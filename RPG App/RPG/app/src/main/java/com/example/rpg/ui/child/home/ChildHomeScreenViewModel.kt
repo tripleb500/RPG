@@ -46,7 +46,7 @@ class ChildHomeScreenViewModel @Inject constructor(
     val inProgressQuestsFlow: StateFlow<List<Quest>> = authRepository.currentUserIdFlow
         .filterNotNull()
         .flatMapLatest { uid ->
-            println("🔄 User ID received: $uid")
+            println("User ID received: $uid")
             questRepository.getQuestsByStatus(flowOf(uid), Status.INPROGRESS)
                 .catch { error ->
                     Log.e("ChildHomeScreenVM", "Error loading quests: ${error.message}")
@@ -65,7 +65,7 @@ class ChildHomeScreenViewModel @Inject constructor(
     fun markQuestAsPending(quest: Quest) {
         viewModelScope.launch {
             try {
-                println("📝 Marking quest as PENDING: ${quest.title} (ID: ${quest.id})")
+                println("Marking quest as PENDING: ${quest.title} (ID: ${quest.id})")
                 questRepository.updateQuestStatus(quest.id, Status.PENDING)
                 // Add a small delay to see if the update propagates correctly
                 delay(100)

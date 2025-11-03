@@ -75,7 +75,7 @@ fun QuestDialog(
                 // Complete button
                 Button(
                     onClick = {
-                        println("✅ Complete button clicked for quest: ${quest.title}")
+                        println("Complete button clicked for quest: ${quest.title}")
                         onCompleteClicked(quest)
                         onDismissRequest()
                     },
