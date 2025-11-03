@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">RPG</string>
+    <string name="turn_in_quest">Turn in Quest</string>
+    <string name="reward_label">Reward: %1$s</string>
+    <string name="amount_label">Amount: %1$d</string>
+    <string name="due_date_label">Due Date: %1$s</string>
+    <string name="assigned_by_label">Assigned by: %1$s</string>
+    <string name="loading">Loading...</string>
 </resources>

@@ -36,7 +36,6 @@ import com.example.rpg.ui.auth.AuthViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
-
 /**
 val title: String = "",
 val description: String = "",
@@ -50,6 +49,7 @@ val allDay : Boolean = false,
 val completed : Boolean = false,
 val assignee : String = Child().id,
  */
+
 @Composable
 fun ParentAddQuestScreen(
     modifier: Modifier = Modifier,
@@ -63,8 +63,8 @@ fun ParentAddQuestScreen(
 
 @Composable
 fun AddQuestContent(
-    viewModel: ParentAddQuestViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    viewModel: ParentAddQuestViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
     var title by remember { mutableStateOf("") }
@@ -123,15 +123,18 @@ fun AddQuestContent(
 
         Button(onClick = { showTimePicker = true }, enabled = dueDate != null) {
             Text(text = dueDate?.let { SimpleDateFormat("h:mm a").format(it) }
-                    ?: "Select Time")
+                ?: "Select Time")
         }
 
         Spacer(modifier = Modifier.height(4.dp))
 
         Button(
-            onClick = { viewModel.addQuest()
-                navController.popBackStack() },
-            enabled = dueDate != null && quest.title.isNotBlank() && quest.description.isNotBlank()) {
+            onClick = {
+                viewModel.addQuest()
+                navController.popBackStack()
+            },
+            enabled = dueDate != null && quest.title.isNotBlank() && quest.description.isNotBlank()
+        ) {
             Text("Assign Quest")
         }
 

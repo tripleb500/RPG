@@ -1,18 +1,22 @@
 package com.example.rpg.data.datasource
 
+import android.util.Log
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import javax.inject.Inject
 import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.tasks.await
 import java.util.Date
+import javax.inject.Inject
 
 /**
  * Communicates directly with Firebase for quest collection.
@@ -23,34 +27,59 @@ import java.util.Date
 class QuestRemoteDataSource @Inject constructor(
     private val firestore: FirebaseFirestore
 ) {
-    // this function is used to get quests for a specified user, along with optional status filter
+    // this generic function is used to get quests for a specified user, along with optional status filter
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun getQuests(
-        currentUserIdFlow: Flow<String?>,
-        status: Status? = null // optional status filter
-    ): Flow<List<Quest>> {
+    fun getQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> {
         return currentUserIdFlow.flatMapLatest { ownerId ->
-            var query = firestore
-                .collection(QUEST_ITEMS_COLLECTION)
-                .whereEqualTo(ASSIGNED_TO_ID_FIELD, ownerId)
+            if (ownerId == null) {
+                flowOf(emptyList())
+            } else {
+                callbackFlow {
+                    println("🔥 Setting up Firestore listener for user: $ownerId")
 
-            if (status != null) {
-                query = query.whereEqualTo("status", status)
+                    val query = firestore
+                        .collection(QUEST_ITEMS_COLLECTION)
+                        .whereEqualTo(ASSIGNED_TO_ID_FIELD, ownerId)
+                    // REMOVE the orderBy if it's causing issues, or add index
+                    // .orderBy("deadlineDate", Query.Direction.ASCENDING)
+
+                    val listener = query.addSnapshotListener { snapshot, error ->
+                        if (error != null) {
+                            Log.e("QuestRemoteDataSource", "Error fetching quests: ${error.message}")
+                            trySend(emptyList())
+                            return@addSnapshotListener
+                        }
+
+                        val quests = snapshot?.toObjects(Quest::class.java) ?: emptyList()
+                        println("📥 Firestore update received: ${quests.size} quests")
+                        quests.forEach { quest ->
+                            println("   - ${quest.title} (Status: ${quest.status})")
+                        }
+
+                        // Try without sorting first to see if that's the issue
+                        trySend(quests)
+
+                        // If you need sorting, use this instead:
+                        // trySend(quests.sortedWith(
+                        //     compareBy<Quest> { it.deadlineDate == null }
+                        //         .thenBy { it.deadlineDate ?: Date(Long.MAX_VALUE) }
+                        // ))
+                    }
+
+                    awaitClose {
+                        println("🔴 Removing Firestore listener")
+                        listener.remove()
+                    }
+                }
             }
-
-            query = query.orderBy("deadlineDate", Query.Direction.ASCENDING)
-
-            val questsFlow: Flow<List<Quest>> = query.dataObjects<Quest>()
-
-            questsFlow.map { quests: List<Quest> ->
-                quests.sortedWith(
-                    compareBy<Quest> { it.deadlineDate == null } // nulls last
-                        .thenBy { it.deadlineDate ?: Date(Long.MAX_VALUE) } // ascending for non-null
-                )
-            }
+        }.catch { error ->
+            Log.e("QuestRemoteDataSource", "Stream error: ${error.message}")
+            emit(emptyList())
         }
     }
 
+
+    // TODO: Delete, this gets all quests even if not a child
     // This function is useful for parents to view all their children's quests
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getAllQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> {
@@ -86,9 +115,8 @@ class QuestRemoteDataSource @Inject constructor(
     }
 
     companion object {
-//        private const val OWNER_ID_FIELD = "ownerId"
+        //        private const val OWNER_ID_FIELD = "ownerId"
         private const val ASSIGNED_TO_ID_FIELD = "assignedTo"
         private const val QUEST_ITEMS_COLLECTION = "quests" //Name of the collection for quest items
     }
 }
-

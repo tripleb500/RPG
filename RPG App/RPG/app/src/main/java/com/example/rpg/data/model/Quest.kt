@@ -25,7 +25,6 @@ data class Quest(
 enum class Status {
     INPROGRESS,
     PENDING,
-    Pending,
     COMPLETED,
     INCOMPLETED
 }

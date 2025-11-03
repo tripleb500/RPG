@@ -11,5 +11,5 @@ class ChildQuestViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val questRepository: QuestRepository
 ) : ViewModel() {
-    val quests = questRepository.getQuests(authRepository.currentUserIdFlow)
+    val quests = questRepository.getAllQuests(authRepository.currentUserIdFlow)
 }

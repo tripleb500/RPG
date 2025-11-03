@@ -7,13 +7,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -33,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,16 +49,10 @@ import com.example.rpg.ui.child.stats.ChildStatsDialog
 import com.example.rpg.ui.parent.home.Family
 import com.example.rpg.ui.parent.home.ProgressIndicator
 import com.example.rpg.ui.theme.RPGTheme
-import kotlinx.coroutines.selects.select
 
 // mock data
 val child = Family("Bradford", 1, 0.1F)
-//val questList = mutableStateListOf(
-//    Quest("", "Dishes", "Wash the dishes", null,
-//        null, null, 20,
-//        Reward.OTHER, false, true, false, ""),
-//)
-// mock data
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,7 +66,7 @@ fun ChildHomeScreen(
     val user by viewModel.currentUserFlow.collectAsState(initial = null)
     var showDialogAchievements by remember { mutableStateOf(false) }
     var showDialogStats by remember { mutableStateOf(false) }
-    val questList by viewModel.quests.collectAsState(initial = emptyList())
+    val questList by viewModel.inProgressQuestsFlow.collectAsState(initial = emptyList())
     var selectedQuest by remember { mutableStateOf<Quest?>(null) }
     var cardColor by remember { mutableStateOf(Color.Green) }
 
@@ -121,12 +112,6 @@ fun ChildHomeScreen(
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.Start
                 ) {
-//                    Text(
-//                        user?.firstname
-//                            ?.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
-//                            ?: "Loading...",
-//                        modifier = Modifier.padding(top = 16.dp, bottom = 20.dp)
-//                    )
                     ProgressIndicator(
                         progress = child.lvlProgress
                     )
@@ -155,9 +140,10 @@ fun ChildHomeScreen(
                                 .width(100.dp)
                                 .height(100.dp)
                         )
-                        Column(Modifier
-                            .fillMaxSize()
-                            .padding(start = 16.dp),
+                        Column(
+                            Modifier
+                                .fillMaxSize()
+                                .padding(start = 16.dp),
                             verticalArrangement = Arrangement.Center
 
                         ) {
@@ -183,9 +169,10 @@ fun ChildHomeScreen(
                                 .width(100.dp)
                                 .height(100.dp)
                         )
-                        Column(Modifier
-                            .fillMaxSize()
-                            .padding(start = 16.dp),
+                        Column(
+                            Modifier
+                                .fillMaxSize()
+                                .padding(start = 16.dp),
                             verticalArrangement = Arrangement.Center
                         ) {
                             Text(
@@ -214,17 +201,18 @@ fun ChildHomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
-                            colors = CardDefaults.cardColors(
+                    colors = CardDefaults.cardColors(
                         containerColor = cardColor
-                            )
+                    )
                 ) {
-                    Column(modifier = Modifier
-                        .fillMaxSize()
-                        .padding(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally,
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
 
-                    ) {
+                        ) {
 
                         Text(
                             text = "Main Quest",
@@ -232,13 +220,22 @@ fun ChildHomeScreen(
                         )
                     }
                 }
+                Text(
+                    text = "Debug: ${questList.size} quests in progress",
+                    color = Color.White,
+                    modifier = Modifier.padding(8.dp)
+                )
                 LazyColumn {
-                    items(questList) { quest ->
+                    items(
+                        items = questList,
+                        key = { quest -> quest.id }
+                    ) { quest ->
                         CardView(quest) { clickedQuest ->
                             selectedQuest = clickedQuest
                         }
                     }
                 }
+
             }
         }
 
@@ -247,6 +244,7 @@ fun ChildHomeScreen(
             QuestDialog(
                 quest = selectedQuest!!,
                 onDismissRequest = { selectedQuest = null },
+                viewModel = viewModel,
                 onCompleteClicked = { completedQuest ->
                     viewModel.markQuestAsPending(completedQuest)
                     selectedQuest = null
@@ -260,7 +258,7 @@ fun ChildHomeScreen(
 fun ProgressIndicator(
     progress: Float,
     modifier: Modifier = Modifier
-){
+) {
     LinearProgressIndicator(
         progress = { progress },
         modifier = modifier,
@@ -304,8 +302,11 @@ fun CardView(
 
 @Preview
 @Composable
-fun PreviewChildHomeScreen(){
+fun PreviewChildHomeScreen() {
     RPGTheme {
-        ChildHomeScreen(navController = rememberNavController(), overlayNavController = rememberNavController())
+        ChildHomeScreen(
+            navController = rememberNavController(),
+            overlayNavController = rememberNavController()
+        )
     }
 }

@@ -13,38 +13,26 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.rpg.R
 import com.example.rpg.data.model.Quest
-import com.example.rpg.data.repository.UserRepository
+import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 
 @Composable
 fun QuestDialog(
     quest: Quest,
-//    userRepository: UserRepository = hiltViewModel(),
+    viewModel: ChildHomeScreenViewModel,
     onDismissRequest: () -> Unit,
     onCompleteClicked: (Quest) -> Unit
 ) {
-    var parentName by remember { mutableStateOf("Loading...") }
-
-    // Load parent info when the dialog is first composed
-//    LaunchedEffect(quest.assignee) {
-//        quest.assignee?.let { parentId ->
-//            val parentUser = userRepository.getUserByUid(parentId) // suspend function
-//            parentName = parentUser?.firstname ?: "Unknown"
-//        }
-//    }
-
+    val assigneeName by viewModel.getQuestParentName(quest.assignee)
     Dialog(onDismissRequest = onDismissRequest) {
         Surface(
             shape = RoundedCornerShape(16.dp),
@@ -66,28 +54,34 @@ fun QuestDialog(
                 )
 
                 // Reward
-                Text("Reward: ${quest.rewardType}")
+                Text(stringResource(R.string.reward_label, quest.rewardType))
 
                 // Amount
-                Text("Amount: ${quest.rewardAmount}")
+                Text(stringResource(R.string.amount_label, quest.rewardAmount))
 
                 // Due Date
-                Text("Due Date: ${quest.deadlineDate ?: "No deadline"}")
+                Text(stringResource(R.string.due_date_label, quest.deadlineDate ?: "No deadline"))
 
                 // Assignee
-                Text("Assigned by: blah")
+                Text(
+                    stringResource(
+                        R.string.assigned_by_label,
+                        assigneeName ?: stringResource(R.string.loading)
+                    )
+                )
 
                 Spacer(Modifier.height(16.dp))
 
                 // Complete button
                 Button(
                     onClick = {
+                        println("✅ Complete button clicked for quest: ${quest.title}")
                         onCompleteClicked(quest)
                         onDismissRequest()
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Mark as Completed")
+                    Text(stringResource(R.string.turn_in_quest))
                 }
 
                 // Cancel
