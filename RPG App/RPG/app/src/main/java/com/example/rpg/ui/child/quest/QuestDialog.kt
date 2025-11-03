@@ -14,6 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +41,9 @@ fun QuestDialog(
     onCompleteClicked: (Quest) -> Unit
 ) {
     val assigneeName by viewModel.getQuestParentName(quest.assignee)
+
+    var openCamera by remember { mutableStateOf(false) }
+
     Dialog(onDismissRequest = onDismissRequest) {
         Surface(
             shape = RoundedCornerShape(16.dp),
@@ -81,12 +87,17 @@ fun QuestDialog(
                 Button(
                     onClick = {
                         println("Complete button clicked for quest: ${quest.title}")
+                        openCamera = true
                         onCompleteClicked(quest)
                         onDismissRequest()
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(stringResource(R.string.turn_in_quest))
+                }
+
+                if (openCamera) {
+                    TakeQuestPictureScreen()
                 }
 
                 // Cancel
