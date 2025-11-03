@@ -58,7 +58,7 @@ fun ParentQuestScreen(
 ) {
     val childQuestMap = viewModel.questsByAssignee.collectAsState()
 
-    var selectedTab by rememberSaveable { mutableStateOf(QuestTab.Ongoing) }
+    var selectedTab by rememberSaveable { mutableStateOf(Status.INPROGRESS) }
 
     Scaffold(
         // Topbar, visual signifier for users to know where they are.
@@ -110,7 +110,7 @@ fun ParentQuestScreen(
 //                }
 
                 // quests with no status field in firebase currently defaults to inprogress tab (Quest.kt)
-                QuestTab.Ongoing -> {
+                Status.INPROGRESS -> {
                     LazyColumn {
                         childQuestMap.value.forEach { (assigneeId, quests) ->
                             items(quests.filter { it.status == Status.INPROGRESS }) { quest ->
@@ -120,7 +120,7 @@ fun ParentQuestScreen(
                     }
                 }
 
-                QuestTab.Pending -> {
+                Status.PENDING -> {
                     LazyColumn {
                         childQuestMap.value.forEach { (assigneeId, quests) ->
                             items(quests.filter { it.status == Status.PENDING }) { quest ->
@@ -131,7 +131,7 @@ fun ParentQuestScreen(
                     }
                 }
 
-                QuestTab.Completed -> {
+                Status.COMPLETED -> {
                     LazyColumn {
                         childQuestMap.value.forEach { (assigneeId, quests) ->
                             items(quests.filter { it.status == Status.COMPLETED }) { quest ->
@@ -141,7 +141,7 @@ fun ParentQuestScreen(
                     }
                 }
 
-                QuestTab.Incompleted -> {
+                Status.INCOMPLETED -> {
                     LazyColumn {
                         childQuestMap.value.forEach { (assigneeId, quests) ->
                             items(quests.filter { it.status == Status.INCOMPLETED }) { quest ->
@@ -178,6 +178,9 @@ fun CardView(quest: Quest) {
             }
 
             Column(modifier = Modifier.padding(start = 12.dp)) {
+//                Text(
+//                    text = "Assigned to: ${quest.userFirstName}"
+//                )
                 Text(
                     text = "Title: ${quest.title}",
                     style = MaterialTheme.typography.titleMedium
@@ -206,20 +209,17 @@ fun PreviewParentQuestScreen() {
     }
 }
 
-// Individual Tabs
-enum class QuestTab { Ongoing, Pending, Completed, Incompleted }
-
 // Tab Bar
 @Composable
 private fun QuestTabBar(
-    selected: QuestTab,
-    onSelect: (QuestTab) -> Unit
+    selected: Status,
+    onSelect: (Status) -> Unit
 ) {
     Row(modifier = Modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
     ) {
-        QuestTab.entries.forEach { tab ->
+        Status.entries.forEach { tab ->
             Button(onClick = { onSelect(tab) }) {
                 Text(text = tab.name)
             }
