@@ -30,6 +30,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.rpg.ui.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -112,7 +113,7 @@ fun ParentChangeEmailScreen (
             OutlinedTextField(
                 value = password,
                 onValueChange = { viewModel.password.value = it },
-                label = { Text ("Password") },
+                label = { Text ("Current Password") },
                 singleLine = true
             )
 
@@ -129,6 +130,10 @@ fun ParentChangeEmailScreen (
                     .fillMaxSize(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
+                Button(onClick = {overlayNavController.navigate(Routes.ParentAccountSettingsScreen.route)}
+                ) {
+                    Text("Cancel")
+                }
                 Button(onClick = { viewModel.updateEmail() }
                 ) {
                     Text("Confirm")
