@@ -220,11 +220,6 @@ fun ChildHomeScreen(
                         )
                     }
                 }
-                Text(
-                    text = "Debug: ${questList.size} quests in progress",
-                    color = Color.White,
-                    modifier = Modifier.padding(8.dp)
-                )
                 LazyColumn {
                     items(
                         items = questList,
