@@ -13,6 +13,7 @@ import com.example.rpg.ui.child.ChildBottomBar
 import com.example.rpg.ui.child.game.ChildGameScreen
 import com.example.rpg.ui.child.home.ChildHomeScreen
 import com.example.rpg.ui.child.quest.ChildQuestScreen
+import com.example.rpg.ui.child.quest.TakeQuestPictureScreen
 import com.example.rpg.ui.child.settings.ChildSettingsScreen
 import com.example.rpg.ui.child.social.ChildSocialScreen
 
@@ -45,6 +46,14 @@ fun ChildNavGraph(navController: NavHostController) {
                     overlayNavController = overlayNavController
                 )
             }
+
+            // Child Routes : ChildQuestPicture
+            //composable(Routes.TakeQuestPictureScreen.route) {
+            //    ChildQuestScreen(
+            //        navController = navController,
+            //        overlayNavController = overlayNavController
+            //    )
+            //}
 
             // Child Routes : ChildHome
             composable(Routes.ChildHomeScreen.route) {
