@@ -18,15 +18,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.rpg.ui.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParentAccountSettingsScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    overlayNavController: NavHostController
+    overlayNavController: NavHostController,
+    viewModel: ParentAccountSettingsViewModel = hiltViewModel()
 ) {
+
+    val username = viewModel.username.value ?: "Loading..."
+    val userEmail = viewModel.userEmail.value ?: "Loading..."
+
     val accountSettings = listOf(
         1 to "Change username",
         2 to "Change email",
@@ -63,10 +70,19 @@ fun ParentAccountSettingsScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(accountSettings) {(id, name) ->
+
+                    val subtitle = when(id) {
+                        1 -> username
+                        2 -> userEmail
+                        else -> null
+                    }
+
                     ClickableCard(
                         title = name,
+                        subtitle = subtitle,
                         onClick = {
                             when (id) {
+                                2 -> overlayNavController.navigate(Routes.ParentChangeEmailScreen.route)
                             }
                         }
                     )

@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,10 +28,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.rpg.R
 import com.example.rpg.ui.Routes
 import com.example.rpg.ui.theme.RPGTheme
 
@@ -43,7 +40,6 @@ fun ParentSettingsScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     overlayNavController: NavHostController,
-    viewModel: ParentSettingsViewModel = hiltViewModel()
 ) {
     val settingsOptions = listOf(
         1 to "Account",
@@ -57,6 +53,7 @@ fun ParentSettingsScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFF1B2631)
                 ),
 
                 title = {
@@ -108,14 +105,17 @@ fun ParentSettingsScreen(
 
 @Composable
 fun ClickableCard(
-    title: String, onClick: () -> Unit
+    title: String,
+    subtitle: String? = null,
+    iconRes: Int? = null,
+    onClick: () -> Unit
 ) {
     Card(
-
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 40.dp)
-            .padding(12.dp), onClick = onClick
+            .padding(12.dp),
+        onClick = onClick
     ) {
         Row(
             modifier = Modifier
@@ -123,6 +123,16 @@ fun ClickableCard(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            if(iconRes != null) {
+                Image(
+                    painter = painterResource(id = iconRes),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(40.dp)
+                        .height(40.dp)
+                )
+            }
+            /**
             Image(
                 painter = painterResource(id = R.drawable.baseline_person_24),
                 contentDescription = "Photo of default avatar",
@@ -130,12 +140,36 @@ fun ClickableCard(
                     .width(40.dp)
                     .height(40.dp)
             )
+            */
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
 
-            Spacer(modifier = Modifier.width(16.dp))
+            ) {
+                Text(
+                    text = title,
+                    fontSize = 16.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                subtitle?.let {
+                    Text(
+                        text = it,
+                        fontSize = 16.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.End
+                    )
+                }
+            }
 
-            Text(
-                text = title, textAlign = TextAlign.Center
-            )
+            //Spacer(modifier = Modifier.width(16.dp))
+
+            //Text(
+                //text = title, textAlign = TextAlign.Center
+            //)
         }
     }
 }

@@ -45,7 +45,6 @@ class AuthRemoteDataSource @Inject constructor(private val auth: FirebaseAuth) {
         val user = auth.currentUser ?: throw Exception("User not logged in")
         val credential = EmailAuthProvider.getCredential(email, password)
         user.reauthenticate(credential).await()
-
     }
 
     suspend fun updateEmail(newEmail: String) {
