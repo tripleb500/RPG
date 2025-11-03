@@ -49,7 +49,7 @@ class AuthRemoteDataSource @Inject constructor(private val auth: FirebaseAuth) {
 
     suspend fun updateEmail(newEmail: String) {
         val user = auth.currentUser ?: throw Exception("user not logged in to update email")
-        user.updateEmail(newEmail).await()
+        user.verifyBeforeUpdateEmail(newEmail).await()
 
     }
 
