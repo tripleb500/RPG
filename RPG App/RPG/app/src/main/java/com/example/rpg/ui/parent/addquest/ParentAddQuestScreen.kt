@@ -2,15 +2,21 @@ package com.example.rpg.ui.parent.addquest
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.net.Uri
 import android.text.format.DateFormat
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -35,6 +41,7 @@ import androidx.navigation.NavHostController
 import com.example.rpg.ui.auth.AuthViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import coil.compose.AsyncImage
 
 @Composable
 fun ParentAddQuestScreen(
@@ -49,8 +56,8 @@ fun ParentAddQuestScreen(
 
 @Composable
 fun AddQuestContent(
-    modifier: Modifier = Modifier,
     viewModel: ParentAddQuestViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
     var title by remember { mutableStateOf("") }
@@ -68,6 +75,30 @@ fun AddQuestContent(
     val minute = calendar.get(Calendar.MINUTE)
 
     val quest by viewModel.quest.collectAsState()
+
+    // 99% sure these are fine here and don't need to be in ViewModel...
+    var hasImage by remember {
+        mutableStateOf(false)
+    }
+    var imageUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            // 3
+            hasImage = uri != null
+            imageUri = uri
+        }
+    )
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = { success ->
+            hasImage = success
+        }
+    )
 
     viewModel.fetchChildren()
 
@@ -105,22 +136,49 @@ fun AddQuestContent(
                 ?: "Select Due Date")
         }
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(){
+            Button(onClick = {imagePicker.launch("image/*")}
+            ) {
+                Text("Select Image")
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Button(onClick = { /* Do nothing */ }) {
+                Text("Take Photo")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Box(){
+            // 4
+            if (hasImage && imageUri != null) {
+                // 5
+                AsyncImage(
+                    model = imageUri,
+                    modifier = Modifier.width(80.dp)
+                        .height(80.dp),
+                    contentDescription = "Selected image",
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
 
         Button(onClick = { showTimePicker = true }, enabled = dueDate != null) {
             Text(text = dueDate?.let { SimpleDateFormat("h:mm a").format(it) }
-                ?: "Select Time")
+                    ?: "Select Time")
         }
 
-        Spacer(modifier = Modifier.height(4.dp))
-
         Button(
-            onClick = {
-                viewModel.addQuest()
+            onClick = { viewModel.addQuest()
                 navController.popBackStack()
-            },
-            enabled = dueDate != null && quest.title.isNotBlank() && quest.description.isNotBlank()
-        ) {
+                      },
+            enabled = dueDate != null && quest.title.isNotBlank() && quest.description.isNotBlank()) {
             Text("Assign Quest")
         }
 
