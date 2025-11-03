@@ -36,20 +36,6 @@ import com.example.rpg.ui.auth.AuthViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
-/**
-val title: String = "",
-val description: String = "",
-val assignDate: Date? = null,
-val deadlineDate: Date? = null,
-val completionDate : Date? = null,
-val rewardAmount : Int = 0,
-val rewardType : Reward = Reward.NONE,
-val repeat : Boolean = false,
-val allDay : Boolean = false,
-val completed : Boolean = false,
-val assignee : String = Child().id,
- */
-
 @Composable
 fun ParentAddQuestScreen(
     modifier: Modifier = Modifier,
