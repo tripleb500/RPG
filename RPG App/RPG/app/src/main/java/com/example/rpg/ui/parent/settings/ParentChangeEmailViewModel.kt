@@ -1,19 +1,14 @@
 package com.example.rpg.ui.parent.settings
 
 import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.rpg.data.repository.AuthRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import androidx.compose.runtime.State
 import androidx.lifecycle.viewModelScope
+import com.example.rpg.data.repository.AuthRepository
 import com.example.rpg.data.repository.UserRepository
-import com.google.firebase.auth.EmailAuthProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-
 import javax.inject.Inject
 
 @HiltViewModel

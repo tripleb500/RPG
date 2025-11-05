@@ -83,6 +83,7 @@ fun ParentAccountSettingsScreen(
                         onClick = {
                             when (id) {
                                 2 -> overlayNavController.navigate(Routes.ParentChangeEmailScreen.route)
+                                3 -> overlayNavController.navigate(Routes.ParentChangePasswordScreen.route)
                             }
                         }
                     )

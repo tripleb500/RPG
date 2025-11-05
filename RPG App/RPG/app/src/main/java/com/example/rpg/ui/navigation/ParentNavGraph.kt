@@ -17,6 +17,7 @@ import com.example.rpg.ui.parent.settings.ParentSettingsScreen
 import com.example.rpg.ui.parent.stats.ParentStatsScreen
 import com.example.rpg.ui.parent.settings.ParentAccountSettingsScreen
 import com.example.rpg.ui.parent.settings.ParentChangeEmailScreen
+import com.example.rpg.ui.parent.settings.ParentChangePasswordScreen
 
 //ParentNavGraph handles navigation between screens with the parent version of a bottom NavBar
 @Composable
@@ -81,6 +82,12 @@ fun ParentNavGraph(navController: NavHostController) {
                 ParentChangeEmailScreen(
                     navController = navController,
                     overlayNavController = overlayNavController,
+                )
+            }
+            composable (Routes.ParentChangePasswordScreen.route) {
+                ParentChangePasswordScreen(
+                    navController = navController,
+                    overlayNavController = overlayNavController
                 )
             }
 
