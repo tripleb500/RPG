@@ -22,6 +22,7 @@ sealed class Routes(val route: String) {
     object ParentHomeScreen : Routes("parentHome")
     object ParentStatsScreen : Routes("parentStats")
     object ParentSettingsScreen : Routes("parentSettings")
+    object ParentChangeUsernameScreen : Routes("parentChangeUsername")
     object ParentChangeEmailScreen : Routes("parentChangeEmail")
     object ParentChangePasswordScreen : Routes("parentChangePassword")
 

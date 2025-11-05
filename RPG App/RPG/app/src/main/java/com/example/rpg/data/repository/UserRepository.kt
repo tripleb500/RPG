@@ -18,4 +18,16 @@ class UserRepository @Inject constructor(
     suspend fun getChildren(parentId: String): List<User> = remoteDataSource.getChildren(parentId)
     suspend fun getUserByUid(uid: String): User? = remoteDataSource.getUserByUid(uid)
 
+    suspend fun updateUsername(uid: String, newUsername: String) {
+        val existingUser = remoteDataSource.getUserByUsername(newUsername)
+        if (existingUser != null && existingUser.id != uid) {
+            throw Exception("Username is already taken")
+        }
+
+        val currentUser = remoteDataSource.getUserByUid(uid) ?: throw Exception("User not found")
+
+        val updateUser = currentUser.copy(username = newUsername)
+        remoteDataSource.createProfile(updateUser)
+    }
+
 }
