@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
+import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Image
@@ -23,7 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -54,18 +55,26 @@ fun ParentCameraScreen(
     viewModel: CameraViewModel = hiltViewModel(),
 ) {
     val cameraState: CameraState by viewModel.state.collectAsStateWithLifecycle()
-
+    val context: Context = LocalContext.current
+    val controller = remember {
+        LifecycleCameraController(context).apply {
+            setEnabledUseCases(
+                CameraController.IMAGE_CAPTURE
+            )
+        }
+    }
     ParentCameraContent(
-        onPhotoCaptured = {
-        /*Do later*/}, //viewModel::storePhotoInGallery,
-        lastCapturedPhoto = cameraState.capturedImage
+        onPhotoCaptured = {/*Do later*/}, //viewModel::storePhotoInGallery,
+        lastCapturedPhoto = cameraState.capturedImage,
+        controller = controller
     )
 }
 
 @Composable
 private fun ParentCameraContent(
     onPhotoCaptured: (Bitmap) -> Unit,
-    lastCapturedPhoto: Bitmap? = null
+    lastCapturedPhoto: Bitmap? = null,
+    controller : LifecycleCameraController
 ) {
 
     val context: Context = LocalContext.current
@@ -78,7 +87,7 @@ private fun ParentCameraContent(
             ExtendedFloatingActionButton(
                 text = { Text(text = "Take photo") },
                 onClick = { capturePhoto(context, cameraController, onPhotoCaptured) },
-                icon = { Icon(imageVector = Icons.Default.CameraAlt, contentDescription = "Camera capture icon") }
+                icon = { Icon(imageVector = Icons.Default.Camera, contentDescription = "Camera capture icon") }
             )
         }
     ) { paddingValues: PaddingValues ->
@@ -109,6 +118,12 @@ private fun ParentCameraContent(
             }
         }
     }
+}
+
+private fun takePhoto(
+    onPhotoTaken: (Bitmap) -> Unit
+){
+
 }
 
 

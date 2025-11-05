@@ -120,17 +120,6 @@ fun AddQuestContent(
     )
 
     val cameraPermissionState: PermissionState = rememberPermissionState(Manifest.permission.CAMERA)
-    //val audioPermissionState: PermissionState = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
-    var showCamera by remember { mutableStateOf(false)}
-
-    /*
-    val cameraLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicture(),
-        onResult = { success ->
-            hasImage = success
-        }
-    )
-     */
 
     viewModel.fetchChildren()
 
@@ -191,9 +180,6 @@ fun AddQuestContent(
             }
 
         }
-        //if (showCamera) {
-            //ParentCameraScreen()
-        //}
 
         Spacer(modifier = Modifier.height(8.dp))
 

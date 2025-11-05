@@ -81,8 +81,11 @@ fun ParentQuestScreen(
         },
 
         floatingActionButton = {
-            FloatingActionButton(onClick = { overlayNavController.navigate(Routes.ParentAddQuestScreen.route) }) {
-                Icon(Icons.Default.Add, contentDescription = "Add Quest")
+            FloatingActionButton(onClick = { overlayNavController.navigate(Routes.ParentAddQuestScreen.route) },
+                modifier = Modifier.width(100.dp)) {
+                Text(text = "Add Quest",
+                    modifier = Modifier,
+                    fontSize = 16.sp)
             }
         }
     ) { paddingValues ->
