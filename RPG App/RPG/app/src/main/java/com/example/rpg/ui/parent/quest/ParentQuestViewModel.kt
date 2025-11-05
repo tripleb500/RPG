@@ -1,5 +1,7 @@
 package com.example.rpg.ui.parent.quest
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rpg.data.model.Quest
@@ -39,6 +41,35 @@ class ParentQuestViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyMap()
     )
+
+    private val questChildCache = mutableMapOf<String, User>()
+
+    // retrieves child's name when loading quest
+    fun getQuestChildName(userId: String): State<String?> {
+        val nameState = mutableStateOf<String?>(null)
+
+        viewModelScope.launch {
+            // Check cache first
+            val cached = questChildCache[userId]
+            if (cached != null) {
+                nameState.value = "${cached.firstname} ${cached.lastname}"
+            } else {
+                try {
+                    val user = userRepository.getUserByUid(userId)
+                    if (user != null) {
+                        questChildCache[userId] = user
+                        nameState.value = "${user.firstname} ${user.lastname}"
+                    } else {
+                        nameState.value = "Unknown"
+                    }
+                } catch (e: Exception) {
+                    nameState.value = "Unknown"
+                }
+            }
+        }
+
+        return nameState
+    }
 
     fun fetchUserForQuest(quest: Quest) {
         viewModelScope.launch {

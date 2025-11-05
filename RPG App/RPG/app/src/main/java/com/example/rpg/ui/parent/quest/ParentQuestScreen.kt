@@ -57,7 +57,6 @@ fun ParentQuestScreen(
     viewModel: ParentQuestViewModel = hiltViewModel()
 ) {
     val childQuestMap = viewModel.questsByAssignee.collectAsState()
-
     var selectedTab by rememberSaveable { mutableStateOf(Status.INPROGRESS) }
 
     Scaffold(
@@ -157,7 +156,8 @@ fun ParentQuestScreen(
 }
 
 @Composable
-fun CardView(quest: Quest) {
+fun CardView(quest: Quest, viewModel: ParentQuestViewModel = hiltViewModel()) {
+    val assignedToName by viewModel.getQuestChildName(quest.assignedTo)
     Card(
         modifier = Modifier
             .fillMaxSize()
@@ -179,7 +179,7 @@ fun CardView(quest: Quest) {
 
             Column(modifier = Modifier.padding(start = 12.dp)) {
                 Text(
-                    text = "Name: ${quest.userFirstName} ${quest.userLastName}",
+                    text = "Name: $assignedToName",
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
