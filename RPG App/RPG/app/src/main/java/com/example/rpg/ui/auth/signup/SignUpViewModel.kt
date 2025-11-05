@@ -50,6 +50,13 @@ class SignUpViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
+                //  Enforces unique username. Users cannot have the same username now when signing up
+                val existingUser = userRepository.getUserByUsername(username)
+                if (existingUser != null) {
+                    _errorMessage.value = "Username already taken."
+                    onSuccess(false, null)
+                    return@launch
+                }
                 authRepository.signUp(
                     email,
                     password
