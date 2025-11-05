@@ -13,6 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
@@ -42,6 +44,10 @@ fun QuestDialog(
 ) {
     val assigneeName by viewModel.getQuestParentName(quest.assignee)
 
+    val cameraPermissionState: PermissionState = rememberPermissionState(android.Manifest.permission.CAMERA)
+
+    var hasPermission = cameraPermissionState.status.isGranted
+    val onRequestPermission = cameraPermissionState::launchPermissionRequest
     var openCamera by remember { mutableStateOf(false) }
 
     Dialog(onDismissRequest = onDismissRequest) {
@@ -83,21 +89,41 @@ fun QuestDialog(
 
                 Spacer(Modifier.height(16.dp))
 
+                LaunchedEffect(openCamera, hasPermission) {
+                    if (openCamera) {
+                        println("Im in the open camera if statement")
+                        if (!hasPermission) {
+                            println("Im in the has permission request")
+                            onRequestPermission()
+                            // Wait for permission result before proceeding
+                        }
+                    }
+                }
+
                 // Complete button
                 Button(
                     onClick = {
                         println("Complete button clicked for quest: ${quest.title}")
+                        //onCompleteClicked(quest)
                         openCamera = true
-                        onCompleteClicked(quest)
-                        onDismissRequest()
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(stringResource(R.string.turn_in_quest))
                 }
 
-                if (openCamera) {
-                    TakeQuestPictureScreen()
+                if (openCamera && hasPermission) {
+                    Dialog(
+                        onDismissRequest = { openCamera = false },
+                        properties = DialogProperties(usePlatformDefaultWidth = false)
+                    ) {
+                        TakeQuestPictureScreen(
+                            onClose = {
+                                openCamera = false
+                                onDismissRequest() // Dismiss original dialog after camera closes
+                            }
+                        )
+                    }
                 }
 
                 // Cancel
