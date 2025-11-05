@@ -18,7 +18,6 @@ data class Quest(
     val completed: Boolean = false,
     val assignee: String = User().id,
     val assignedTo: String = User().id,
-//    val userFirstName: String = User().firstname,
     val status: Status = Status.INPROGRESS
 )
 

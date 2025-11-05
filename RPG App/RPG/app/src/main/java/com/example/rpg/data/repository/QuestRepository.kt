@@ -29,6 +29,9 @@ class QuestRepository @Inject constructor(
     fun getAllQuests(currentUserIdFlow: Flow<String?>) =
         questRemoteDataSource.getAllQuests(currentUserIdFlow)
 
+    fun getParentQuests(currentUserIdFlow: Flow<String?>) =
+        questRemoteDataSource.getParentQuests(currentUserIdFlow)
+
 //    suspend fun getQuestItem(questId: String) = questRemoteDataSource.getQuestItem(questId)
 
     suspend fun create(questItem: Quest) = questRemoteDataSource.create(questItem)

@@ -90,6 +90,16 @@ class QuestRemoteDataSource @Inject constructor(
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getParentQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> {
+        return currentUserIdFlow.flatMapLatest { parentId ->
+                firestore
+                    .collection(QUEST_ITEMS_COLLECTION)
+                    .whereEqualTo("assignee", parentId)
+                    .dataObjects()
+            }
+    }
+
     suspend fun updateQuestStatus(questId: String, newStatus: Status) {
         firestore.collection(QUEST_ITEMS_COLLECTION)
             .document(questId)

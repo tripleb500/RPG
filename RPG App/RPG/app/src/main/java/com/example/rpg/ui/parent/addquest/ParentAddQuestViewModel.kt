@@ -122,6 +122,7 @@ class ParentAddQuestViewModel @Inject constructor(
     fun addQuest() {
         val current = _quest.value
 
+
         if (current.title != "" && current.description != "" && current.deadlineDate != null) {
             viewModelScope.launch {
                 questRepository.create(current)
