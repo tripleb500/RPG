@@ -57,13 +57,13 @@ class QuestRemoteDataSource @Inject constructor(
                         }
 
                         // Try without sorting first to see if that's the issue
-                        trySend(quests)
+//                        trySend(quests)
 
-                        // If you need sorting, use this instead:
-                        // trySend(quests.sortedWith(
-                        //     compareBy<Quest> { it.deadlineDate == null }
-                        //         .thenBy { it.deadlineDate ?: Date(Long.MAX_VALUE) }
-                        // ))
+//                         If you need sorting, use this instead:
+                         trySend(quests.sortedWith(
+                             compareBy<Quest> { it.deadlineDate == null }
+                                 .thenBy { it.deadlineDate ?: Date(Long.MAX_VALUE) }
+                         ))
                     }
 
                     awaitClose {
