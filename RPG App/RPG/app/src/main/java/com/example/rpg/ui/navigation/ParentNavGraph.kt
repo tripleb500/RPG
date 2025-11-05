@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
 import com.example.rpg.ui.parent.ParentBottomBar
 import com.example.rpg.ui.parent.addquest.ParentAddQuestScreen
+import com.example.rpg.ui.parent.camera.ParentCameraScreen
 import com.example.rpg.ui.parent.home.ParentHomeScreen
 import com.example.rpg.ui.parent.quest.ParentQuestScreen
 import com.example.rpg.ui.parent.settings.ParentSettingsScreen
@@ -41,6 +42,14 @@ fun ParentNavGraph(navController: NavHostController) {
             // Parent Routes : ParentAddQuest
             composable(Routes.ParentAddQuestScreen.route) {
                 ParentAddQuestScreen(
+                    navController = navController,
+                    overlayNavController = overlayNavController
+                )
+            }
+
+            // Parent Routes : ParentCamera
+            composable(Routes.ParentCameraScreen.route) {
+                ParentCameraScreen(
                     navController = navController,
                     overlayNavController = overlayNavController
                 )

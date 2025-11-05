@@ -1,7 +1,11 @@
 package com.example.rpg.ui.parent.addquest
 
+import android.Manifest
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.text.format.DateFormat
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -36,12 +40,32 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.rpg.ui.auth.AuthViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import coil.compose.AsyncImage
+import com.example.rpg.ui.Routes
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.example.rpg.ui.parent.camera.NoPermissionScreen
+import com.example.rpg.ui.parent.camera.ParentCameraScreen
+
+//For handling camera permissions
+private val CAMERAX_PERMISSIONS = Manifest.permission.CAMERA
+
+
+private fun hasRequiredPermissions(context: Context): Boolean {
+    return ContextCompat.checkSelfPermission(context,
+        CAMERAX_PERMISSIONS
+    ) == PackageManager.PERMISSION_GRANTED
+}
+
 
 @Composable
 fun ParentAddQuestScreen(
@@ -49,15 +73,17 @@ fun ParentAddQuestScreen(
     navController: NavHostController,
     overlayNavController: NavHostController,
     viewModel: ParentAddQuestViewModel = hiltViewModel(),
-    authViewModel: AuthViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel()
 ) {
-    AddQuestContent(navController = overlayNavController)
+    AddQuestContent(navController = overlayNavController, overlayNavController = overlayNavController)
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun AddQuestContent(
     viewModel: ParentAddQuestViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    overlayNavController: NavHostController,
     navController: NavHostController
 ) {
     var title by remember { mutableStateOf("") }
@@ -93,12 +119,18 @@ fun AddQuestContent(
         }
     )
 
+    val cameraPermissionState: PermissionState = rememberPermissionState(Manifest.permission.CAMERA)
+    //val audioPermissionState: PermissionState = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
+    var showCamera by remember { mutableStateOf(false)}
+
+    /*
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { success ->
             hasImage = success
         }
     )
+     */
 
     viewModel.fetchChildren()
 
@@ -146,10 +178,22 @@ fun AddQuestContent(
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            Button(onClick = { /* Do nothing */ }) {
-                Text("Take Photo")
+
+            Button(onClick = {
+                if (hasRequiredPermissions(context)) {
+                    overlayNavController.navigate(Routes.ParentCameraScreen.route)
+                } else {
+                    // Request permission
+                    cameraPermissionState.launchPermissionRequest()
+                }
+            }) {
+                Text("Open Camera")
             }
+
         }
+        //if (showCamera) {
+            //ParentCameraScreen()
+        //}
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -232,6 +276,19 @@ fun AddQuestContent(
             dialog.setOnDismissListener { showTimePicker = false }
             dialog.show()
         }
+    }
+}
+
+//Might get rid of this function
+@Composable
+fun ParentCameraContent(
+    hasPermission: Boolean,
+    onRequestPermission: () -> Unit
+) {
+    if (hasPermission) {
+        //ParentCameraScreen()
+    } else {
+        NoPermissionScreen(onRequestPermission)
     }
 }
 

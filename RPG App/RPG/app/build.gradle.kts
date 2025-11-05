@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation("androidx.compose.material:material-icons-extended:1.5.1")
     implementation(libs.firebase.firestore)
     implementation(libs.androidx.compose.foundation.layout)
     implementation(libs.androidx.camera.core)
@@ -79,6 +80,7 @@ dependencies {
 
     // CameraX dependencies
     implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.camera.extensions)

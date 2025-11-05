@@ -1,5 +1,6 @@
 package com.example.rpg
 
+import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,10 +17,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             RPGTheme {
                 RPGNavGraph()
+
             }
         }
     }
 }
+
+
 
 @Preview
 @Composable
