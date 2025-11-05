@@ -178,9 +178,10 @@ fun CardView(quest: Quest) {
             }
 
             Column(modifier = Modifier.padding(start = 12.dp)) {
-//                Text(
-//                    text = "Assigned to: ${quest.userFirstName}"
-//                )
+                Text(
+                    text = "Name: ${quest.userFirstName} ${quest.userLastName}",
+                    style = MaterialTheme.typography.titleMedium
+                )
                 Text(
                     text = "Title: ${quest.title}",
                     style = MaterialTheme.typography.titleMedium

@@ -120,11 +120,17 @@ class ParentAddQuestViewModel @Inject constructor(
     }
 
     fun addQuest() {
+        val child = _selectedChild.value
         val current = _quest.value
 
-        if (current.title != "" && current.description != "" && current.deadlineDate != null) {
+        val questWithName = current.copy(
+            userFirstName = child?.firstname ?: "",
+            userLastName = child?.lastname ?: ""
+        )
+
+        if (questWithName.title != "" && questWithName.description != "" && questWithName.deadlineDate != null) {
             viewModelScope.launch {
-                questRepository.create(current)
+                questRepository.create(questWithName)
             }
         }
     }
