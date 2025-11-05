@@ -22,11 +22,13 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -224,13 +226,9 @@ private fun QuestTabBar(
 ) {
     var selectedTabIndex by remember { mutableStateOf(0) }
 
-    ScrollableTabRow(
+    PrimaryTabRow(
         selectedTabIndex = selectedTabIndex,
         modifier = Modifier.fillMaxWidth(),
-        edgePadding = 0.dp,
-        // Optional: Customize colors
-        containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.onPrimary
     ) {
         QuestTab.entries.forEachIndexed { index, tab ->
             Tab(
@@ -239,21 +237,8 @@ private fun QuestTabBar(
                     selectedTabIndex = index
                     onSelect(tab)
                 },
-                text = { Text(text = tab.name) },
-                selectedContentColor = MaterialTheme.colorScheme.onPrimary,
-                unselectedContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
+                text = { Text(text = tab.name) }
             )
         }
     }
-    /*Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .horizontalScroll(rememberScrollState())
-    ) {
-        QuestTab.entries.forEach { tab ->
-            Button(onClick = { onSelect(tab) }) {
-                Text(text = tab.name)
-            }
-        }
-    }*/
 }
