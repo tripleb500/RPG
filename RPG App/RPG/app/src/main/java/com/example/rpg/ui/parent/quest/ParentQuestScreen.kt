@@ -1,5 +1,6 @@
 package com.example.rpg.ui.parent.quest
 
+import android.graphics.pdf.content.PdfPageGotoLinkContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -21,14 +22,20 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -40,6 +47,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
@@ -92,7 +100,7 @@ fun ParentQuestScreen(
         Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .padding(top = 85.dp),
+                .padding(top = 20.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -213,19 +221,27 @@ fun PreviewParentQuestScreen() {
 enum class QuestTab { Ongoing, Pending, Completed, Incompleted }
 
 // Tab Bar
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun QuestTabBar(
     selected: QuestTab,
     onSelect: (QuestTab) -> Unit
 ) {
-    Row(modifier = Modifier
-            .fillMaxWidth()
-            .horizontalScroll(rememberScrollState())
+    var selectedTabIndex by remember { mutableStateOf(0) }
+
+    PrimaryTabRow(
+        selectedTabIndex = selectedTabIndex,
+        modifier = Modifier.fillMaxWidth(),
     ) {
-        QuestTab.entries.forEach { tab ->
-            Button(onClick = { onSelect(tab) }) {
-                Text(text = tab.name)
-            }
+        QuestTab.entries.forEachIndexed { index, tab ->
+            Tab(
+                selected = selectedTabIndex == index,
+                onClick = {
+                    selectedTabIndex = index
+                    onSelect(tab)
+                },
+                text = { Text(text = tab.name) }
+            )
         }
     }
 }
