@@ -26,7 +26,7 @@ class ParentQuestViewModel @Inject constructor(
 ) : ViewModel() {
     // Retrieve all the quests
     private val questsFlow: Flow<List<Quest>> =
-        questRepository.getAllQuests(authRepository.currentUserIdFlow)
+        questRepository.getParentQuests(authRepository.currentUserIdFlow)
 
     private val _selectedChild = MutableStateFlow<User?>(null)
     val selectedChild = _selectedChild.asStateFlow()
