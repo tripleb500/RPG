@@ -1,7 +1,6 @@
 package com.example.rpg.ui.parent.addquest
 
 import android.Manifest
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
@@ -40,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -51,10 +49,7 @@ import coil.compose.AsyncImage
 import com.example.rpg.ui.Routes
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
-import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.example.rpg.ui.parent.camera.NoPermissionScreen
-import com.example.rpg.ui.parent.camera.ParentCameraScreen
 
 //For handling camera permissions
 private val CAMERAX_PERMISSIONS = Manifest.permission.CAMERA
@@ -70,7 +65,6 @@ private fun hasRequiredPermissions(context: Context): Boolean {
 @Composable
 fun ParentAddQuestScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController,
     overlayNavController: NavHostController,
     viewModel: ParentAddQuestViewModel = hiltViewModel(),
     authViewModel: AuthViewModel = hiltViewModel()
@@ -86,13 +80,13 @@ fun AddQuestContent(
     overlayNavController: NavHostController,
     navController: NavHostController
 ) {
-    var title by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
+
     val dueDate by viewModel.dueDate.collectAsState()
     var showDatePicker by remember { mutableStateOf(false) }
     var showTimePicker by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
+
     val calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
     val month = calendar.get(Calendar.MONTH)
@@ -102,22 +96,23 @@ fun AddQuestContent(
 
     val quest by viewModel.quest.collectAsState()
 
-    // 99% sure these are fine here and don't need to be in ViewModel...
-    var hasImage by remember {
-        mutableStateOf(false)
-    }
-    var imageUri by remember {
-        mutableStateOf<Uri?>(null)
-    }
+    val hasImage by viewModel.hasImage.collectAsState()
+
+    val galleryPhotoUri by viewModel.galleryUri.collectAsState()
 
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             // 3
-            hasImage = uri != null
-            imageUri = uri
+            viewModel.setHasImage(uri != null)
+            viewModel.setGalleryPhotoUri(uri)
         }
     )
+
+    val captureUri: Uri? = overlayNavController
+        .currentBackStackEntry
+        ?.savedStateHandle
+        ?.get<Uri>("photoUri")
 
     val cameraPermissionState: PermissionState = rememberPermissionState(Manifest.permission.CAMERA)
 
@@ -134,6 +129,7 @@ fun AddQuestContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        //Text Field For Quest Title
         OutlinedTextField(
             value = quest.title,
             onValueChange = { viewModel.setQuestTitle(it) },
@@ -143,6 +139,7 @@ fun AddQuestContent(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        //Text Field for Quest Description
         OutlinedTextField(
             value = quest.description,
             onValueChange = { viewModel.setQuestDescription(it) },
@@ -152,6 +149,7 @@ fun AddQuestContent(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        //Button to open Calendar
         Button(onClick = { showDatePicker = true }) {
             Text(text = dueDate?.let { SimpleDateFormat("dd MMM yyyy").format(it) }
                 ?: "Select Due Date")
@@ -159,7 +157,9 @@ fun AddQuestContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+
         Row(){
+            //Button to open gallery and select image
             Button(onClick = {imagePicker.launch("image/*")}
             ) {
                 Text("Select Image")
@@ -167,7 +167,7 @@ fun AddQuestContent(
 
             Spacer(modifier = Modifier.width(8.dp))
 
-
+            //Button checks for camera permission and requests if not given
             Button(onClick = {
                 if (hasRequiredPermissions(context)) {
                     overlayNavController.navigate(Routes.ParentCameraScreen.route)
@@ -183,27 +183,40 @@ fun AddQuestContent(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Box(){
-            // 4
-            if (hasImage && imageUri != null) {
-                // 5
-                AsyncImage(
-                    model = imageUri,
-                    modifier = Modifier.width(80.dp)
-                        .height(80.dp),
-                    contentDescription = "Selected image",
-                )
-            }
+        //This is where images are currently displayed
+        Box(modifier = Modifier
+            .width(80.dp)
+            .height(80.dp)
+        ){
+                // Gallery Image
+                if (hasImage && galleryPhotoUri != null && captureUri == null) {
+                    System.out.println("GALLERY URI:" + galleryPhotoUri)
+                    AsyncImage(
+                        model = galleryPhotoUri,
+                        modifier = Modifier.width(80.dp)
+                            .height(80.dp),
+                        contentDescription = "Selected image",
+                    )
+                }
+                //Camera Image
+                if (captureUri != null) {
+                    AsyncImage(
+                        model = captureUri,
+                        modifier = Modifier.width(80.dp)
+                            .height(80.dp),
+                        contentDescription = "Selected image",
+                    )
+                }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-
 
         Button(onClick = { showTimePicker = true }, enabled = dueDate != null) {
             Text(text = dueDate?.let { SimpleDateFormat("h:mm a").format(it) }
                     ?: "Select Time")
         }
 
+        //Button for assigning the quest
         Button(
             onClick = { viewModel.addQuest()
                 navController.popBackStack()
@@ -218,6 +231,7 @@ fun AddQuestContent(
         //val children = listOf(User(firstname="Alice"), User(firstname="Bob"))
         //var selectedChild by remember { mutableStateOf<User?>(children.firstOrNull()) }
 
+        //This displays children that you can assign quests to
         LazyColumn {
             items(children) { child ->
                 Card(
@@ -262,19 +276,6 @@ fun AddQuestContent(
             dialog.setOnDismissListener { showTimePicker = false }
             dialog.show()
         }
-    }
-}
-
-//Might get rid of this function
-@Composable
-fun ParentCameraContent(
-    hasPermission: Boolean,
-    onRequestPermission: () -> Unit
-) {
-    if (hasPermission) {
-        //ParentCameraScreen()
-    } else {
-        NoPermissionScreen(onRequestPermission)
     }
 }
 

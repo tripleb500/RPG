@@ -1,9 +1,13 @@
 package com.example.rpg.ui.navigation
 
+import androidx.camera.view.CameraController
+import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -42,16 +46,22 @@ fun ParentNavGraph(navController: NavHostController) {
             // Parent Routes : ParentAddQuest
             composable(Routes.ParentAddQuestScreen.route) {
                 ParentAddQuestScreen(
-                    navController = navController,
                     overlayNavController = overlayNavController
                 )
             }
 
             // Parent Routes : ParentCamera
             composable(Routes.ParentCameraScreen.route) {
+                val context = LocalContext.current
+                val cameraController = remember {
+                    LifecycleCameraController(context).apply {
+                        setEnabledUseCases(CameraController.IMAGE_CAPTURE)
+                    }
+                }
                 ParentCameraScreen(
-                    navController = navController,
-                    overlayNavController = overlayNavController
+                    controller = cameraController,
+                    overlayNavController = overlayNavController,
+                    modifier = Modifier
                 )
             }
 
