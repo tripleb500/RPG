@@ -23,6 +23,15 @@ class QuestRepository @Inject constructor(
                 }
                 filteredQuests
             }
+    fun getCompletedQuestsByChild(
+        currentUserIdFlow: Flow<String?>,
+    ): Flow<List<Quest>> =
+        questRemoteDataSource.getQuests(currentUserIdFlow)
+            .map { quests ->
+                val filteredQuests = quests.filter { it.status == Status.COMPLETED }
+
+                filteredQuests
+            }
 
     // TODO: Delete, this gets all quests even if not a child
     // This function is useful for parents to view all their children's quests

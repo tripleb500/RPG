@@ -41,7 +41,17 @@ val sdf = SimpleDateFormat("dd/M/yyyy")
 val dateAch = sdf.format(Date())
 val AchievementsList = mutableStateListOf(
     achievementItems("Go Getter", dateAch, "Get 10 Quests Completed"),
-)
+    achievementItems("Go Getter2", dateAch, "Get 20 Quests Completed"),
+    achievementItems("Go Getter3", dateAch, "Get 30 Quests Completed"),
+    achievementItems("Go Getter4", dateAch, "Get 40 Quests Completed"),
+    achievementItems("Go Getter5", dateAch, "Get 50 Quests Completed"),
+    achievementItems("Level Up!!!", dateAch, "Reach level 2"),
+    achievementItems("Level Up2!!!", dateAch, "Reach level 3"),
+    achievementItems("Level Up3!!!", dateAch, "Reach level 4"),
+    achievementItems("Level Up4!!!", dateAch, "Reach level 5"),
+    achievementItems("Level Up5!!!", dateAch, "Reach level 6"),
+
+    )
 
 @Composable
 fun ChildAchievementsDialog(

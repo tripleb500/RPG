@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rpg.data.model.Quest
+import com.example.rpg.data.model.Status
 import com.example.rpg.data.model.User
 import com.example.rpg.data.repository.AuthRepository
 import com.example.rpg.data.repository.QuestRepository
@@ -43,6 +44,17 @@ class ParentQuestViewModel @Inject constructor(
     )
 
     private val questChildCache = mutableMapOf<String, User>()
+
+    // Function to update a quest’s status
+    fun updateQuestStatus(questId: String, newStatus: Status) {
+        viewModelScope.launch {
+            try {
+                questRepository.updateQuestStatus(questId, newStatus)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 
     // retrieves child's name when loading quest
     fun getQuestChildName(userId: String): State<String?> {

@@ -78,6 +78,7 @@ fun QuestDialog(
                         println("Complete button clicked for quest: ${quest.title}")
                         onCompleteClicked(quest)
                         onDismissRequest()
+                        //dr.setValue()
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {

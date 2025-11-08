@@ -68,7 +68,6 @@ fun ChildHomeScreen(
     var showDialogStats by remember { mutableStateOf(false) }
     val questList by viewModel.inProgressQuestsFlow.collectAsState(initial = emptyList())
     var selectedQuest by remember { mutableStateOf<Quest?>(null) }
-    var cardColor by remember { mutableStateOf(Color.Green) }
 
     Box(
         modifier = Modifier
@@ -202,7 +201,7 @@ fun ChildHomeScreen(
                         .fillMaxWidth()
                         .height(50.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = cardColor
+                        containerColor = Color(0xFF1A4A17)
                     )
                 ) {
                     Column(

@@ -12,10 +12,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.rpg.ui.auth.AuthViewModel
-
 import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 
 const val totalXP = 340
@@ -48,6 +47,8 @@ fun ChildStatsDialog(
 ) {
     val isLoadingStats by remember { derivedStateOf { viewModel.isLoadingStats } }
     val errorMessagesStats by remember { derivedStateOf { viewModel.errorMessageStats } }
+
+    val count by viewModel.completedQuestsCount.collectAsState()
 
     var username by remember { mutableStateOf("") }
 
@@ -81,7 +82,7 @@ fun ChildStatsDialog(
                             style = MaterialTheme.typography.bodySmall,
                         )
                         Text(
-                            text = "Quests Completed: " + Stats.questsCompleted,
+                            text = "Quests Completed: $count",
                             style = MaterialTheme.typography.bodySmall,
                         )
                         Text(

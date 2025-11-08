@@ -12,6 +12,7 @@ import com.example.rpg.data.model.Status
 import com.example.rpg.data.model.User
 import com.example.rpg.data.repository.AuthRepository
 import com.example.rpg.data.repository.QuestRepository
+import com.example.rpg.data.repository.StatsRepository
 import com.example.rpg.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -40,7 +41,8 @@ private val authRepository: AuthRepository
 class ChildHomeScreenViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
-    private val questRepository: QuestRepository
+    private val questRepository: QuestRepository,
+    private val statsRepository: StatsRepository
 ) : ViewModel() {
     // Flow of all in-progress quests for the current child
     val inProgressQuestsFlow: StateFlow<List<Quest>> = authRepository.currentUserIdFlow
@@ -59,6 +61,22 @@ class ChildHomeScreenViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
+    // Count of completed quests for the *current* child account
+    val completedQuestsCount: StateFlow<Int> = authRepository.currentUserIdFlow
+        .filterNotNull()
+        .flatMapLatest { uid ->
+            questRepository.getQuestsByStatus(flowOf(uid), Status.COMPLETED)
+                .map { it.size } // count them
+                .catch { error ->
+                    Log.e("ChildHomeScreenVM", "Error loading completed quests: ${error.message}")
+                    emit(0)
+                }
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = 0
+        )
     private val questParentCache = mutableMapOf<String, User>()
 
     // Function to mark a quest as pending

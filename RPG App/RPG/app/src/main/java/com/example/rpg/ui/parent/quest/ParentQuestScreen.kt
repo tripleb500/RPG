@@ -1,6 +1,7 @@
 package com.example.rpg.ui.parent.quest
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -158,10 +160,40 @@ fun ParentQuestScreen(
 @Composable
 fun CardView(quest: Quest, viewModel: ParentQuestViewModel = hiltViewModel()) {
     val assignedToName by viewModel.getQuestChildName(quest.assignedTo)
+    var showDialog by rememberSaveable { mutableStateOf(false) }
+
+    if (showDialog) {
+        PendingQuestDialog(
+            quest = quest,
+            onApprove = {
+                viewModel.updateQuestStatus(quest.id, Status.COMPLETED)
+            },
+            onReject = {
+                viewModel.updateQuestStatus(quest.id, Status.INPROGRESS)
+            },
+            onDismiss = { showDialog = false }
+        )
+    }
+
     Card(
         modifier = Modifier
             .fillMaxSize()
             .padding(12.dp)
+            .then(
+                if (quest.status == Status.PENDING)
+                    Modifier
+                        .clickable { showDialog = true } // parent clicks pending quest
+                else Modifier
+            ),
+        colors = CardDefaults.cardColors(
+            containerColor = when (quest.status) {
+                Status.COMPLETED -> Color(0xFFB2DFDB)
+                Status.PENDING -> Color(0xFFFFF9C4)
+                Status.INPROGRESS -> Color(0xFFBBDEFB)
+                Status.INCOMPLETED -> Color(0xFFFFCDD2)
+                else -> Color.White
+            }
+        )
     ) {
         Row(
             modifier = Modifier.padding(8.dp),
