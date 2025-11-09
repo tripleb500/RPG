@@ -266,7 +266,7 @@ private fun QuestTabBar(
         selectedTabIndex = selectedTabIndex,
         modifier = Modifier.fillMaxWidth(),
     ) {
-        QuestTab.entries.forEachIndexed { index, tab ->
+        Status.entries.forEachIndexed { index, tab ->
             Tab(
                 selected = selectedTabIndex == index,
                 onClick = {
