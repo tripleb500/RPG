@@ -1,5 +1,6 @@
 package com.example.rpg.ui.parent.addquest
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,6 +19,7 @@ import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
 
+
 @HiltViewModel
 class ParentAddQuestViewModel @Inject constructor(
     private val authRepository: AuthRepository,
@@ -33,6 +35,15 @@ class ParentAddQuestViewModel @Inject constructor(
 
     private val _quest = MutableStateFlow(Quest())
     val quest = _quest.asStateFlow()
+
+    //Gallery for gallery image and camera for camera image
+    private val _galleryUri = MutableStateFlow<Uri?>(null)
+    val galleryUri = _galleryUri.asStateFlow()
+    private val _cameraUri = MutableStateFlow<Uri?>(null)
+    val photoUri = _cameraUri.asStateFlow()
+
+    private val _hasImage = MutableStateFlow(false)
+    val hasImage = _hasImage.asStateFlow()
 
     private val _dueDate = MutableStateFlow<Date?>(null)
     val dueDate = _dueDate.asStateFlow()
@@ -77,6 +88,19 @@ class ParentAddQuestViewModel @Inject constructor(
         } catch (e: Exception) {
             _error.value = e.message
         }
+    }
+
+    fun setCameraPhotoUri(uri: Uri?) {
+        _cameraUri.value = uri
+        _quest.value = _quest.value.copy(imageUri = uri)
+    }
+
+    fun setGalleryPhotoUri(uri: Uri?) {
+        _galleryUri.value = uri
+    }
+
+    fun setHasImage(hasImage: Boolean) {
+        _hasImage.value = hasImage
     }
 
     fun setDeadlineDate(newDate: Date) {

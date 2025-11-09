@@ -1,16 +1,25 @@
 package com.example.rpg.ui.parent.addquest
 
+import android.Manifest
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.text.format.DateFormat
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -31,50 +40,54 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.rpg.ui.auth.AuthViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import coil.compose.AsyncImage
+import com.example.rpg.ui.Routes
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.rememberPermissionState
 
-/**
-val title: String = "",
-val description: String = "",
-val assignDate: Date? = null,
-val deadlineDate: Date? = null,
-val completionDate : Date? = null,
-val rewardAmount : Int = 0,
-val rewardType : Reward = Reward.NONE,
-val repeat : Boolean = false,
-val allDay : Boolean = false,
-val completed : Boolean = false,
-val assignee : String = Child().id,
- */
+//For handling camera permissions
+private val CAMERAX_PERMISSIONS = Manifest.permission.CAMERA
+
+
+private fun hasRequiredPermissions(context: Context): Boolean {
+    return ContextCompat.checkSelfPermission(context,
+        CAMERAX_PERMISSIONS
+    ) == PackageManager.PERMISSION_GRANTED
+}
+
 
 @Composable
 fun ParentAddQuestScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController,
     overlayNavController: NavHostController,
     viewModel: ParentAddQuestViewModel = hiltViewModel(),
-    authViewModel: AuthViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel()
 ) {
-    AddQuestContent(navController = overlayNavController)
+    AddQuestContent(navController = overlayNavController, overlayNavController = overlayNavController)
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun AddQuestContent(
-    modifier: Modifier = Modifier,
     viewModel: ParentAddQuestViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
+    overlayNavController: NavHostController,
     navController: NavHostController
 ) {
-    var title by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
+
     val dueDate by viewModel.dueDate.collectAsState()
     var showDatePicker by remember { mutableStateOf(false) }
     var showTimePicker by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
+
     val calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
     val month = calendar.get(Calendar.MONTH)
@@ -83,6 +96,26 @@ fun AddQuestContent(
     val minute = calendar.get(Calendar.MINUTE)
 
     val quest by viewModel.quest.collectAsState()
+
+    val hasImage by viewModel.hasImage.collectAsState()
+
+    val galleryPhotoUri by viewModel.galleryUri.collectAsState()
+
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            // 3
+            viewModel.setHasImage(uri != null)
+            viewModel.setGalleryPhotoUri(uri)
+        }
+    )
+
+    val captureUri: Uri? = overlayNavController
+        .currentBackStackEntry
+        ?.savedStateHandle
+        ?.get<Uri>("photoUri")
+
+    val cameraPermissionState: PermissionState = rememberPermissionState(Manifest.permission.CAMERA)
 
     viewModel.fetchChildren()
 
@@ -97,6 +130,7 @@ fun AddQuestContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        //Text Field For Quest Title
         OutlinedTextField(
             value = quest.title,
             onValueChange = { viewModel.setQuestTitle(it) },
@@ -106,6 +140,7 @@ fun AddQuestContent(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        //Text Field for Quest Description
         OutlinedTextField(
             value = quest.description,
             onValueChange = { viewModel.setQuestDescription(it) },
@@ -115,27 +150,79 @@ fun AddQuestContent(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        //Button to open Calendar
         Button(onClick = { showDatePicker = true }) {
             Text(text = dueDate?.let { SimpleDateFormat("dd MMM yyyy").format(it) }
                 ?: "Select Due Date")
         }
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+
+
+        Row(){
+            //Button to open gallery and select image
+            Button(onClick = {imagePicker.launch("image/*")}
+            ) {
+                Text("Select Image")
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            //Button checks for camera permission and requests if not given
+            Button(onClick = {
+                if (hasRequiredPermissions(context)) {
+                    overlayNavController.navigate(Routes.ParentCameraScreen.route)
+                } else {
+                    // Request permission
+                    cameraPermissionState.launchPermissionRequest()
+                }
+            }) {
+                Text("Open Camera")
+            }
+
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        //This is where images are currently displayed
+        Box(modifier = Modifier
+            .width(80.dp)
+            .height(80.dp)
+        ){
+                // Gallery Image
+                if (hasImage && galleryPhotoUri != null && captureUri == null) {
+                    System.out.println("GALLERY URI:" + galleryPhotoUri)
+                    AsyncImage(
+                        model = galleryPhotoUri,
+                        modifier = Modifier.width(80.dp)
+                            .height(80.dp),
+                        contentDescription = "Selected image",
+                    )
+                }
+                //Camera Image
+                if (captureUri != null) {
+                    AsyncImage(
+                        model = captureUri,
+                        modifier = Modifier.width(80.dp)
+                            .height(80.dp),
+                        contentDescription = "Selected image",
+                    )
+                }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         Button(onClick = { showTimePicker = true }, enabled = dueDate != null) {
             Text(text = dueDate?.let { SimpleDateFormat("h:mm a").format(it) }
-                ?: "Select Time")
+                    ?: "Select Time")
         }
 
-        Spacer(modifier = Modifier.height(4.dp))
-
+        //Button for assigning the quest
         Button(
-            onClick = {
-                viewModel.addQuest()
+            onClick = { viewModel.addQuest()
                 navController.popBackStack()
-            },
-            enabled = dueDate != null && quest.title.isNotBlank() && quest.description.isNotBlank()
-        ) {
+                      },
+            enabled = dueDate != null && quest.title.isNotBlank() && quest.description.isNotBlank()) {
             Text("Assign Quest")
         }
 
@@ -198,12 +285,3 @@ fun IntInputField(
 ) {
     TODO("Not yet implemented")
 }
-
-
-/*@Preview
-@Composable
-fun PreviewParentAddQuestScreen(){
-    RPGTheme {
-        ParentAddQuestScreen(modifier = modifier, overlayNavController = rememberNavController(), viewModel = hiltViewModel(), authViewModel = hiltViewModel())
-    }
-}*/

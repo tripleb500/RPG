@@ -10,6 +10,7 @@ sealed class Routes(val route: String) {
 
     object ParentQuestScreen : Routes("parentQuest")
     object ParentAddQuestScreen : Routes("parentAddQuest")
+    object ParentCameraScreen : Routes("parentCameraScreen")
 
     // START NOTE
     // Bryan Note: Can we make another navgraph for overview, assign, ongoing etc.?

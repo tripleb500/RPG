@@ -1,5 +1,6 @@
 package com.example.rpg.data.model
 
+import android.net.Uri
 import com.google.firebase.firestore.DocumentId
 import java.util.Date
 
@@ -18,13 +19,15 @@ data class Quest(
     val completed: Boolean = false,
     val assignee: String = User().id,
     val assignedTo: String = User().id,
-    val status: Status = Status.INPROGRESS
+    val status: Status = Status.INPROGRESS,
+    val imageUri : Uri? = null
 )
 
 // representation of Status
 enum class Status {
     INPROGRESS,
     PENDING,
+    Pending,
     COMPLETED,
     INCOMPLETED
 }
