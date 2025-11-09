@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -214,8 +215,9 @@ fun ChildHomeScreen(
                         ) {
 
                         Text(
-                            text = "Main Quest",
-                            textAlign = TextAlign.Center
+                            text = stringResource(R.string.main_quest),
+                            textAlign = TextAlign.Center,
+                            color = Color.White
                         )
                     }
                 }
@@ -233,7 +235,7 @@ fun ChildHomeScreen(
             }
         }
 
-        // 🧠 Quest completion dialog
+        // Quest completion dialog
         if (selectedQuest != null) {
             QuestDialog(
                 quest = selectedQuest!!,

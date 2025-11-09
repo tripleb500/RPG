@@ -78,7 +78,6 @@ class QuestRemoteDataSource @Inject constructor(
         }
     }
 
-
     // TODO: Delete, this gets all quests even if not a child
     // This function is useful for parents to view all their children's quests
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -98,6 +97,16 @@ class QuestRemoteDataSource @Inject constructor(
                     .whereEqualTo("assignee", parentId)
                     .dataObjects()
             }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getChildQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> {
+        return currentUserIdFlow.flatMapLatest { childId ->
+            firestore
+                .collection(QUEST_ITEMS_COLLECTION)
+                .whereEqualTo("assignedTo", childId)
+                .dataObjects()
+        }
     }
 
     suspend fun updateQuestStatus(questId: String, newStatus: Status) {

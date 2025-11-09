@@ -44,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -242,17 +243,6 @@ fun CardView(quest: Quest, viewModel: ParentQuestViewModel = hiltViewModel()) {
     }
 }
 
-@Preview
-@Composable
-fun PreviewParentQuestScreen() {
-    RPGTheme {
-        ParentQuestScreen(
-            navController = rememberNavController(),
-            overlayNavController = rememberNavController()
-        )
-    }
-}
-
 // Tab Bar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -260,11 +250,11 @@ private fun QuestTabBar(
     selected: Status,
     onSelect: (Status) -> Unit
 ) {
-    var selectedTabIndex by remember { mutableStateOf(0) }
+    var selectedTabIndex by remember { mutableStateOf(selected.ordinal) }
 
-    PrimaryTabRow(
+    ScrollableTabRow(
         selectedTabIndex = selectedTabIndex,
-        modifier = Modifier.fillMaxWidth(),
+        edgePadding = 8.dp
     ) {
         Status.entries.forEachIndexed { index, tab ->
             Tab(
@@ -273,8 +263,27 @@ private fun QuestTabBar(
                     selectedTabIndex = index
                     onSelect(tab)
                 },
-                text = { Text(text = tab.name) }
+                text = {
+                    Text(
+                        text = tab.name.replace("_", " "),
+                        maxLines = 1,
+                        fontSize = 14.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
             )
         }
+    }
+}
+
+
+@Preview
+@Composable
+fun PreviewParentQuestScreen() {
+    RPGTheme {
+        ParentQuestScreen(
+            navController = rememberNavController(),
+            overlayNavController = rememberNavController()
+        )
     }
 }

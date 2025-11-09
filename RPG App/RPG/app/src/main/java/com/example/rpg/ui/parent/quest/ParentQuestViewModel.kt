@@ -36,7 +36,7 @@ class ParentQuestViewModel @Inject constructor(
 
     // Group the quests by assignee (Child.id)
     val questsByAssignee: StateFlow<Map<String, List<Quest>>> = questsFlow.map { quests ->
-        quests.groupBy { it.assignee } // 🔹 groups quests by child ID
+        quests.groupBy { it.assignee } // groups quests by child ID
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),

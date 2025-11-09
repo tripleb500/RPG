@@ -23,6 +23,7 @@ class QuestRepository @Inject constructor(
                 }
                 filteredQuests
             }
+
     fun getCompletedQuestsByChild(
         currentUserIdFlow: Flow<String?>,
     ): Flow<List<Quest>> =
@@ -40,6 +41,9 @@ class QuestRepository @Inject constructor(
 
     fun getParentQuests(currentUserIdFlow: Flow<String?>) =
         questRemoteDataSource.getParentQuests(currentUserIdFlow)
+
+    fun getChildQuests(currentUserIdFlow: Flow<String?>) =
+        questRemoteDataSource.getChildQuests(currentUserIdFlow)
 
 //    suspend fun getQuestItem(questId: String) = questRemoteDataSource.getQuestItem(questId)
 
