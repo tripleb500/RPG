@@ -26,6 +26,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -85,6 +86,7 @@ fun AddQuestContent(
     val dueDate by viewModel.dueDate.collectAsState()
     var showDatePicker by remember { mutableStateOf(false) }
     var showTimePicker by remember { mutableStateOf(false) }
+    var showRepeatDatePicker by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
 
@@ -148,16 +150,37 @@ fun AddQuestContent(
             modifier = Modifier
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-        //Button to open Calendar
-        Button(onClick = { showDatePicker = true }) {
-            Text(text = dueDate?.let { SimpleDateFormat("dd MMM yyyy").format(it) }
-                ?: "Select Due Date")
+        Row(){
+            //Button to open Calendar
+            Button(onClick = { showDatePicker = true }) {
+                Text(text = dueDate?.let { SimpleDateFormat("dd MMM yyyy").format(it) }
+                    ?: "Select Due Date")
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            //Button to open Clock
+            Button(onClick = { showTimePicker = true }, enabled = dueDate != null) {
+                Text(text = dueDate?.let { SimpleDateFormat("h:mm a").format(it) }
+                    ?: "Select Time")
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(
+                    checked = quest.repeat,
+                    onCheckedChange = { checked ->
+                        viewModel.setRepeat(checked)
+                    }
+                )
+                Text(text = "Repeat")
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
 
         Row(){
             //Button to open gallery and select image
@@ -211,11 +234,6 @@ fun AddQuestContent(
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-
-        Button(onClick = { showTimePicker = true }, enabled = dueDate != null) {
-            Text(text = dueDate?.let { SimpleDateFormat("h:mm a").format(it) }
-                    ?: "Select Time")
-        }
 
         //Button for assigning the quest
         Button(

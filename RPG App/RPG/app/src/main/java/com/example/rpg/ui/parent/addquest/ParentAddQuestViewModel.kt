@@ -137,6 +137,10 @@ class ParentAddQuestViewModel @Inject constructor(
         _quest.value = _quest.value.copy(deadlineDate = newDateTime)
     }
 
+    fun setRepeat(enabled: Boolean) {
+        _quest.value = _quest.value.copy(repeat = enabled)
+    }
+
     fun setChild(newChild: User) {
         _selectedChild.value = newChild
         _quest.value = _quest.value.copy(assignedTo = newChild.id)
