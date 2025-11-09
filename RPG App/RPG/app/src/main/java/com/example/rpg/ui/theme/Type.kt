@@ -39,6 +39,14 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp
     ),
+    //This changes CenterAlignedTopAppBar for tabs in quest screens
+    titleLarge = TextStyle(
+        fontFamily = dynaPuffFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 32.sp,  // match your current size
+        lineHeight = 40.sp,
+        letterSpacing = 0.sp
+    ),
 
     /* Other default text styles to override
     titleLarge = TextStyle(

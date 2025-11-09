@@ -74,7 +74,6 @@ fun ChildQuestScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFF1B2631)
                 ),
-
                 title = {
                     Text(
                         "Quests",
@@ -94,10 +93,8 @@ fun ChildQuestScreen(
                         Icon(icon, contentDescription = "Sort by deadline")
                     }
                 }
-
             )
         },
-
         floatingActionButton = {
             FloatingActionButton(onClick = { overlayNavController.navigate(Routes.ParentAddQuestScreen.route) },
                 modifier = Modifier.width(100.dp)) {
@@ -129,63 +126,6 @@ fun ChildQuestScreen(
                     CardView(quest)
                 }
             }
-
-//            // Use when conditional to swap between what's being displayed
-//            when (selectedTab) {
-////                QuestTab.Overview -> {
-////                    LazyColumn {
-////                        childQuestMap.value.forEach { (assigneeId, quests) ->
-////                            // Maybe display the child's name here using assigneeId
-////
-////                            items(quests) { quest ->
-////                                CardView(quest)
-////                            }
-////                        }
-////                    }
-////                }
-//
-//                // quests with no status field in firebase currently defaults to inprogress tab (Quest.kt)
-//                Status.INPROGRESS -> {
-//                    LazyColumn {
-//                        childQuestMap.value.forEach { (quests) ->
-//                            items(quests.filter { it.status == Status.INPROGRESS }) { quest ->
-//                                CardView(quest)
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                Status.PENDING -> {
-//                    LazyColumn {
-//                        childQuestMap.value.forEach { (quests) ->
-//                            items(quests.filter { it.status == Status.PENDING }) { quest ->
-//                                CardView(quest)
-//
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                Status.COMPLETED -> {
-//                    LazyColumn {
-//                        childQuestMap.value.forEach { (quests) ->
-//                            items(quests.filter { it.status == Status.COMPLETED }) { quest ->
-//                                CardView(quest)
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                Status.INCOMPLETED -> {
-//                    LazyColumn {
-//                        childQuestMap.value.forEach { (quests) ->
-//                            items(quests.filter { it.status == Status.INCOMPLETED }) { quest ->
-//                                CardView(quest)
-//                            }
-//                        }
-//                    }
-//                }
-
         }
     }
 }
@@ -223,7 +163,7 @@ fun CardView(quest: Quest, viewModel: ParentQuestViewModel = hiltViewModel()) {
                 Status.COMPLETED -> Color(0xFFB2DFDB)
                 Status.PENDING -> Color(0xFFFFF9C4)
                 Status.INPROGRESS -> Color(0xFFBBDEFB)
-                Status.INCOMPLETED -> Color(0xFFFFCDD2)
+                Status.INCOMPLETE -> Color(0xFFFFCDD2)
                 else -> Color.White
             }
         )

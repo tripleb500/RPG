@@ -28,7 +28,7 @@ enum class Status {
     INPROGRESS,
     PENDING,
     COMPLETED,
-    INCOMPLETED
+    INCOMPLETE
 }
 
 // representation of Reward

@@ -7,4 +7,11 @@
     <string name="assigned_by_label">Assigned by: %1$s</string>
     <string name="loading">Loading...</string>
     <string name="main_quest">Main Quest</string>
+    <string name="quests">Quests</string>
+    <string name="add_quest">Add Quest</string>
+    <string name="unknown">Unknown</string>
+    <string name="name">Name: %1$s</string>
+    <string name="title">Title: %1$s</string>
+    <string name="description">Description: %1$s</string>
+    <string name="due_date">Due Date: %1$s</string>
 </resources>

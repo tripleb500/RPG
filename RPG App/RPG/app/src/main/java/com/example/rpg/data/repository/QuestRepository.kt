@@ -39,8 +39,8 @@ class QuestRepository @Inject constructor(
     fun getAllQuests(currentUserIdFlow: Flow<String?>) =
         questRemoteDataSource.getAllQuests(currentUserIdFlow)
 
-    fun getParentQuests(currentUserIdFlow: Flow<String?>) =
-        questRemoteDataSource.getParentQuests(currentUserIdFlow)
+    fun getAssignedQuests(currentUserIdFlow: Flow<String?>) =
+        questRemoteDataSource.getAssignedQuests(currentUserIdFlow)
 
     fun getChildQuests(currentUserIdFlow: Flow<String?>) =
         questRemoteDataSource.getChildQuests(currentUserIdFlow)

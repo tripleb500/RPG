@@ -27,21 +27,17 @@ class ParentQuestViewModel @Inject constructor(
     private val questRepository: QuestRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
-    // Retrieve all the quests
-    private val questsFlow: Flow<List<Quest>> =
-        questRepository.getParentQuests(authRepository.currentUserIdFlow)
+    // Retrieve assignedQuests
+    val assignedQuests: StateFlow<List<Quest>> =
+        questRepository.getAssignedQuests(authRepository.currentUserIdFlow)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyList()
+            )
 
     private val _selectedChild = MutableStateFlow<User?>(null)
     val selectedChild = _selectedChild.asStateFlow()
-
-    // Group the quests by assignee (Child.id)
-    val questsByAssignee: StateFlow<Map<String, List<Quest>>> = questsFlow.map { quests ->
-        quests.groupBy { it.assignee } // groups quests by child ID
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyMap()
-    )
 
     private val questChildCache = mutableMapOf<String, User>()
 
