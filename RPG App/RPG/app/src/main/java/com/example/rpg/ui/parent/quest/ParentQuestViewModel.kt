@@ -50,6 +50,16 @@ class ParentQuestViewModel @Inject constructor(
         }
     }
 
+    fun completeQuest(questId: String) {
+        viewModelScope.launch {
+            try {
+                questRepository.completeQuest(questId)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     fun updateQuestDetails(updatedQuest: Quest) {
         viewModelScope.launch {
             questRepository.updateQuest(updatedQuest.id, updatedQuest)

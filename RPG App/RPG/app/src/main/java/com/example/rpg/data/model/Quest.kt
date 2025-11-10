@@ -18,7 +18,6 @@ data class Quest(
     val repeatType: RepeatType = RepeatType.NONE,
     val repeatInterval: Int = 1,
     val allDay: Boolean = false,
-    val completed: Boolean = false,
     val assignee: String = User().id,
     val assignedTo: String = User().id,
     val status: Status = Status.INPROGRESS,

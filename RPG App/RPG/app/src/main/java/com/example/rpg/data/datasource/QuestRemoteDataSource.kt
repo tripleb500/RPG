@@ -3,8 +3,8 @@ package com.example.rpg.data.datasource
 import android.util.Log
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -154,6 +154,13 @@ class QuestRemoteDataSource @Inject constructor(
         }
 
         questRef.update(updateMap).await()
+    }
+
+    suspend fun completeQuest(questId: String) {
+        firestore.collection(QUEST_ITEMS_COLLECTION)
+            .document(questId)
+            .update("completionDate", Timestamp.now())
+            .await()
     }
 
     suspend fun updateQuestAssignment(questId: String, childId: String, newStatus: Status) {
