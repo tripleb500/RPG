@@ -1,5 +1,6 @@
 package com.example.rpg.ui.child.home
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -17,8 +18,10 @@ import com.example.rpg.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
@@ -78,6 +81,14 @@ class ChildHomeScreenViewModel @Inject constructor(
             initialValue = 0
         )
     private val questParentCache = mutableMapOf<String, User>()
+
+
+    private val _capturedImage = MutableStateFlow<Bitmap?>(null)
+    val capturedImage = _capturedImage.asStateFlow()
+
+    fun setCapturedImage(bitmap: Bitmap?) {
+        _capturedImage.value = bitmap
+    }
 
     // Function to mark a quest as pending
     fun markQuestAsPending(quest: Quest) {

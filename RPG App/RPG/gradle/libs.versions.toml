@@ -15,6 +15,7 @@ googleGmsGoogleServices = "4.4.3"
 firebaseFirestore = "26.0.1"
 foundationLayout = "1.9.3"
 cameraCore = "1.5.1"
+navigationCompose = "2.9.6"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -40,6 +41,7 @@ androidx-navigation-compose-jvmstubs = { group = "androidx.navigation", name = "
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
 androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraCore" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

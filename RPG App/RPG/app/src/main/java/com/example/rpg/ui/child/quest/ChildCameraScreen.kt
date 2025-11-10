@@ -1,6 +1,7 @@
 package com.example.rpg.ui.child.quest
 
 import android.Manifest
+import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -21,24 +22,28 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionState
-import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 import com.google.accompanist.permissions.PermissionStatus
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun TakeQuestPictureScreen(onClose: () -> Unit = {}) {
+fun ChildCameraScreen(
+    viewModel: ChildHomeScreenViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
+    onPhotoTaken: (Bitmap) -> Unit
+) {
     var context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val cameraController = remember { LifecycleCameraController(context) }
@@ -56,7 +61,7 @@ fun TakeQuestPictureScreen(onClose: () -> Unit = {}) {
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 text = { Text(text = "Take Photo") },
-                icon = { Icon(Icons.Filled.CheckCircle, "Take photo") },
+                icon = { Icon(Icons.Default.PhotoCamera, "Take photo") },
                 onClick = {
                     val mainExecutor = ContextCompat.getMainExecutor(context)
                     cameraController.takePicture(
@@ -72,7 +77,7 @@ fun TakeQuestPictureScreen(onClose: () -> Unit = {}) {
 
                                     // Close after a short delay to show the toast
                                     Handler(Looper.getMainLooper()).postDelayed({
-                                        onClose()
+                                        onPhotoTaken(bitmap)
                                     }, 1000) // 1 second delay
 
                                 } finally {

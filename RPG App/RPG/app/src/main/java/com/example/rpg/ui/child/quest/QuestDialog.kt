@@ -1,11 +1,16 @@
 package com.example.rpg.ui.child.quest
 
+import android.graphics.Bitmap
+import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -13,21 +18,26 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
+import com.example.rpg.ui.Routes
 import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
@@ -40,15 +50,31 @@ fun QuestDialog(
     quest: Quest,
     viewModel: ChildHomeScreenViewModel,
     onDismissRequest: () -> Unit,
-    onCompleteClicked: (Quest) -> Unit
+    onCompleteClicked: (Quest) -> Unit,
+    overlayNavController: NavHostController
 ) {
+
     val assigneeName by viewModel.getQuestParentName(quest.assignee)
 
     val cameraPermissionState: PermissionState = rememberPermissionState(android.Manifest.permission.CAMERA)
 
     var hasPermission = cameraPermissionState.status.isGranted
     val onRequestPermission = cameraPermissionState::launchPermissionRequest
-    var openCamera by remember { mutableStateOf(false) }
+
+    var showCamera by remember { mutableStateOf(false) }
+
+    val capturedImage by viewModel.capturedImage.collectAsState()
+
+
+    if (showCamera && hasPermission) {
+        ChildCameraScreen(
+            onPhotoTaken = { bitmap ->
+                viewModel.setCapturedImage(bitmap)
+                showCamera = false
+            }
+        )
+        return
+    }
 
     Dialog(onDismissRequest = onDismissRequest) {
         Surface(
@@ -89,43 +115,50 @@ fun QuestDialog(
 
                 Spacer(Modifier.height(16.dp))
 
-                LaunchedEffect(openCamera, hasPermission) {
-                    if (openCamera) {
-                        println("Im in the open camera if statement")
-                        if (!hasPermission) {
-                            println("Im in the has permission request")
-                            onRequestPermission()
-                            // Wait for permission result before proceeding
-                        }
-                    }
-                }
 
-                // Complete button
+
                 Button(
                     onClick = {
-                        println("Complete button clicked for quest: ${quest.title}")
-                        onCompleteClicked(quest)
-                        onDismissRequest()
-                        // openCamera = true // TURNING OFF FOR NOW, SEE NOTES TO CREATE ANOTHER BUTTON??
+                        if (hasPermission) {
+                            showCamera = true
+                        }
+                        else {
+                            onRequestPermission()
+                        }
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(stringResource(R.string.turn_in_quest))
+                    Text("Take Picture")
                 }
 
-                if (openCamera && hasPermission) {
-                    Dialog(
-                        onDismissRequest = { openCamera = false },
-                        properties = DialogProperties(usePlatformDefaultWidth = false)
+                capturedImage?.let { bitmap ->
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Photo Captured:",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Image(
+                        bitmap = bitmap.asImageBitmap(),
+                        contentDescription = "Captured quest photo",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(150.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                    )
+                    Button(
+                        onClick = {
+                            onCompleteClicked(quest)
+                            onDismissRequest()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+
                     ) {
-                        TakeQuestPictureScreen(
-                            onClose = {
-                                openCamera = false
-                                onDismissRequest() // Dismiss original dialog after camera closes
-                            }
-                        )
+                        Text("Turn In Quest")
                     }
                 }
+
+
 
                 // Cancel
                 TextButton(

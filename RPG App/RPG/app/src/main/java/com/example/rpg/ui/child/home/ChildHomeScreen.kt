@@ -241,6 +241,7 @@ fun ChildHomeScreen(
                 quest = selectedQuest!!,
                 onDismissRequest = { selectedQuest = null },
                 viewModel = viewModel,
+                overlayNavController = overlayNavController,
                 onCompleteClicked = { completedQuest ->
                     viewModel.markQuestAsPending(completedQuest)
                     selectedQuest = null
