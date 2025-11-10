@@ -81,6 +81,10 @@ fun ChildStatsDialog(
                             text = "Current XP: " + Stats.currentXP,
                             style = MaterialTheme.typography.bodySmall,
                         )
+                       /* Text(
+                            text = "Quests Accepted: $count",
+                            style = MaterialTheme.typography.bodySmall,
+                        )*/
                         Text(
                             text = "Quests Completed: $count",
                             style = MaterialTheme.typography.bodySmall,

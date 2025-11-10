@@ -2,8 +2,10 @@ package com.example.rpg.ui.auth.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.rpg.data.model.Stats
 import com.example.rpg.data.model.User
 import com.example.rpg.data.repository.AuthRepository
+import com.example.rpg.data.repository.StatsRepository
 import com.example.rpg.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,11 +13,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.String
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val statsRepository: StatsRepository
 ) : ViewModel() {
     //  Holds string; current user error if necessary, when signing up.
     private val _errorMessage = MutableStateFlow<String?>(null)
@@ -72,11 +76,22 @@ class SignUpViewModel @Inject constructor(
                     email = email,
                     familyRole = role
                 )
+                val stats = Stats(
+                    id = userId,
+                    questsCompleted = 0,
+                    questsAccepted = 0,
+                    questsStreak = 0,
+                    totalXP = 0,
+                    rewardsEarned = emptyList()
+                )
                 userRepository.createProfile(user)  // Calls UserRepository to save the profile to Firestore database. Ensures that we have a user profile instead of just user authentication.
                 onSuccess(
                     true,
                     role
                 )  // Tells UI that signup was successful. Role is passed so UI can navigate to Parent or Child screen based upon selection.
+
+                if (role == "child")
+                    statsRepository.createStats(stats)
 
             } catch (e: Exception) {
                 _errorMessage.value = e.message ?: "An error occurred"
