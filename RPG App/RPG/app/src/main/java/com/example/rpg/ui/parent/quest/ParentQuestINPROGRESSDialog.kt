@@ -1,5 +1,6 @@
 package com.example.rpg.ui.parent.quest
 
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,11 +13,11 @@ fun InProgressQuestDialog(
     onReject: () -> Unit,
     onDismiss: () -> Unit
 ) {
-    androidx.compose.material3.AlertDialog(
+    AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("INPROGRESS Quest Completion?") },
+        title = { Text("Override Quest Completion?") },
         text = {
-            Text("Mark '${quest.title}' as completed, or send it back to the child?")
+            Text("Mark '${quest.title}' as completed?")
         },
         confirmButton = {
             Button(onClick = { onApprove(); onDismiss() }) {
