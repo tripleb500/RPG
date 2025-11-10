@@ -27,6 +27,10 @@ import javax.inject.Inject
 class QuestRemoteDataSource @Inject constructor(
     private val firestore: FirebaseFirestore
 ) {
+    // ===========================
+    // GET QUESTS
+    // ===========================
+
     // this generic function is used to get quests for a specified user, along with optional status filter
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> {
@@ -109,12 +113,37 @@ class QuestRemoteDataSource @Inject constructor(
         }
     }
 
+    // ===========================
+    // UPDATE QUESTS
+    // ===========================
+
     suspend fun updateQuestStatus(questId: String, newStatus: Status) {
         firestore.collection(QUEST_ITEMS_COLLECTION)
             .document(questId)
             .update("status", newStatus.name)
             .await()
     }
+
+    // TODO: add more fields as needed
+    suspend fun updateQuest(questId: String, updatedQuest: Quest) {
+        val questRef = firestore.collection(QUEST_ITEMS_COLLECTION).document(questId)
+
+        // Build a map of fields to update (skip nulls to avoid overwriting valid data)
+        val updateMap = mutableMapOf<String, Any?>().apply {
+            updatedQuest.title.let { this["title"] = it }
+            updatedQuest.description.let { this["description"] = it }
+            updatedQuest.rewardType.let { this["reward"] = it }
+            updatedQuest.deadlineDate?.let { this["deadlineDate"] = it }
+            updatedQuest.status.let { this["status"] = it.name }
+            updatedQuest.assignedTo.let { this["assignedTo"] = it }
+        }
+
+        questRef.update(updateMap).await()
+    }
+
+    // ===========================
+    // BASIC CRUD
+    // ===========================
 
     suspend fun getQuestItem(questId: String): Quest? {
         return firestore.collection(QUEST_ITEMS_COLLECTION).document(questId).get().await()

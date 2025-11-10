@@ -1,5 +1,6 @@
 package com.example.rpg.ui.parent.quest
 
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,7 +13,7 @@ fun IncompleteQuestDialog(
     onReject: () -> Unit,
     onDismiss: () -> Unit
 ) {
-    androidx.compose.material3.AlertDialog(
+    AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("INCOMPLETE Quest Completion?") },
         text = {

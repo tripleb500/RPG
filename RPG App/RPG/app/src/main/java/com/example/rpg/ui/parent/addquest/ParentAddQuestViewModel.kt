@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import android.content.ContentResolver
 import com.example.rpg.data.model.Quest
+import com.example.rpg.data.model.RepeatType
 import com.example.rpg.data.model.User
 import com.example.rpg.data.repository.AuthRepository
 import com.example.rpg.data.repository.QuestRepository
@@ -146,6 +147,21 @@ class ParentAddQuestViewModel @Inject constructor(
         val newDateTime = tempCalendar.time
         _dueDate.value = newDateTime
         _quest.value = _quest.value.copy(deadlineDate = newDateTime)
+    }
+
+    fun setRepeat(enabled: Boolean) {
+        _quest.value = _quest.value.copy(repeat = enabled,
+            repeatType = if (enabled) _quest.value.repeatType else RepeatType.NONE,
+            repeatInterval = if (enabled) _quest.value.repeatInterval else 1)
+    }
+
+    fun setRepeatType(type: RepeatType) {
+        _quest.value = _quest.value.copy(repeatType = type,
+            repeat = type != RepeatType.NONE)
+    }
+
+    fun setRepeatInterval(interval: Int) {
+        _quest.value = _quest.value.copy(repeatInterval = interval.coerceAtLeast(1))
     }
 
     fun setChild(newChild: User) {
