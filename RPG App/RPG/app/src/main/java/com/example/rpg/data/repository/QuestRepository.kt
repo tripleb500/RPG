@@ -1,5 +1,6 @@
 package com.example.rpg.data.repository
 
+import android.net.Uri
 import com.example.rpg.data.datasource.QuestRemoteDataSource
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
@@ -48,6 +49,8 @@ class QuestRepository @Inject constructor(
 //    suspend fun getQuestItem(questId: String) = questRemoteDataSource.getQuestItem(questId)
 
     suspend fun create(questItem: Quest) = questRemoteDataSource.create(questItem)
+
+    fun uploadImage(imageUri: Uri) = questRemoteDataSource.uploadImage(imageUri)
 
 //    suspend fun update(questItem: Quest) = questRemoteDataSource.update(questItem)
 

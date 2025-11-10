@@ -1,12 +1,15 @@
 package com.example.rpg.data.datasource
 
+import android.net.Uri
 import android.util.Log
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -25,7 +28,9 @@ import javax.inject.Inject
  */
 
 class QuestRemoteDataSource @Inject constructor(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val storage: FirebaseStorage
+
 ) {
     // ===========================
     // GET QUESTS
@@ -186,6 +191,14 @@ class QuestRemoteDataSource @Inject constructor(
 
     suspend fun delete(itemId: String) {
         firestore.collection(QUEST_ITEMS_COLLECTION).document(itemId).delete().await()
+    }
+
+    fun uploadImage(uri: Uri?): Task<Uri?> {
+        val storageReference = storage.reference
+        val imageReference = storageReference.child("images/" + uri!!.lastPathSegment)
+        imageReference.putFile(uri)
+        return imageReference.downloadUrl
+        //val uploadtask = uri.let { imageReference.putFile(it) }
     }
 
     companion object {

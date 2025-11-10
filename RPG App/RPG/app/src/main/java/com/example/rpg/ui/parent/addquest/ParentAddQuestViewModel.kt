@@ -6,13 +6,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import android.content.ContentResolver
+import android.content.Context
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.RepeatType
 import com.example.rpg.data.model.User
 import com.example.rpg.data.repository.AuthRepository
 import com.example.rpg.data.repository.QuestRepository
 import com.example.rpg.data.repository.UserRepository
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -53,9 +56,11 @@ class ParentAddQuestViewModel @Inject constructor(
     private val _questImage = MutableStateFlow<Uri?>(null)
     val questImage = _questImage.asStateFlow()
 
-
     private val _dueDate = MutableStateFlow<Date?>(null)
     val dueDate = _dueDate.asStateFlow()
+
+    private val _context = MutableStateFlow<Context?>(null)
+    val context = _context.asStateFlow()
 
     fun setDueDate(date: Date) {
         _dueDate.value = date
@@ -195,6 +200,10 @@ class ParentAddQuestViewModel @Inject constructor(
         val current = _quest.value
 
         if (current.title != "" && current.description != "" && current.deadlineDate != null) {
+            if(current.imageUri != null){
+                val url = questRepository.uploadImage(current.imageUri)
+                current.imageURL = url.toString()
+            }
             viewModelScope.launch {
                 //questRepository.create(current)
                 try {
@@ -212,4 +221,6 @@ class ParentAddQuestViewModel @Inject constructor(
 
         }
     }
+
+
 }

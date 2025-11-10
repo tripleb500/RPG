@@ -84,6 +84,7 @@ fun AddQuestContent(
 
     val dueDate by viewModel.dueDate.collectAsState()
     val context = LocalContext.current
+
     val quest by viewModel.quest.collectAsState()
     val hasImage by viewModel.hasImage.collectAsState()
     val galleryPhotoUri by viewModel.galleryUri.collectAsState()
