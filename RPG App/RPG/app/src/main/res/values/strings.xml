@@ -14,4 +14,7 @@
     <string name="title">Title: %1$s</string>
     <string name="description">Description: %1$s</string>
     <string name="due_date">Due Date: %1$s</string>
+    <string name="manage_quest">Manage Quest</string>
+    <string name="what_would_you_like_to_do_with">What would you like to do with \'</string>
+    <string name="quote_question">\'?</string>
 </resources>

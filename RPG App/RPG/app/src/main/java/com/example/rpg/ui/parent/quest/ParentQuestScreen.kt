@@ -52,7 +52,6 @@ import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
 import com.example.rpg.ui.Routes
 import com.example.rpg.ui.theme.RPGTheme
-import com.example.rpg.ui.theme.dynaPuffFontFamily
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -231,8 +230,14 @@ fun CardView(
         when (selectedTab) {
             Status.INPROGRESS -> InProgressQuestDialog(
                 quest = quest,
-                onApprove = { viewModel.updateQuestStatus(quest.id, Status.COMPLETED) },
-                onReject = { viewModel.updateQuestStatus(quest.id, Status.INPROGRESS) },
+                onApprove = {
+                    // Mark quest as completed
+                    viewModel.updateQuestStatus(quest.id, Status.COMPLETED)
+                },
+                onEdit = { updatedQuest ->
+                    // Update quest details in Firestore
+                    viewModel.updateQuestDetails(updatedQuest)
+                },
                 onDismiss = { showDialog = false }
             )
             Status.PENDING -> PendingQuestDialog(
@@ -330,8 +335,6 @@ private fun QuestTabBar(
                 text = {
                     Text(
                         text = tab.name.replace("_", " "),
-                        fontFamily = dynaPuffFontFamily,
-                        fontWeight = FontWeight.Medium,
                         fontSize = 16.sp,
                         color = Color.Black,
                         modifier = Modifier.padding(vertical = 8.dp)

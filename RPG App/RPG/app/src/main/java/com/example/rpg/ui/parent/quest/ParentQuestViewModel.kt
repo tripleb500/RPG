@@ -50,6 +50,12 @@ class ParentQuestViewModel @Inject constructor(
         }
     }
 
+    fun updateQuestDetails(updatedQuest: Quest) {
+        viewModelScope.launch {
+            questRepository.updateQuest(updatedQuest.id, updatedQuest)
+        }
+    }
+
     // retrieves child's name when loading quest
     fun getQuestChildName(userId: String): State<String?> {
         val nameState = mutableStateOf<String?>(null)
