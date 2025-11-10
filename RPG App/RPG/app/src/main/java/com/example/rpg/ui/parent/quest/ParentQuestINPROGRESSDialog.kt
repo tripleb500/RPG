@@ -39,19 +39,9 @@ import com.example.rpg.data.model.Quest
 fun InProgressQuestDialog(
     quest: Quest,
     onApprove: () -> Unit,
-    onEdit: (Quest) -> Unit,
+    onEdit: () -> Unit,
     onDismiss: () -> Unit
 ) {
-    var showEditDialog by remember { mutableStateOf(false) }
-
-    if (showEditDialog) {
-        EditQuestDialog(
-            quest = quest,
-            onSave = { updatedQuest -> onEdit(updatedQuest) },
-            onDismiss = { showEditDialog = false }
-        )
-    }
-
     Dialog(onDismissRequest = onDismiss) {
         Card(
             shape = RoundedCornerShape(16.dp),
@@ -66,10 +56,10 @@ fun InProgressQuestDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            color = Color(0xFFBBDEFB), // your desired background color
-                            shape = RoundedCornerShape(12.dp) // rounded corners
+                            color = Color(0xFFBBDEFB),
+                            shape = RoundedCornerShape(12.dp)
                         )
-                        .padding(vertical = 8.dp) // padding inside the background
+                        .padding(vertical = 8.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.manage_quest),
@@ -103,8 +93,8 @@ fun InProgressQuestDialog(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         OutlinedButton(
-                            onClick = { showEditDialog = true },
-                            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 12.dp) // more padding inside
+                            onClick = onEdit,
+                            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 12.dp)
                         ) {
                             Text("Edit")
                         }
@@ -135,5 +125,4 @@ fun InProgressQuestDialog(
             }
         }
     }
-
 }

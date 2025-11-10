@@ -224,8 +224,21 @@ fun CardView(
     // Collect child name as state
     val assignedToName by viewModel.getQuestChildName(quest.assignedTo)
     var showDialog by rememberSaveable { mutableStateOf(false) }
+    var showEditDialog by rememberSaveable { mutableStateOf(false) }
 
-    // TODO: Finish this
+    // InProgress Edit Dialog
+    if (showEditDialog) {
+        EditQuestDialog(
+            quest = quest,
+            onSave = { updatedQuest ->
+                viewModel.updateQuestDetails(updatedQuest)
+                showEditDialog = false
+            },
+            onDismiss = { showEditDialog = false }
+        )
+    }
+
+    // Base Dialogs TODO: Finish this
     if (showDialog) {
         when (selectedTab) {
             Status.AVAILABLE -> AvailableQuestDialog(
@@ -240,9 +253,9 @@ fun CardView(
                     // Mark quest as completed
                     viewModel.updateQuestStatus(quest.id, Status.COMPLETED)
                 },
-                onEdit = { updatedQuest ->
-                    // Update quest details in Firestore
-                    viewModel.updateQuestDetails(updatedQuest)
+                onEdit = {
+                    showDialog = false
+                    showEditDialog = true
                 },
                 onDismiss = { showDialog = false }
             )

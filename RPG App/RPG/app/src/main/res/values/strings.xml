@@ -17,4 +17,5 @@
     <string name="manage_quest">Manage Quest</string>
     <string name="what_would_you_like_to_do_with">What would you like to do with \'</string>
     <string name="quote_question">\'?</string>
+    <string name="edit_quest">Edit Quest</string>
 </resources>

@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -43,14 +42,14 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.rpg.ui.auth.AuthViewModel
-import java.text.SimpleDateFormat
-import java.util.Calendar
 import coil.compose.AsyncImage
 import com.example.rpg.ui.Routes
+import com.example.rpg.ui.auth.AuthViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberPermissionState
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
 //For handling camera permissions
 private val CAMERAX_PERMISSIONS = Manifest.permission.CAMERA
