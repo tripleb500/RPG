@@ -1,6 +1,5 @@
 package com.example.rpg.data.datasource
 
-import com.example.rpg.data.datasource.QuestRemoteDataSource.Companion.QUEST_ITEMS_COLLECTION
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Stats
 import com.example.rpg.data.model.Status
@@ -14,25 +13,26 @@ import javax.inject.Inject
 class StatsRemoteDataSource @Inject constructor(
     private val firestore: FirebaseFirestore
 ) {
-    suspend fun createStats(statItem: Stats): String {
-        return firestore.collection(STAT_ITEMS_COLLECTION).add(statItem).await().id
+    suspend fun createStats(Stats: Stats): String {
+        return firestore.collection(STAT_ITEMS_COLLECTION).add(Stats).await().id
     }
 
-    suspend fun getStats(currentUserIdFlow: Flow<String?>): Flow<List<Stats>> {
+    suspend fun getStatsCompleted(currentUserIdFlow: Flow<String?>): Flow<List<Stats>> {
         return currentUserIdFlow.flatMapLatest { childId ->
             firestore
                 .collection(STAT_ITEMS_COLLECTION)
-                .whereEqualTo("children Id", childId)
+                .whereEqualTo("assignedTo", childId)
+                .whereEqualTo("status", "COMPLETED")
                 .dataObjects()
         }
     }
-    suspend fun updateStats(statItem: String, newCount: Stats) {
+    /*suspend fun updateStats(statItem: String, newCount: Stats) {
         firestore.collection(STAT_ITEMS_COLLECTION)
             .document(statItem)
             .update("questsCompleted", newCount)
             .await()
 
-    }
+    }*/
 
     companion object {
         private const val STAT_ITEMS_COLLECTION = "statItem" //Name of the collection for quest items

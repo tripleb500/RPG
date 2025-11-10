@@ -9,9 +9,9 @@ class StatsRepository @Inject constructor(
     private val statsRemoteDataSource: StatsRemoteDataSource
 ) {
 
-    suspend fun createStats(statItem: Stats) = statsRemoteDataSource.createStats(statItem)
-    suspend fun getStats(currentUserIdFlow: Flow<String?>) = statsRemoteDataSource.getStats(currentUserIdFlow)
-    suspend fun updateStats(statItem: String, newCount: Stats) = statsRemoteDataSource.updateStats(statItem, newCount)
+    suspend fun createStats(Stats: Stats) = statsRemoteDataSource.createStats(Stats)
+    suspend fun getStatsCompleted(currentUserIdFlow: Flow<String?>) = statsRemoteDataSource.getStatsCompleted(currentUserIdFlow)
+    //suspend fun updateStats(statItem: String, newCount: Stats) = statsRemoteDataSource.updateStats(statItem, newCount)
 
 
 }
