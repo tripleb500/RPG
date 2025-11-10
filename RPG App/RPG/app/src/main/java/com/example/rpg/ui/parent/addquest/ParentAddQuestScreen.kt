@@ -3,6 +3,7 @@ package com.example.rpg.ui.parent.addquest
 import android.Manifest
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -20,7 +21,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -51,6 +51,7 @@ import com.example.rpg.ui.Routes
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberPermissionState
+import java.io.InputStream
 
 //For handling camera permissions
 private val CAMERAX_PERMISSIONS = Manifest.permission.CAMERA
@@ -83,10 +84,14 @@ fun AddQuestContent(
 ) {
 
     val dueDate by viewModel.dueDate.collectAsState()
+    val context = LocalContext.current
+    val quest by viewModel.quest.collectAsState()
+    val hasImage by viewModel.hasImage.collectAsState()
+    val galleryPhotoUri by viewModel.galleryUri.collectAsState()
+    val cameraPermissionState: PermissionState = rememberPermissionState(Manifest.permission.CAMERA)
+
     var showDatePicker by remember { mutableStateOf(false) }
     var showTimePicker by remember { mutableStateOf(false) }
-
-    val context = LocalContext.current
 
     val calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
@@ -95,18 +100,14 @@ fun AddQuestContent(
     val hour = calendar.get(Calendar.HOUR_OF_DAY)
     val minute = calendar.get(Calendar.MINUTE)
 
-    val quest by viewModel.quest.collectAsState()
-
-    val hasImage by viewModel.hasImage.collectAsState()
-
-    val galleryPhotoUri by viewModel.galleryUri.collectAsState()
-
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             // 3
             viewModel.setHasImage(uri != null)
             viewModel.setGalleryPhotoUri(uri)
+            viewModel.setCameraPhotoUri(null)
+            overlayNavController.currentBackStackEntry?.savedStateHandle?.set<Uri>("photoUri", null)
         }
     )
 
@@ -114,8 +115,6 @@ fun AddQuestContent(
         .currentBackStackEntry
         ?.savedStateHandle
         ?.get<Uri>("photoUri")
-
-    val cameraPermissionState: PermissionState = rememberPermissionState(Manifest.permission.CAMERA)
 
     viewModel.fetchChildren()
 
@@ -158,10 +157,11 @@ fun AddQuestContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-
         Row(){
             //Button to open gallery and select image
-            Button(onClick = {imagePicker.launch("image/*")}
+            Button(onClick = {
+                imagePicker.launch("image/*")
+            }
             ) {
                 Text("Select Image")
             }
@@ -172,14 +172,13 @@ fun AddQuestContent(
             Button(onClick = {
                 if (hasRequiredPermissions(context)) {
                     overlayNavController.navigate(Routes.ParentCameraScreen.route)
-                } else {
-                    // Request permission
+                }
+                else{
                     cameraPermissionState.launchPermissionRequest()
                 }
             }) {
                 Text("Open Camera")
             }
-
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -189,25 +188,28 @@ fun AddQuestContent(
             .width(80.dp)
             .height(80.dp)
         ){
-                // Gallery Image
-                if (hasImage && galleryPhotoUri != null && captureUri == null) {
-                    System.out.println("GALLERY URI:" + galleryPhotoUri)
-                    AsyncImage(
-                        model = galleryPhotoUri,
-                        modifier = Modifier.width(80.dp)
-                            .height(80.dp),
-                        contentDescription = "Selected image",
-                    )
-                }
-                //Camera Image
-                if (captureUri != null) {
-                    AsyncImage(
-                        model = captureUri,
-                        modifier = Modifier.width(80.dp)
-                            .height(80.dp),
-                        contentDescription = "Selected image",
-                    )
-                }
+            // Gallery Image
+            if (hasImage && galleryPhotoUri != null && captureUri == null) {
+                viewModel.setQuestImage(galleryPhotoUri)
+                AsyncImage(
+                    model = galleryPhotoUri,
+                    modifier = Modifier.width(80.dp)
+                        .height(80.dp),
+                    contentDescription = "Selected image",
+                )
+            }
+            //Camera Image
+            else if (captureUri != null) {
+                viewModel.setQuestImage(captureUri)
+                viewModel.setGalleryPhotoUri(null)
+                viewModel.setHasImage(false)
+                AsyncImage(
+                    model = captureUri,
+                    modifier = Modifier.width(80.dp)
+                        .height(80.dp),
+                    contentDescription = "Selected image",
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -219,7 +221,14 @@ fun AddQuestContent(
 
         //Button for assigning the quest
         Button(
-            onClick = { viewModel.addQuest()
+            onClick = {
+                if(hasImage){
+                    val resolver = context.contentResolver
+                    val uri = viewModel.questImage
+                    val inputStream: InputStream? = resolver.openInputStream(uri as Uri)
+                }
+
+                viewModel.addQuest()
                 navController.popBackStack()
                       },
             enabled = dueDate != null && quest.title.isNotBlank() && quest.description.isNotBlank()) {
@@ -278,6 +287,7 @@ fun AddQuestContent(
         }
     }
 }
+
 
 @Composable
 fun IntInputField(

@@ -78,6 +78,9 @@ dependencies {
     // Adds the dependency for the Firebase Authentication Library
     implementation("com.google.firebase:firebase-auth")
 
+    // Firebase Storage to be used for images
+    implementation("com.google.firebase:firebase-storage-ktx:21.0.1")
+
     // CameraX dependencies
     implementation(libs.androidx.camera.camera2)
     implementation(libs.androidx.camera.core)
