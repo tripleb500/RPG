@@ -18,7 +18,7 @@ fun AvailableQuestDialog(
         onDismissRequest = onDismiss,
         title = { Text("Make Quest Available to all Children?")},
         text = {
-            Text("Do you want to pose '${quest.title}' to the family quest board so any child can accept it?")
+            Text("Do you want to post '${quest.title}' to the family quest board so any child can accept it?")
 
         },
         confirmButton = {

@@ -113,6 +113,21 @@ class QuestRemoteDataSource @Inject constructor(
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getAvailableQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> {
+        return currentUserIdFlow.flatMapLatest { parentId ->
+            if(parentId == null) {
+                flowOf(emptyList())
+            } else {
+                firestore.collection(QUEST_ITEMS_COLLECTION)
+                    .whereEqualTo("assignee", parentId)
+                    .whereEqualTo("status", Status.AVAILABLE.name)
+                    .dataObjects()
+            }
+        }
+
+    }
+
     // ===========================
     // UPDATE QUESTS
     // ===========================
@@ -139,6 +154,17 @@ class QuestRemoteDataSource @Inject constructor(
         }
 
         questRef.update(updateMap).await()
+    }
+
+    suspend fun updateQuestAssignment(questId: String, childId: String, newStatus: Status) {
+        firestore.collection(QUEST_ITEMS_COLLECTION)
+            .document(questId)
+            .update(
+                mapOf(
+                    "assignedTo" to childId,
+                    "status" to newStatus.name
+                )
+            ).await()
     }
 
     // ===========================

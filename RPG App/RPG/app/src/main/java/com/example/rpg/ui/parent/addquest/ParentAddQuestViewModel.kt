@@ -35,6 +35,9 @@ class ParentAddQuestViewModel @Inject constructor(
     private val _selectedChild = MutableStateFlow<User?>(null)
     val selectedChild = _selectedChild.asStateFlow()
 
+    private val _isAvailableToAllChildren  = MutableStateFlow(false)
+    val isAvailableToAllChildren = _isAvailableToAllChildren.asStateFlow()
+
     private val _quest = MutableStateFlow(Quest())
     val quest = _quest.asStateFlow()
 
@@ -170,12 +173,41 @@ class ParentAddQuestViewModel @Inject constructor(
         _quest.value = _quest.value.copy(assignee = parentId.toString())
     }
 
+    fun selectChild(child: User?) {
+        if(child == null) {
+            _isAvailableToAllChildren.value = true
+            _selectedChild.value = null
+            _quest.value = _quest.value.copy(
+                assignedTo = "",
+                assignee = parentId ?: ""
+            )
+        } else {
+            _isAvailableToAllChildren.value = false
+            _selectedChild.value = child
+            _quest.value = _quest.value.copy(
+                assignedTo = child.id,
+                assignee = parentId ?: ""
+            )
+        }
+    }
+
     fun addQuest() {
         val current = _quest.value
 
         if (current.title != "" && current.description != "" && current.deadlineDate != null) {
             viewModelScope.launch {
-                questRepository.create(current)
+                //questRepository.create(current)
+                try {
+                    if(_isAvailableToAllChildren.value) {
+                        parentId?.let { id ->
+                            questRepository.createAvailableQuest(current, id)
+                        }
+                    } else {
+                        questRepository.create(current)
+                    }
+                }catch (e: Exception) {
+                    _error.value = e.message
+                }
             }
 
         }
