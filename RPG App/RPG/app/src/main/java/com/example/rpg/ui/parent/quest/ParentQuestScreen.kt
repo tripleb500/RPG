@@ -229,6 +229,12 @@ fun CardView(
     // TODO: Finish this
     if (showDialog) {
         when (selectedTab) {
+            Status.AVAILABLE -> AvailableQuestDialog(
+                quest = quest,
+                onApprove = {viewModel.updateQuestStatus(quest.id, Status.COMPLETED)},
+                onReject = {viewModel.updateQuestStatus(quest.id, Status.AVAILABLE)},
+                onDismiss = {showDialog = false}
+            )
             Status.INPROGRESS -> InProgressQuestDialog(
                 quest = quest,
                 onApprove = { viewModel.updateQuestStatus(quest.id, Status.COMPLETED) },
