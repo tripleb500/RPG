@@ -261,7 +261,10 @@ fun CardView(
             )
             Status.PENDING -> PendingQuestDialog(
                 quest = quest,
-                onApprove = { viewModel.updateQuestStatus(quest.id, Status.COMPLETED) },
+                onApprove = {
+                    viewModel.updateQuestStatus(quest.id, Status.COMPLETED)
+                    viewModel.completeQuest(quest.id)
+                            },
                 onReject = { viewModel.updateQuestStatus(quest.id, Status.INCOMPLETE) },
                 onReassign = { viewModel.updateQuestDetails(it.copy(status = Status.INPROGRESS)) },
                 onDismiss = { showDialog = false }
