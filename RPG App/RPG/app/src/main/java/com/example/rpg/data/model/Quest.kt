@@ -15,6 +15,8 @@ data class Quest(
     val rewardAmount: Int = 0,
     val rewardType: Reward = Reward.NONE, // TODO
     val repeat: Boolean = false,
+    val repeatType: RepeatType = RepeatType.NONE,
+    val repeatInterval: Int = 1,
     val allDay: Boolean = false,
     val completed: Boolean = false,
     val assignee: String = User().id,
@@ -29,6 +31,15 @@ enum class Status {
     PENDING,
     COMPLETED,
     INCOMPLETE
+}
+
+// representation of Repeat Days
+enum class RepeatType {
+    NONE,
+    DAY,
+    WEEK,
+    MONTH,
+    YEAR
 }
 
 // representation of Reward

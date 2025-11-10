@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rpg.data.model.Quest
+import com.example.rpg.data.model.RepeatType
 import com.example.rpg.data.model.User
 import com.example.rpg.data.repository.AuthRepository
 import com.example.rpg.data.repository.QuestRepository
@@ -138,7 +139,17 @@ class ParentAddQuestViewModel @Inject constructor(
     }
 
     fun setRepeat(enabled: Boolean) {
-        _quest.value = _quest.value.copy(repeat = enabled)
+        _quest.value = _quest.value.copy(repeat = enabled,
+            repeatType = if (enabled) _quest.value.repeatType else RepeatType.NONE)
+    }
+
+    fun setRepeatType(type: RepeatType) {
+        _quest.value = _quest.value.copy(repeatType = type,
+            repeat = type != RepeatType.NONE)
+    }
+
+    fun setRepeatInterval(interval: Int) {
+        _quest.value = _quest.value.copy(repeatInterval = interval.coerceAtLeast(1))
     }
 
     fun setChild(newChild: User) {
