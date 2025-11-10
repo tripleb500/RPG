@@ -140,7 +140,8 @@ class ParentAddQuestViewModel @Inject constructor(
 
     fun setRepeat(enabled: Boolean) {
         _quest.value = _quest.value.copy(repeat = enabled,
-            repeatType = if (enabled) _quest.value.repeatType else RepeatType.NONE)
+            repeatType = if (enabled) _quest.value.repeatType else RepeatType.NONE,
+            repeatInterval = if (enabled) _quest.value.repeatInterval else 1)
     }
 
     fun setRepeatType(type: RepeatType) {

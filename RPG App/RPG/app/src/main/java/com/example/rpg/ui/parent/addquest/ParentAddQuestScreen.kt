@@ -200,7 +200,13 @@ fun AddQuestContent(
                 onValueChange = { text ->
                     text.toIntOrNull()?.let { viewModel.setRepeatInterval(it) }
                 },
-                label = { Text("Repeat every x ${quest.repeatType.name.lowercase()}(s)") },
+                label = {
+                    val typeLabel = if (quest.repeatType == RepeatType.NONE)
+                        ""
+                    else
+                        " ${quest.repeatType.name.lowercase()}(s)"
+                    Text("Repeat every x$typeLabel")
+                },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -213,10 +219,10 @@ fun AddQuestContent(
                 horizontalAlignment = Alignment.Start
             ) {
                 val repeatOptions = listOf(
-                    RepeatType.DAY to "Day",
-                    RepeatType.WEEK to "Week",
-                    RepeatType.MONTH to "Month",
-                    RepeatType.YEAR to "Year"
+                    RepeatType.DAY to "Daily",
+                    RepeatType.WEEK to "Weekly",
+                    RepeatType.MONTH to "Monthly",
+                    RepeatType.YEAR to "Yearly"
                 )
 
                 repeatOptions.forEach { (type, label) ->
