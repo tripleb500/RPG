@@ -142,7 +142,11 @@ fun CardView(quest: Quest, viewModel: ParentQuestViewModel = hiltViewModel()) {
                 viewModel.updateQuestStatus(quest.id, Status.COMPLETED)
             },
             onReject = {
-                viewModel.updateQuestStatus(quest.id, Status.INPROGRESS)
+                viewModel.updateQuestStatus(quest.id, Status.INCOMPLETE)
+            },
+            onReassign = { updatedQuest ->
+                // This is triggered when the parent reassigns a quest
+                viewModel.updateQuestDetails(updatedQuest.copy(status = Status.INPROGRESS))
             },
             onDismiss = { showDialog = false }
         )

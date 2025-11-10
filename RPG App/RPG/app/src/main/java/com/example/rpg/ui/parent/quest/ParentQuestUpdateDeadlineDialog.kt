@@ -3,7 +3,9 @@ package com.example.rpg.ui.parent.quest
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.text.format.DateFormat
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +32,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -65,23 +69,33 @@ fun UpdateDeadlineDialog(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 // Title
-                Text(
-                    text = "Update Deadline",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 28.sp,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = Color(0xFFFFF9C4),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .padding(vertical = 8.dp)
+                ) {
+                    Text(
+                        text = "Update Deadline",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 28.sp,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
 
                 // Message
                 Text(
                     text = buildAnnotatedString {
-                        append("Update the deadline for ")
+                        append(stringResource(R.string.update_the_deadline_for))
                         withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
                             append(quest.title)
                         }
-                        append(" so it can be reassigned.")
+                        append(stringResource(R.string.so_it_can_be_reassigned))
                     },
                     color = Color.Black,
                     fontSize = 16.sp,
@@ -119,7 +133,7 @@ fun UpdateDeadlineDialog(
                         onClick = onDismiss,
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text("Cancel", textAlign = TextAlign.Center)
+                        Text(stringResource(R.string.cancel), textAlign = TextAlign.Center)
                     }
 
                     Button(
@@ -129,7 +143,7 @@ fun UpdateDeadlineDialog(
                         },
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text("Save", textAlign = TextAlign.Center)
+                        Text(stringResource(R.string.reassign), textAlign = TextAlign.Center)
                     }
                 }
             }

@@ -3,7 +3,6 @@ package com.example.rpg.ui.parent.addquest
 import android.Manifest
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -49,9 +48,9 @@ import com.example.rpg.ui.auth.AuthViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberPermissionState
+import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.io.InputStream
 
 //For handling camera permissions
 private val CAMERAX_PERMISSIONS = Manifest.permission.CAMERA

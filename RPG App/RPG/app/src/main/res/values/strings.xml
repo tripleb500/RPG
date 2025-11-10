@@ -18,4 +18,10 @@
     <string name="what_would_you_like_to_do_with">What would you like to do with \'</string>
     <string name="quote_question">\'?</string>
     <string name="edit_quest">Edit Quest</string>
+    <string name="single_quote">\'</string>
+    <string name="update_the_deadline_for">"Update the deadline for "</string>
+    <string name="so_it_can_be_reassigned">" so it can be reassigned."</string>
+    <string name="cancel">Cancel</string>
+    <string name="reassign">Reassign</string>
+    <string name="verify_quest">Verify Quest</string>
 </resources>

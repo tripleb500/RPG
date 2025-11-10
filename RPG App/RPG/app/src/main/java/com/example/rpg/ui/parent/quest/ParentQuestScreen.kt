@@ -263,6 +263,7 @@ fun CardView(
                 quest = quest,
                 onApprove = { viewModel.updateQuestStatus(quest.id, Status.COMPLETED) },
                 onReject = { viewModel.updateQuestStatus(quest.id, Status.INCOMPLETE) },
+                onReassign = { viewModel.updateQuestDetails(it.copy(status = Status.INPROGRESS)) },
                 onDismiss = { showDialog = false }
             )
             Status.COMPLETED -> CompletedQuestDialog(

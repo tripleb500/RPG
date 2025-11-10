@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -28,12 +30,15 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.rpg.R
 import com.example.rpg.data.model.Quest
+import com.example.rpg.data.model.Status
 
 @Composable
 fun PendingQuestDialog(
     quest: Quest,
     onApprove: () -> Unit,
+    onReassign: (Quest) -> Unit,
     onReject: (Quest) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -43,7 +48,10 @@ fun PendingQuestDialog(
         UpdateDeadlineDialog(
             quest = quest,
             onSave = { updatedQuest ->
-                onReject(updatedQuest)
+                // Mark as INPROGRESS and update deadline
+                onReassign(updatedQuest.copy(status = Status.INPROGRESS))
+                showUpdateDeadline = false
+                onDismiss() // close PendingQuestDialog
             },
             onDismiss = { showUpdateDeadline = false }
         )
@@ -68,7 +76,7 @@ fun PendingQuestDialog(
                         .padding(vertical = 8.dp)
                 ) {
                     Text(
-                        text = "Approve Quest",
+                        text = stringResource(R.string.verify_quest),
                         fontWeight = FontWeight.Bold,
                         fontSize = 28.sp,
                         color = Color.Black,
@@ -80,11 +88,11 @@ fun PendingQuestDialog(
                 // Message text
                 Text(
                     text = buildAnnotatedString {
-                        append("Mark ")
+                        append(stringResource(R.string.what_would_you_like_to_do_with))
                         withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
                             append(quest.title)
                         }
-                        append(" as completed, or send it back to the child?")
+                        append(stringResource(R.string.quote_question))
                     },
                     color = Color.Black,
                     fontSize = 16.sp,
@@ -93,13 +101,30 @@ fun PendingQuestDialog(
                 )
 
                 // Buttons
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    // Row 1 button: Reassign
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        OutlinedButton(
+                            onClick = { showUpdateDeadline = true },
+                            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 12.dp)
+                        ) {
+                            Text("Reassign")
+                        }
+                    }
+                }
+
+                // Row 2 buttons: Reject, Approve
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedButton(
                         onClick = {
-                            showUpdateDeadline = true
+                            onReject(quest)
+                            onDismiss()
                         },
                         modifier = Modifier.weight(1f)
                     ) {
