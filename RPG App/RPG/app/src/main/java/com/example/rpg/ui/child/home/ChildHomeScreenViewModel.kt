@@ -61,7 +61,7 @@ class ChildHomeScreenViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
-    // Count of completed quests for the *current* child account
+    // Count of completed quests for the current child account
     val completedQuestsCount: StateFlow<Int> = authRepository.currentUserIdFlow
         .filterNotNull()
         .flatMapLatest { uid ->
