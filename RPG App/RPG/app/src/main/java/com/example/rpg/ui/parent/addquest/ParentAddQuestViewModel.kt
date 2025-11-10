@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import android.content.ContentResolver
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.RepeatType
 import com.example.rpg.data.model.User
@@ -41,10 +42,14 @@ class ParentAddQuestViewModel @Inject constructor(
     private val _galleryUri = MutableStateFlow<Uri?>(null)
     val galleryUri = _galleryUri.asStateFlow()
     private val _cameraUri = MutableStateFlow<Uri?>(null)
-    val photoUri = _cameraUri.asStateFlow()
+    val cameraUri = _cameraUri.asStateFlow()
 
     private val _hasImage = MutableStateFlow(false)
     val hasImage = _hasImage.asStateFlow()
+
+    private val _questImage = MutableStateFlow<Uri?>(null)
+    val questImage = _questImage.asStateFlow()
+
 
     private val _dueDate = MutableStateFlow<Date?>(null)
     val dueDate = _dueDate.asStateFlow()
@@ -96,8 +101,14 @@ class ParentAddQuestViewModel @Inject constructor(
         _quest.value = _quest.value.copy(imageUri = uri)
     }
 
+    fun setQuestImage(uri: Uri?) {
+        _questImage.value = uri
+        _quest.value = _quest.value.copy(imageUri = uri)
+    }
+
     fun setGalleryPhotoUri(uri: Uri?) {
         _galleryUri.value = uri
+        _quest.value = _quest.value.copy(imageUri = uri)
     }
 
     fun setHasImage(hasImage: Boolean) {
@@ -162,11 +173,11 @@ class ParentAddQuestViewModel @Inject constructor(
     fun addQuest() {
         val current = _quest.value
 
-
         if (current.title != "" && current.description != "" && current.deadlineDate != null) {
             viewModelScope.launch {
                 questRepository.create(current)
             }
+
         }
     }
 }
