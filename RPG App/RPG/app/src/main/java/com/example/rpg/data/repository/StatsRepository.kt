@@ -10,7 +10,6 @@ class StatsRepository @Inject constructor(
 ) {
 
     suspend fun createStats(Stats: Stats) = statsRemoteDataSource.createStats(Stats)
-    suspend fun getStatsCompleted(currentUserIdFlow: Flow<String?>) = statsRemoteDataSource.getStatsCompleted(currentUserIdFlow)
     //suspend fun updateStats(statItem: String, newCount: Stats) = statsRemoteDataSource.updateStats(statItem, newCount)
 
 

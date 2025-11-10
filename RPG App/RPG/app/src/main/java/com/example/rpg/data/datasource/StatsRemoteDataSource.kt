@@ -16,16 +16,6 @@ class StatsRemoteDataSource @Inject constructor(
     suspend fun createStats(Stats: Stats): String {
         return firestore.collection(STAT_ITEMS_COLLECTION).add(Stats).await().id
     }
-
-    suspend fun getStatsCompleted(currentUserIdFlow: Flow<String?>): Flow<List<Stats>> {
-        return currentUserIdFlow.flatMapLatest { childId ->
-            firestore
-                .collection(STAT_ITEMS_COLLECTION)
-                .whereEqualTo("assignedTo", childId)
-                .whereEqualTo("status", "COMPLETED")
-                .dataObjects()
-        }
-    }
     /*suspend fun updateStats(statItem: String, newCount: Stats) {
         firestore.collection(STAT_ITEMS_COLLECTION)
             .document(statItem)
