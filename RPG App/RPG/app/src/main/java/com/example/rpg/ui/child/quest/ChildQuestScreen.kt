@@ -50,6 +50,7 @@ import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
 import com.example.rpg.ui.Routes
+import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 import com.example.rpg.ui.parent.quest.ParentQuestViewModel
 import com.example.rpg.ui.parent.quest.PendingQuestDialog
 
@@ -61,11 +62,13 @@ fun ChildQuestScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     overlayNavController: NavHostController,
-    viewModel: ChildQuestViewModel = hiltViewModel()
+    viewModel: ChildHomeScreenViewModel = hiltViewModel()
 ) {
     val childQuests = viewModel.childQuests.collectAsState()
     var selectedTab by rememberSaveable { mutableStateOf(Status.INPROGRESS) }
     var sortOrder by rememberSaveable { mutableStateOf(SortOrder.ASCENDING) }
+
+    var selectedQuest by remember { mutableStateOf<Quest?>(null) }
 
     Scaffold(
         // Topbar, visual signifier for users to know where they are.
@@ -123,34 +126,31 @@ fun ChildQuestScreen(
 
             LazyColumn {
                 items(sorted) { quest ->
-                    CardView(quest)
+                    CardView(quest) {clickedQuest ->
+                        selectedQuest = clickedQuest
+                    }
                 }
+            }
+
+            if (selectedQuest != null) {
+                ChildInProgressQuestDialog(
+                    quest = selectedQuest!!,
+                    onDismissRequest = { selectedQuest = null },
+                    viewModel = viewModel,
+                    onCompleteClicked = { completedQuest ->
+                        viewModel.markQuestAsPending(completedQuest)
+                        selectedQuest = null
+                    }
+                )
             }
         }
     }
 }
 
 @Composable
-fun CardView(quest: Quest, viewModel: ParentQuestViewModel = hiltViewModel()) {
-    val assignedToName by viewModel.getQuestChildName(quest.assignedTo)
+fun CardView(quest: Quest, viewModel: ChildQuestViewModel = hiltViewModel(), onQuestClicked: (Quest) -> Unit) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
 
-    if (showDialog) {
-        PendingQuestDialog(
-            quest = quest,
-            onApprove = {
-                viewModel.updateQuestStatus(quest.id, Status.COMPLETED)
-            },
-            onReject = {
-                viewModel.updateQuestStatus(quest.id, Status.INCOMPLETE)
-            },
-            onReassign = { updatedQuest ->
-                // This is triggered when the parent reassigns a quest
-                viewModel.updateQuestDetails(updatedQuest.copy(status = Status.INPROGRESS))
-            },
-            onDismiss = { showDialog = false }
-        )
-    }
 
     Card(
         modifier = Modifier

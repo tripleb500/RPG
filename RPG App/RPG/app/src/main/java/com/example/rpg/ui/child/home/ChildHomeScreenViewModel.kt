@@ -64,6 +64,14 @@ class ChildHomeScreenViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
+    val childQuests: StateFlow<List<Quest>> =
+        questRepository.getChildQuests(authRepository.currentUserIdFlow)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyList()
+            )
+
 
     // Count of completed quests for the current child account
     val completedQuestsCount: StateFlow<Int> = authRepository.currentUserIdFlow

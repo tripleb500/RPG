@@ -1,13 +1,16 @@
 package com.example.rpg.ui.child.quest
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rpg.data.model.Quest
+import com.example.rpg.data.model.Status
 import com.example.rpg.data.repository.AuthRepository
 import com.example.rpg.data.repository.QuestRepository
 import com.example.rpg.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,6 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,12 +27,26 @@ class ChildQuestViewModel @Inject constructor(
     private val questRepository: QuestRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
-    val childQuests: StateFlow<List<Quest>> =
-        questRepository.getChildQuests(authRepository.currentUserIdFlow)
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = emptyList()
-            )
+
+    private val _capturedImage = MutableStateFlow<Bitmap?>(null)
+    val capturedImage = _capturedImage.asStateFlow()
+
+
+    fun setCapturedImage(bitmap: Bitmap?) {
+        _capturedImage.value = bitmap
+    }
+
+    fun markQuestAsPending(quest: Quest) {
+        viewModelScope.launch {
+            try {
+                println("Marking quest as PENDING: ${quest.title} (ID: ${quest.id})")
+                questRepository.updateQuestStatus(quest.id, Status.PENDING)
+                // Add a small delay to see if the update propagates correctly
+                delay(100)
+            } catch (e: Exception) {
+                Log.e("QuestVM", "Error updating quest", e)
+            }
+        }
+    }
 
 }
