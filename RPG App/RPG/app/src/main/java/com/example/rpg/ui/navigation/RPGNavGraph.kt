@@ -17,7 +17,7 @@ import com.example.rpg.ui.theme.RPGTheme
 fun RPGNavGraph() {
     val navController = rememberNavController()
     // Start Destination: parentLandingScreen
-    NavHost(navController = navController, startDestination = Routes.SignUpScreen.route) {
+    NavHost(navController = navController, startDestination = Routes.SignInScreen.route) {
         // Account Management Route : signInScreen
         composable(Routes.SignUpScreen.route) {
             SignUpScreen(navController = navController)
