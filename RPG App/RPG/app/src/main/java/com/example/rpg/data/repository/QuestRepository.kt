@@ -80,6 +80,9 @@ class QuestRepository @Inject constructor(
     suspend fun completeQuest(questId: String) =
         questRemoteDataSource.completeQuest(questId)
 
+    suspend fun setAssignDate(questId: String) =
+        questRemoteDataSource.setAssignDate(questId)
+
     suspend fun updateQuest(questId: String, updatedQuest: Quest) {
         questRemoteDataSource.updateQuest(questId, updatedQuest)
     }
@@ -91,5 +94,5 @@ class QuestRepository @Inject constructor(
     suspend fun updateQuestImage(questId: String, newImage: String) =
         questRemoteDataSource.updateQuestImage(questId, newImage)
 
-//    suspend fun delete(questId: String) = questRemoteDataSource.delete(questId)
+    suspend fun delete(questId: String) = questRemoteDataSource.delete(questId)
 }
