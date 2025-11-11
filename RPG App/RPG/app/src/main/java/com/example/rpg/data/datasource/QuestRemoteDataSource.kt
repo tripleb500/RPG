@@ -1,5 +1,6 @@
 package com.example.rpg.data.datasource
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import com.example.rpg.data.model.Quest
@@ -10,6 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageMetadata
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +20,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.tasks.await
+import java.io.ByteArrayOutputStream
 import java.util.Date
 import java.util.UUID
 import javax.inject.Inject
@@ -230,5 +233,25 @@ class QuestRemoteDataSource @Inject constructor(
         //        private const val OWNER_ID_FIELD = "ownerId"
         private const val ASSIGNED_TO_ID_FIELD = "assignedTo"
         private const val QUEST_ITEMS_COLLECTION = "quests" //Name of the collection for quest items
+    }
+
+    suspend fun uploadBitmapAndGetUrl(
+        bitmap: Bitmap,
+        questId: String
+    ): String? { // Just return String? (null if failed)
+        return try {
+            val baos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos)
+            val imageData = baos.toByteArray()
+
+            val path = "quests/$questId/images/camera_${System.currentTimeMillis()}.jpg"
+            val storageRef = storage.reference.child(path)
+
+            storageRef.putBytes(imageData).await()
+            storageRef.downloadUrl.await().toString()
+
+        } catch (e: Exception) {
+            null // Just return null if anything fails
+        }
     }
 }

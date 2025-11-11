@@ -49,11 +49,6 @@ class ChildHomeScreenViewModel @Inject constructor(
 ) : ViewModel() {
     // Flow of all in-progress quests for the current child
 
-    private val _imageUrl = MutableStateFlow<String?>(null)
-    val imageUrl: StateFlow<String?> = _imageUrl
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
 
     val inProgressQuestsFlow: StateFlow<List<Quest>> = authRepository.currentUserIdFlow
         .filterNotNull()
@@ -70,6 +65,20 @@ class ChildHomeScreenViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = emptyList()
         )
+
+    private val _imageUrl = MutableStateFlow<String?>(null)
+    val imageUrl: StateFlow<String?> = _imageUrl.asStateFlow()
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+    fun uploadImageForQuest(questId: String, bitmap: Bitmap) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            _imageUrl.value = questRepository.uploadBitmapAndGetUrl(bitmap, questId)
+            _isLoading.value = false
+        }
+    }
 
     val childQuests: StateFlow<List<Quest>> =
         questRepository.getChildQuests(authRepository.currentUserIdFlow)
@@ -99,12 +108,6 @@ class ChildHomeScreenViewModel @Inject constructor(
     private val questParentCache = mutableMapOf<String, User>()
 
 
-    private val _capturedImage = MutableStateFlow<Bitmap?>(null)
-    val capturedImage = _capturedImage.asStateFlow()
-
-    fun setCapturedImage(bitmap: Bitmap?) {
-        _capturedImage.value = bitmap
-    }
 
     // Function to mark a quest as pending
     fun markQuestAsPending(quest: Quest) {

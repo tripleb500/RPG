@@ -32,6 +32,9 @@ import com.google.accompanist.permissions.rememberPermissionState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
@@ -48,6 +51,7 @@ fun ChildCameraScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
     val cameraController = remember { LifecycleCameraController(context) }
     val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
+
 
     LaunchedEffect(cameraPermissionState.status) {
         if (cameraPermissionState.status == PermissionStatus.Granted) {

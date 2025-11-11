@@ -1,5 +1,6 @@
 package com.example.rpg.data.repository
 
+import android.graphics.Bitmap
 import android.net.Uri
 import com.example.rpg.data.datasource.QuestRemoteDataSource
 import com.example.rpg.data.model.Quest
@@ -81,6 +82,10 @@ class QuestRepository @Inject constructor(
 
     suspend fun updateQuest(questId: String, updatedQuest: Quest) {
         questRemoteDataSource.updateQuest(questId, updatedQuest)
+    }
+
+    suspend fun uploadBitmapAndGetUrl(bitmap: Bitmap, questId: String): String? {
+        return questRemoteDataSource.uploadBitmapAndGetUrl(bitmap, questId)
     }
 
 //    suspend fun delete(questId: String) = questRemoteDataSource.delete(questId)
