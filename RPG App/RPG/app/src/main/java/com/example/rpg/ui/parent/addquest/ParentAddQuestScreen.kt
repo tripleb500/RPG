@@ -33,6 +33,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -89,6 +90,13 @@ fun AddQuestContent(
     overlayNavController: NavHostController,
     navController: NavHostController
 ) {
+
+    val questCreated by viewModel.questCreated.collectAsState()
+    LaunchedEffect(questCreated) {
+        if (questCreated) {
+            navController.popBackStack()
+        }
+    }
 
     val dueDate by viewModel.dueDate.collectAsState()
     val context = LocalContext.current

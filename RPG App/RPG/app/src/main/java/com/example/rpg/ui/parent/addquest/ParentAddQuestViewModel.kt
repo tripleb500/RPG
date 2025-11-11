@@ -63,6 +63,8 @@ class ParentAddQuestViewModel @Inject constructor(
     private val _context = MutableStateFlow<Context?>(null)
     val context = _context.asStateFlow()
 
+    private val _questCreated = MutableStateFlow(false)
+    val questCreated: StateFlow<Boolean> = _questCreated
 
     fun setDueDate(date: Date) {
         _dueDate.value = date
@@ -223,6 +225,7 @@ class ParentAddQuestViewModel @Inject constructor(
                     } else {
                         questRepository.create(questToCreate)
                     }
+                    _questCreated.value = true
                 }catch (e: Exception) {
                     _error.value = e.message
                     println("Error creating quest: ${e.message}")
