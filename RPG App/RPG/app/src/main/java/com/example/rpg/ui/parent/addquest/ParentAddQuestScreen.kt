@@ -28,6 +28,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -207,7 +208,7 @@ fun AddQuestContent(
             else if (captureUri != null) {
                 viewModel.setQuestImage(captureUri)
                 viewModel.setGalleryPhotoUri(null)
-                viewModel.setHasImage(false)
+                //viewModel.setHasImage(false)
                 AsyncImage(
                     model = captureUri,
                     modifier = Modifier.width(80.dp)
@@ -227,17 +228,12 @@ fun AddQuestContent(
         //Button for assigning the quest
         Button(
             onClick = {
-                if(hasImage){
-                    val resolver = context.contentResolver
-                    val uri = viewModel.questImage
-                    val inputStream: InputStream? = resolver.openInputStream(uri as Uri)
-                }
                 viewModel.addQuest()
-                navController.popBackStack()
                       },
             enabled = dueDate != null && quest.title.isNotBlank() && quest.description.isNotBlank()) {
             Text("Assign Quest")
         }
+        //navController.popBackStack()
 
         val children by viewModel.children.collectAsState()
         val selectedChild by viewModel.selectedChild.collectAsState()
@@ -289,6 +285,8 @@ fun AddQuestContent(
             dialog.setOnDismissListener { showTimePicker = false }
             dialog.show()
         }
+
+
     }
 }
 

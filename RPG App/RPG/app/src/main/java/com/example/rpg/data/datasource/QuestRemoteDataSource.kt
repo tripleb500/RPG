@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.tasks.await
 import java.util.Date
+import java.util.UUID
 import javax.inject.Inject
 
 /**
@@ -200,6 +201,7 @@ class QuestRemoteDataSource @Inject constructor(
         firestore.collection(QUEST_ITEMS_COLLECTION).document(itemId).delete().await()
     }
 
+    /*
     fun uploadImage(uri: Uri?): Task<Uri?> {
         val storageReference = storage.reference
         val imageReference = storageReference.child("images/" + uri!!.lastPathSegment)
@@ -207,6 +209,22 @@ class QuestRemoteDataSource @Inject constructor(
         return imageReference.downloadUrl
         //val uploadtask = uri.let { imageReference.putFile(it) }
     }
+
+     */
+
+    suspend fun uploadImage(uri: Uri?): String {
+        if (uri == null) throw IllegalArgumentException("URI cannot be null")
+
+        val fileName = "images/${UUID.randomUUID()}.jpg" // generate unique name
+        val imageRef = storage.reference.child(fileName)
+
+        // Upload the file
+        imageRef.putFile(uri).await()
+
+        // Get the download URL after successful upload
+        return imageRef.downloadUrl.await().toString()
+    }
+
 
     companion object {
         //        private const val OWNER_ID_FIELD = "ownerId"

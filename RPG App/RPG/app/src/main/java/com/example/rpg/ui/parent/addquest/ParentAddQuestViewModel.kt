@@ -18,11 +18,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
+import androidx.core.net.toUri
 
 
 @HiltViewModel
@@ -30,7 +32,6 @@ class ParentAddQuestViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val questRepository: QuestRepository,
     private val userRepository: UserRepository
-
 ) : ViewModel() {
     private val _children = MutableStateFlow<List<User>>(emptyList())
     val children = _children.asStateFlow()
@@ -61,6 +62,7 @@ class ParentAddQuestViewModel @Inject constructor(
 
     private val _context = MutableStateFlow<Context?>(null)
     val context = _context.asStateFlow()
+
 
     fun setDueDate(date: Date) {
         _dueDate.value = date
@@ -106,17 +108,17 @@ class ParentAddQuestViewModel @Inject constructor(
 
     fun setCameraPhotoUri(uri: Uri?) {
         _cameraUri.value = uri
-        _quest.value = _quest.value.copy(imageUri = uri)
+        _quest.value = _quest.value.copy(imageUri = uri.toString())
     }
 
     fun setQuestImage(uri: Uri?) {
         _questImage.value = uri
-        _quest.value = _quest.value.copy(imageUri = uri)
+        _quest.value = _quest.value.copy(imageUri = uri.toString())
     }
 
     fun setGalleryPhotoUri(uri: Uri?) {
         _galleryUri.value = uri
-        _quest.value = _quest.value.copy(imageUri = uri)
+        _quest.value = _quest.value.copy(imageUri = uri.toString())
     }
 
     fun setHasImage(hasImage: Boolean) {
@@ -200,22 +202,31 @@ class ParentAddQuestViewModel @Inject constructor(
         val current = _quest.value
 
         if (current.title != "" && current.description != "" && current.deadlineDate != null) {
-            if(current.imageUri != null){
-                val url = questRepository.uploadImage(current.imageUri)
-                current.imageURL = url.toString()
-            }
             viewModelScope.launch {
                 //questRepository.create(current)
                 try {
+                    var questToCreate = current
+
+                    if(questToCreate.imageUri != null){
+                        println("Attempting to upload Image")
+                        val uri = current.imageUri.toUri()
+                        println("IMAGE URI: " + uri)
+                        val url = questRepository.uploadImage(uri)
+                        println("IMAGE URL: " + url)
+                        questToCreate = questToCreate.copy(imageURL = url)
+
+                    }
                     if(_isAvailableToAllChildren.value) {
                         parentId?.let { id ->
-                            questRepository.createAvailableQuest(current, id)
+                            questRepository.createAvailableQuest(questToCreate, id)
                         }
                     } else {
-                        questRepository.create(current)
+                        questRepository.create(questToCreate)
                     }
                 }catch (e: Exception) {
                     _error.value = e.message
+                    println("Error creating quest: ${e.message}")
+                    e.printStackTrace()
                 }
             }
 

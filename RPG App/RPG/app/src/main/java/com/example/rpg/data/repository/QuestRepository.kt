@@ -50,7 +50,7 @@ class QuestRepository @Inject constructor(
 
     suspend fun create(questItem: Quest) = questRemoteDataSource.create(questItem)
 
-    fun uploadImage(imageUri: Uri) = questRemoteDataSource.uploadImage(imageUri)
+    suspend fun uploadImage(imageUri: Uri) = questRemoteDataSource.uploadImage(imageUri)
 
 //    suspend fun update(questItem: Quest) = questRemoteDataSource.update(questItem)
 

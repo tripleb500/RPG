@@ -22,7 +22,7 @@ data class Quest(
     val assignee: String = User().id,
     val assignedTo: String = User().id,
     val status: Status = Status.INPROGRESS,
-    val imageUri : Uri? = null,
+    val imageUri : String? = null,
     var imageURL : String = ""
 )
 
