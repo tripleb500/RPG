@@ -228,9 +228,6 @@ fun CardView(
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var showEditDialog by rememberSaveable { mutableStateOf(false) }
     var questImage by rememberSaveable {mutableStateOf("")}
-    if(quest.imageURL != ""){
-        questImage = quest.imageURL
-    }
 
     // InProgress Edit Dialog
     if (showEditDialog) {
@@ -316,11 +313,13 @@ fun CardView(
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = questImage,
+                model = if (quest.imageURL.isNotBlank()) quest.imageURL else null,
+                contentDescription = "Quest Image",
                 modifier = Modifier
                     .size(100.dp)
                     .padding(end = 12.dp),
-                contentDescription = "Quest Image"
+                placeholder = painterResource(R.drawable.rpg_logo_parent),
+                error = painterResource(R.drawable.rpg_logo_parent)
             )
 
             Column {

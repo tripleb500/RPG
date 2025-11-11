@@ -189,16 +189,12 @@ class ParentAddQuestViewModel @Inject constructor(
 
         if (current.title != "" && current.description != "" && current.deadlineDate != null) {
             viewModelScope.launch {
-                //questRepository.create(current)
                 try {
                     var questToCreate = current
 
                     if(questToCreate.imageUri != null){
-                        println("Attempting to upload Image")
                         val uri = current.imageUri.toUri()
-                        println("IMAGE URI: " + uri)
                         val url = questRepository.uploadImage(uri)
-                        println("IMAGE URL: " + url)
                         questToCreate = questToCreate.copy(imageURL = url)
                     }
                     if(_isAvailableToAllChildren.value) {
