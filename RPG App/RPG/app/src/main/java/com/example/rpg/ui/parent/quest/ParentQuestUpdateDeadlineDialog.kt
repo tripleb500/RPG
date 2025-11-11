@@ -73,7 +73,7 @@ fun UpdateDeadlineDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            color = Color(0xFFFFF9C4),
+                            color = Color(0xFFA8E6CF),
                             shape = RoundedCornerShape(12.dp)
                         )
                         .padding(vertical = 8.dp)
