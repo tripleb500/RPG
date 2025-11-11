@@ -106,7 +106,7 @@ class ParentAddQuestViewModel @Inject constructor(
             _error.value = e.message
         }
     }
-    
+
     fun setHasImage(hasImage: Boolean) {
         _hasImage.value = hasImage
     }

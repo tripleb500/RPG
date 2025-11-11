@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
@@ -228,6 +229,10 @@ fun CardView(
     val assignedToName by viewModel.getQuestChildName(quest.assignedTo)
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var showEditDialog by rememberSaveable { mutableStateOf(false) }
+    var questImage by rememberSaveable {mutableStateOf("")}
+    if(quest.imageURL != ""){
+        questImage = quest.imageURL
+    }
 
     // InProgress Edit Dialog
     if (showEditDialog) {
@@ -307,13 +312,14 @@ fun CardView(
             modifier = Modifier.padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.baseline_person_24),
-                contentDescription = "Child avatar",
+            AsyncImage(
+                model = questImage,
                 modifier = Modifier
                     .size(100.dp)
-                    .padding(end = 12.dp)
+                    .padding(end = 12.dp),
+                contentDescription = "Quest Image"
             )
+
             Column {
                 Text(
                     buildAnnotatedString {
