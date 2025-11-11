@@ -97,14 +97,6 @@ fun ChildQuestScreen(
                     }
                 }
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = { overlayNavController.navigate(Routes.ParentAddQuestScreen.route) },
-                modifier = Modifier.width(100.dp)) {
-                Text(text = "Add Quest",
-                    modifier = Modifier,
-                    fontSize = 16.sp)
-            }
         }
     ) { paddingValues ->
         Column(
@@ -126,44 +118,62 @@ fun ChildQuestScreen(
 
             LazyColumn {
                 items(sorted) { quest ->
-                    CardView(quest) {clickedQuest ->
-                        selectedQuest = clickedQuest
-                    }
+                    CardView(
+                        quest = quest,
+                        selectedTab = selectedTab,
+                        viewModel = viewModel
+                    )
                 }
-            }
-
-            if (selectedQuest != null) {
-                ChildInProgressQuestDialog(
-                    quest = selectedQuest!!,
-                    onDismissRequest = { selectedQuest = null },
-                    viewModel = viewModel,
-                    onCompleteClicked = { completedQuest ->
-                        viewModel.markQuestAsPending(completedQuest)
-                        selectedQuest = null
-                    }
-                )
             }
         }
     }
 }
 
 @Composable
-fun CardView(quest: Quest, viewModel: ChildQuestViewModel = hiltViewModel(), onQuestClicked: (Quest) -> Unit) {
+fun CardView(
+    quest: Quest,
+    viewModel: ChildHomeScreenViewModel = hiltViewModel(),
+    selectedTab: Status) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
+
+    if (showDialog) {
+        when (selectedTab) {
+            Status.INPROGRESS -> ChildInProgressQuestDialog(
+                quest = quest,
+                onDismissRequest = {showDialog = false},
+                onCompleteClicked = {
+                    completedQuest ->
+                    viewModel.markQuestAsPending(completedQuest)
+                },
+                viewModel = viewModel
+            )
+            Status.PENDING -> ChildPendingQuestDialog(
+                quest = quest,
+                onDismissRequest = {showDialog = false},
+                viewModel = viewModel
+            )
+            Status.COMPLETED -> ChildPendingQuestDialog(
+                quest = quest,
+                onDismissRequest = {showDialog = false},
+                viewModel = viewModel
+            )
+            Status.INCOMPLETE -> ChildPendingQuestDialog(
+                quest = quest,
+                onDismissRequest = {showDialog = false},
+                viewModel = viewModel
+            )
+            else -> {}
+        }
+    }
 
 
     Card(
         modifier = Modifier
             .fillMaxSize()
             .padding(12.dp)
-            .then(
-                if (quest.status == Status.PENDING)
-                    Modifier
-                        .clickable { showDialog = true } // parent clicks pending quest
-                else Modifier
-            ),
+            .clickable { showDialog = true },
         colors = CardDefaults.cardColors(
-            containerColor = when (quest.status) {
+            containerColor = when (selectedTab) {
                 Status.COMPLETED -> Color(0xFFB2DFDB)
                 Status.PENDING -> Color(0xFFFFF9C4)
                 Status.INPROGRESS -> Color(0xFFBBDEFB)

@@ -48,6 +48,13 @@ class ChildHomeScreenViewModel @Inject constructor(
     private val statsRepository: StatsRepository
 ) : ViewModel() {
     // Flow of all in-progress quests for the current child
+
+    private val _imageUrl = MutableStateFlow<String?>(null)
+    val imageUrl: StateFlow<String?> = _imageUrl
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
     val inProgressQuestsFlow: StateFlow<List<Quest>> = authRepository.currentUserIdFlow
         .filterNotNull()
         .flatMapLatest { uid ->
