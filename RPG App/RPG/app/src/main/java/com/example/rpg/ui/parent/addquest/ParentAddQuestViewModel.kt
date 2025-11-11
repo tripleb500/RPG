@@ -57,6 +57,15 @@ class ParentAddQuestViewModel @Inject constructor(
     private val _questImage = MutableStateFlow<Uri?>(null)
     val questImage = _questImage.asStateFlow()
 
+    private val _selectedImageUri = MutableStateFlow<Uri?>(null)
+    val selectedImageUri = _selectedImageUri.asStateFlow()
+
+    fun setSelectedImage(uri: Uri?) {
+        _selectedImageUri.value = uri
+        _quest.value = _quest.value.copy(imageUri = uri.toString())
+    }
+
+
     private val _dueDate = MutableStateFlow<Date?>(null)
     val dueDate = _dueDate.asStateFlow()
 
