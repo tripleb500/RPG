@@ -83,7 +83,7 @@ fun ChildPendingQuestDialog(
 
                 Spacer(Modifier.height(16.dp))
 
-                //Will display the image is there is on
+                //Will display the image if there is one
 
                 if (imageUrl != null) {
                    Spacer(modifier = Modifier.height(8.dp))

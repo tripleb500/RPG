@@ -35,6 +35,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.ui.Routes
@@ -63,13 +64,13 @@ fun QuestDialog(
 
     var showCamera by remember { mutableStateOf(false) }
 
-    val capturedImage by viewModel.capturedImage.collectAsState()
+    val imageUrl by viewModel.imageUrl.collectAsState()
 
 
     if (showCamera && hasPermission) {
         ChildCameraScreen(
             onPhotoTaken = { bitmap ->
-                viewModel.setCapturedImage(bitmap)
+                viewModel.uploadImageForQuest(quest.id, bitmap)
                 showCamera = false
             }
         )
@@ -131,7 +132,7 @@ fun QuestDialog(
                     Text("Take Picture")
                 }
 
-                capturedImage?.let { bitmap ->
+                if (imageUrl != null) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = "Photo Captured:",
@@ -139,8 +140,8 @@ fun QuestDialog(
                         fontWeight = FontWeight.Medium
                     )
                     Image(
-                        bitmap = bitmap.asImageBitmap(),
-                        contentDescription = "Captured quest photo",
+                        painter = rememberAsyncImagePainter(imageUrl),
+                        contentDescription = "Quest image",
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(150.dp)
