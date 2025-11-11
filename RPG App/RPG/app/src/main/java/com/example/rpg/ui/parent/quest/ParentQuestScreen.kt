@@ -1,6 +1,5 @@
 package com.example.rpg.ui.parent.quest
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,7 +36,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -286,10 +284,18 @@ fun CardView(
             )
             Status.INCOMPLETE -> IncompleteQuestDialog(
                 quest = quest,
-                onApprove = { viewModel.updateQuestStatus(quest.id, Status.COMPLETED) },
-                onReject = { viewModel.updateQuestStatus(quest.id, Status.INPROGRESS) },
-                onDismiss = { showDialog = false }
+                onCancel = { showDialog = false },
+                onReassign = { questToReassign ->
+                    viewModel.updateQuestStatus(questToReassign.id, Status.INPROGRESS)
+                    viewModel.setAssignDate(quest.id)
+                    showDialog = false
+                },
+                onDelete = { questToDelete ->
+                    viewModel.deleteQuest(questToDelete.id)
+                    showDialog = false
+                }
             )
+
         }
     }
 
