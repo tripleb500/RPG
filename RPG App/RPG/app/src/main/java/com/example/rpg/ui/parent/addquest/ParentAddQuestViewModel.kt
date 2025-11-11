@@ -214,7 +214,6 @@ class ParentAddQuestViewModel @Inject constructor(
                         val url = questRepository.uploadImage(uri)
                         println("IMAGE URL: " + url)
                         questToCreate = questToCreate.copy(imageURL = url)
-
                     }
                     if(_isAvailableToAllChildren.value) {
                         parentId?.let { id ->
@@ -232,6 +231,4 @@ class ParentAddQuestViewModel @Inject constructor(
 
         }
     }
-
-
 }

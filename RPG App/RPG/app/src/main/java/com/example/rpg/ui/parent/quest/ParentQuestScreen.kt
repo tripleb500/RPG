@@ -224,8 +224,6 @@ fun CardView(
     selectedTab: Status,
     viewModel: ParentQuestViewModel = hiltViewModel()
 ) {
-    // Collect child name as state
-    val assignedToName by viewModel.getQuestChildName(quest.assignedTo)
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var showEditDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -235,6 +233,10 @@ fun CardView(
             quest = quest,
             onSave = { updatedQuest ->
                 viewModel.updateQuestDetails(updatedQuest)
+                showEditDialog = false
+            },
+            onDelete = { questToDelete ->
+                viewModel.deleteQuest(questToDelete.id)
                 showEditDialog = false
             },
             onDismiss = { showEditDialog = false }
@@ -270,13 +272,14 @@ fun CardView(
                     viewModel.completeQuest(quest.id)
                             },
                 onReject = { viewModel.updateQuestStatus(quest.id, Status.INCOMPLETE) },
-                onReassign = { viewModel.updateQuestDetails(it.copy(status = Status.INPROGRESS)) },
+                onReassign = {
+                    viewModel.updateQuestDetails(it.copy(status = Status.INPROGRESS))
+                    viewModel.setAssignDate(quest.id)
+                },
                 onDismiss = { showDialog = false }
             )
             Status.COMPLETED -> CompletedQuestDialog(
                 quest = quest,
-                onApprove = { viewModel.updateQuestStatus(quest.id, Status.COMPLETED) },
-                onReject = { viewModel.updateQuestStatus(quest.id, Status.INPROGRESS) },
                 onDismiss = { showDialog = false }
             )
             Status.INCOMPLETE -> IncompleteQuestDialog(
