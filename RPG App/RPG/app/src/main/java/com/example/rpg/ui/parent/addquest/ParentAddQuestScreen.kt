@@ -104,8 +104,6 @@ fun AddQuestContent(
     val context = LocalContext.current
 
     val quest by viewModel.quest.collectAsState()
-    val hasImage by viewModel.hasImage.collectAsState()
-    val galleryPhotoUri by viewModel.galleryUri.collectAsState()
     val cameraPermissionState: PermissionState = rememberPermissionState(Manifest.permission.CAMERA)
 
     var showDatePicker by remember { mutableStateOf(false) }
@@ -122,43 +120,9 @@ fun AddQuestContent(
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(), onResult = { uri ->
             viewModel.setSelectedImage(uri)
-            /*
-            // 3
-            viewModel.setHasImage(uri != null)
-            viewModel.setGalleryPhotoUri(uri)
-            viewModel.setCameraPhotoUri(null)
-            overlayNavController.currentBackStackEntry?.savedStateHandle?.set<Uri>("photoUri", null)
-            */
-        })
-    /*
-    val captureUri: Uri? =
-        overlayNavController.currentBackStackEntry?.savedStateHandle?.get<Uri>("photoUri")
 
-    // Gallery Image
-            if (hasImage && galleryPhotoUri != null && captureUri == null) {
-                viewModel.setQuestImage(galleryPhotoUri)
-                AsyncImage(
-                    model = galleryPhotoUri,
-                    modifier = Modifier
-                        .width(80.dp)
-                        .height(80.dp),
-                    contentDescription = "Selected image",
-                )
-            }
-            //Camera Image
-            else if (captureUri != null) {
-                viewModel.setQuestImage(captureUri)
-                viewModel.setGalleryPhotoUri(null)
-                //viewModel.setHasImage(false)
-                AsyncImage(
-                    model = captureUri,
-                    modifier = Modifier
-                        .width(80.dp)
-                        .height(80.dp),
-                    contentDescription = "Selected image",
-                )
-            }
-    */
+        })
+
     val captureUri: Uri? =
         overlayNavController.currentBackStackEntry?.savedStateHandle?.get<Uri>("photoUri")
 
