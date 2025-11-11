@@ -60,6 +60,16 @@ class ParentQuestViewModel @Inject constructor(
         }
     }
 
+    fun setAssignDate(questId: String) {
+        viewModelScope.launch {
+            try {
+                questRepository.setAssignDate(questId)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     fun updateQuestDetails(updatedQuest: Quest) {
         viewModelScope.launch {
             questRepository.updateQuest(updatedQuest.id, updatedQuest)
@@ -91,6 +101,16 @@ class ParentQuestViewModel @Inject constructor(
         }
 
         return nameState
+    }
+
+    fun deleteQuest(questId: String) {
+        viewModelScope.launch {
+            try {
+                questRepository.delete(questId)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     fun fetchUserForQuest(quest: Quest) {

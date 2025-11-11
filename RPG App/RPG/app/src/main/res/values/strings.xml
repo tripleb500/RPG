@@ -27,4 +27,7 @@
     <string name="description_colon_label">Description:\u0020</string>
     <string name="due_date_colon_label">Due Date:\u0020</string>
     <string name="completed_on_colon_label">Completed on:\u0020</string>
+    <string name="quest_completed">Quest Completed!</string>
+    <string name="assigned_on_label">Assigned On: %1$s</string>
+    <string name="completed_on_label">Completed on: %1$s</string>
 </resources>

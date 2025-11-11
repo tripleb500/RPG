@@ -5,7 +5,6 @@ import android.net.Uri
 import android.util.Log
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
-import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.dataObjects
@@ -165,6 +164,13 @@ class QuestRemoteDataSource @Inject constructor(
         questRef.update(updateMap).await()
     }
 
+    suspend fun setAssignDate(questId: String) {
+        firestore.collection(QUEST_ITEMS_COLLECTION)
+            .document(questId)
+            .update("assignDate", Timestamp.now())
+            .await()
+    }
+
     suspend fun completeQuest(questId: String) {
         firestore.collection(QUEST_ITEMS_COLLECTION)
             .document(questId)
@@ -201,7 +207,10 @@ class QuestRemoteDataSource @Inject constructor(
     }
 
     suspend fun delete(itemId: String) {
-        firestore.collection(QUEST_ITEMS_COLLECTION).document(itemId).delete().await()
+        firestore.collection(QUEST_ITEMS_COLLECTION)
+            .document(itemId)
+            .delete()
+            .await()
     }
 
     /*

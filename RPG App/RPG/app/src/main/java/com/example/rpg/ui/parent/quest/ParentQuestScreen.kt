@@ -1,6 +1,5 @@
 package com.example.rpg.ui.parent.quest
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,7 +36,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -225,14 +223,9 @@ fun CardView(
     selectedTab: Status,
     viewModel: ParentQuestViewModel = hiltViewModel()
 ) {
-    // Collect child name as state
-    val assignedToName by viewModel.getQuestChildName(quest.assignedTo)
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var showEditDialog by rememberSaveable { mutableStateOf(false) }
     var questImage by rememberSaveable {mutableStateOf("")}
-    if(quest.imageURL != ""){
-        questImage = quest.imageURL
-    }
 
     // InProgress Edit Dialog
     if (showEditDialog) {
@@ -240,6 +233,10 @@ fun CardView(
             quest = quest,
             onSave = { updatedQuest ->
                 viewModel.updateQuestDetails(updatedQuest)
+                showEditDialog = false
+            },
+            onDelete = { questToDelete ->
+                viewModel.deleteQuest(questToDelete.id)
                 showEditDialog = false
             },
             onDismiss = { showEditDialog = false }
@@ -275,21 +272,30 @@ fun CardView(
                     viewModel.completeQuest(quest.id)
                             },
                 onReject = { viewModel.updateQuestStatus(quest.id, Status.INCOMPLETE) },
-                onReassign = { viewModel.updateQuestDetails(it.copy(status = Status.INPROGRESS)) },
+                onReassign = {
+                    viewModel.updateQuestDetails(it.copy(status = Status.INPROGRESS))
+                    viewModel.setAssignDate(quest.id)
+                },
                 onDismiss = { showDialog = false }
             )
             Status.COMPLETED -> CompletedQuestDialog(
                 quest = quest,
-                onApprove = { viewModel.updateQuestStatus(quest.id, Status.COMPLETED) },
-                onReject = { viewModel.updateQuestStatus(quest.id, Status.INPROGRESS) },
                 onDismiss = { showDialog = false }
             )
             Status.INCOMPLETE -> IncompleteQuestDialog(
                 quest = quest,
-                onApprove = { viewModel.updateQuestStatus(quest.id, Status.COMPLETED) },
-                onReject = { viewModel.updateQuestStatus(quest.id, Status.INPROGRESS) },
-                onDismiss = { showDialog = false }
+                onCancel = { showDialog = false },
+                onReassign = { questToReassign ->
+                    viewModel.updateQuestStatus(questToReassign.id, Status.INPROGRESS)
+                    viewModel.setAssignDate(quest.id)
+                    showDialog = false
+                },
+                onDelete = { questToDelete ->
+                    viewModel.deleteQuest(questToDelete.id)
+                    showDialog = false
+                }
             )
+
         }
     }
 
@@ -313,11 +319,13 @@ fun CardView(
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = questImage,
+                model = if (quest.imageURL.isNotBlank()) quest.imageURL else null,
+                contentDescription = "Quest Image",
                 modifier = Modifier
                     .size(100.dp)
                     .padding(end = 12.dp),
-                contentDescription = "Quest Image"
+                placeholder = painterResource(R.drawable.rpg_logo_parent),
+                error = painterResource(R.drawable.rpg_logo_parent)
             )
 
             Column {
