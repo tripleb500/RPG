@@ -45,17 +45,16 @@ class ParentAddQuestViewModel @Inject constructor(
     private val _quest = MutableStateFlow(Quest())
     val quest = _quest.asStateFlow()
 
-    //Gallery for gallery image and camera for camera image
-    private val _galleryUri = MutableStateFlow<Uri?>(null)
-    val galleryUri = _galleryUri.asStateFlow()
-    private val _cameraUri = MutableStateFlow<Uri?>(null)
-    val cameraUri = _cameraUri.asStateFlow()
-
     private val _hasImage = MutableStateFlow(false)
     val hasImage = _hasImage.asStateFlow()
 
-    private val _questImage = MutableStateFlow<Uri?>(null)
-    val questImage = _questImage.asStateFlow()
+    private val _selectedImageUri = MutableStateFlow<Uri?>(null)
+    val selectedImageUri = _selectedImageUri.asStateFlow()
+
+    fun setSelectedImage(uri: Uri?) {
+        _selectedImageUri.value = uri
+        _quest.value = _quest.value.copy(imageUri = uri.toString())
+    }
 
     private val _dueDate = MutableStateFlow<Date?>(null)
     val dueDate = _dueDate.asStateFlow()
@@ -106,21 +105,6 @@ class ParentAddQuestViewModel @Inject constructor(
         } catch (e: Exception) {
             _error.value = e.message
         }
-    }
-
-    fun setCameraPhotoUri(uri: Uri?) {
-        _cameraUri.value = uri
-        _quest.value = _quest.value.copy(imageUri = uri.toString())
-    }
-
-    fun setQuestImage(uri: Uri?) {
-        _questImage.value = uri
-        _quest.value = _quest.value.copy(imageUri = uri.toString())
-    }
-
-    fun setGalleryPhotoUri(uri: Uri?) {
-        _galleryUri.value = uri
-        _quest.value = _quest.value.copy(imageUri = uri.toString())
     }
 
     fun setHasImage(hasImage: Boolean) {

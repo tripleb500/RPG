@@ -37,7 +37,7 @@ import * as admin from "firebase-admin";
 admin.initializeApp();
 const db = admin.firestore();
 
-type RepeatType = "NONE" | "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY";
+type RepeatType = "NONE" | "DAY" | "WEEK" | "MONTH" | "YEAR";
 
 interface Quest {
     [key: string]: any;
@@ -58,16 +58,16 @@ function computeNextDeadline(
     const date = new Date(current.getTime());
 
     switch (repeatType) {
-        case "DAILY":
+        case "DAY":
             date.setDate(date.getDate() + step);
             break;
-        case "WEEKLY":
+        case "WEEK":
             date.setDate(date.getDate() + step * 7);
             break;
-        case "MONTHLY":
+        case "MONTH":
             date.setMonth(date.getMonth() + step);
             break;
-        case "YEARLY":
+        case "YEAR":
             date.setFullYear(date.getFullYear() + step);
             break;
         case "NONE":

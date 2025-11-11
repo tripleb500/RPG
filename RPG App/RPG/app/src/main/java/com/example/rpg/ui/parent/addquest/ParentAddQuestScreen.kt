@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -97,13 +98,12 @@ fun AddQuestContent(
             navController.popBackStack()
         }
     }
+    val selectedImageUri by viewModel.selectedImageUri.collectAsState()
 
     val dueDate by viewModel.dueDate.collectAsState()
     val context = LocalContext.current
 
     val quest by viewModel.quest.collectAsState()
-    val hasImage by viewModel.hasImage.collectAsState()
-    val galleryPhotoUri by viewModel.galleryUri.collectAsState()
     val cameraPermissionState: PermissionState = rememberPermissionState(Manifest.permission.CAMERA)
 
     var showDatePicker by remember { mutableStateOf(false) }
@@ -119,15 +119,20 @@ fun AddQuestContent(
 
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(), onResult = { uri ->
-            // 3
-            viewModel.setHasImage(uri != null)
-            viewModel.setGalleryPhotoUri(uri)
-            viewModel.setCameraPhotoUri(null)
-            overlayNavController.currentBackStackEntry?.savedStateHandle?.set<Uri>("photoUri", null)
+            viewModel.setSelectedImage(uri)
+
         })
 
     val captureUri: Uri? =
         overlayNavController.currentBackStackEntry?.savedStateHandle?.get<Uri>("photoUri")
+
+    LaunchedEffect(captureUri) {
+        captureUri?.let {
+            viewModel.setSelectedImage(it)
+            // Optionally clear the savedStateHandle so it doesn't trigger again
+            //overlayNavController.previousBackStackEntry?.savedStateHandle?.remove<Uri>("photoUri")
+        }
+    }
 
 
     viewModel.fetchChildren()
@@ -267,32 +272,14 @@ fun AddQuestContent(
         //This is where images are currently displayed
         Box(
             modifier = Modifier
-                .width(80.dp)
-                .height(80.dp)
+                .size(80.dp)
         ) {
-            // Gallery Image
-            if (hasImage && galleryPhotoUri != null && captureUri == null) {
-                viewModel.setQuestImage(galleryPhotoUri)
-                AsyncImage(
-                    model = galleryPhotoUri,
+            selectedImageUri?.let {
+                AsyncImage(model = it,
                     modifier = Modifier
                         .width(80.dp)
                         .height(80.dp),
-                    contentDescription = "Selected image",
-                )
-            }
-            //Camera Image
-            else if (captureUri != null) {
-                viewModel.setQuestImage(captureUri)
-                viewModel.setGalleryPhotoUri(null)
-                //viewModel.setHasImage(false)
-                AsyncImage(
-                    model = captureUri,
-                    modifier = Modifier
-                        .width(80.dp)
-                        .height(80.dp),
-                    contentDescription = "Selected image",
-                )
+                    contentDescription = "Selected image")
             }
         }
 
