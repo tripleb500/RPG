@@ -1,5 +1,6 @@
 package com.example.rpg.data.repository
 
+import android.net.Uri
 import com.example.rpg.data.datasource.QuestRemoteDataSource
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
@@ -49,6 +50,8 @@ class QuestRepository @Inject constructor(
 
     suspend fun create(questItem: Quest) = questRemoteDataSource.create(questItem)
 
+    suspend fun uploadImage(imageUri: Uri) = questRemoteDataSource.uploadImage(imageUri)
+
 //    suspend fun update(questItem: Quest) = questRemoteDataSource.update(questItem)
 
     fun getAvailableQuests(currentUserIdFlow: Flow<String>): Flow<List<Quest>> =
@@ -72,6 +75,9 @@ class QuestRepository @Inject constructor(
 
     suspend fun updateQuestStatus(questId: String, newStatus: Status) =
         questRemoteDataSource.updateQuestStatus(questId, newStatus)
+
+    suspend fun completeQuest(questId: String) =
+        questRemoteDataSource.completeQuest(questId)
 
     suspend fun updateQuest(questId: String, updatedQuest: Quest) {
         questRemoteDataSource.updateQuest(questId, updatedQuest)

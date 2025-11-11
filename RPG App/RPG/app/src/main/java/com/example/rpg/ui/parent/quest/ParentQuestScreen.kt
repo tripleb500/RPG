@@ -39,8 +39,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -252,6 +255,7 @@ fun CardView(
                 onApprove = {
                     // Mark quest as completed
                     viewModel.updateQuestStatus(quest.id, Status.COMPLETED)
+                    viewModel.completeQuest(quest.id)
                 },
                 onEdit = {
                     showDialog = false
@@ -261,7 +265,10 @@ fun CardView(
             )
             Status.PENDING -> PendingQuestDialog(
                 quest = quest,
-                onApprove = { viewModel.updateQuestStatus(quest.id, Status.COMPLETED) },
+                onApprove = {
+                    viewModel.updateQuestStatus(quest.id, Status.COMPLETED)
+                    viewModel.completeQuest(quest.id)
+                            },
                 onReject = { viewModel.updateQuestStatus(quest.id, Status.INCOMPLETE) },
                 onReassign = { viewModel.updateQuestDetails(it.copy(status = Status.INPROGRESS)) },
                 onDismiss = { showDialog = false }
@@ -307,14 +314,53 @@ fun CardView(
                     .size(100.dp)
                     .padding(end = 12.dp)
             )
-            val formattedDate = quest.deadlineDate?.let {
-                val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-                formatter.format(it)
-            } ?: "N/A"
             Column {
-                Text(stringResource(R.string.title, quest.title))
-                Text(stringResource(R.string.description, quest.description))
-                Text(stringResource(R.string.due_date, formattedDate))
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                            append(stringResource(R.string.title_colon_label))
+                        }
+                        append(quest.title)
+                    }
+                )
+
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                            append(stringResource(R.string.description_colon_label))
+                        }
+                        append(quest.description)
+                    }
+                )
+
+                if (quest.status == Status.COMPLETED) {
+                    val formattedCompletionDate = quest.completionDate?.let {
+                        val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+                        formatter.format(it)
+                    } ?: "N/A"
+
+                    Text(
+                        buildAnnotatedString {
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                append(stringResource(R.string.completed_on_colon_label))
+                            }
+                            append(formattedCompletionDate)
+                        }
+                    )
+                } else {
+                    val formattedDate = quest.deadlineDate?.let {
+                        val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+                        formatter.format(it)
+                    } ?: "N/A"
+                    Text(
+                        buildAnnotatedString {
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                append(stringResource(R.string.due_date_colon_label))
+                            }
+                            append(formattedDate)
+                        }
+                    )
+                }
             }
         }
     }

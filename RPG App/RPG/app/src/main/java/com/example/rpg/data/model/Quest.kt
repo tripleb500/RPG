@@ -1,6 +1,7 @@
 package com.example.rpg.data.model
 
 import android.net.Uri
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentId
 import java.util.Date
 
@@ -18,11 +19,11 @@ data class Quest(
     val repeatType: RepeatType = RepeatType.NONE,
     val repeatInterval: Int = 1,
     val allDay: Boolean = false,
-    val completed: Boolean = false,
     val assignee: String = User().id,
     val assignedTo: String = User().id,
     val status: Status = Status.INPROGRESS,
-    val imageUri : Uri? = null
+    val imageUri : String? = null,
+    var imageURL : String = ""
 )
 
 /** Representation of Statuses a quest can have:

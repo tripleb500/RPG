@@ -1,12 +1,15 @@
 package com.example.rpg.data.datasource
 
+import android.net.Uri
 import android.util.Log
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
+import com.google.android.gms.tasks.Task
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +19,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.tasks.await
 import java.util.Date
+import java.util.UUID
 import javax.inject.Inject
 
 /**
@@ -25,7 +29,9 @@ import javax.inject.Inject
  */
 
 class QuestRemoteDataSource @Inject constructor(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val storage: FirebaseStorage
+
 ) {
     // ===========================
     // GET QUESTS
@@ -156,6 +162,13 @@ class QuestRemoteDataSource @Inject constructor(
         questRef.update(updateMap).await()
     }
 
+    suspend fun completeQuest(questId: String) {
+        firestore.collection(QUEST_ITEMS_COLLECTION)
+            .document(questId)
+            .update("completionDate", Timestamp.now())
+            .await()
+    }
+
     suspend fun updateQuestAssignment(questId: String, childId: String, newStatus: Status) {
         firestore.collection(QUEST_ITEMS_COLLECTION)
             .document(questId)
@@ -187,6 +200,31 @@ class QuestRemoteDataSource @Inject constructor(
     suspend fun delete(itemId: String) {
         firestore.collection(QUEST_ITEMS_COLLECTION).document(itemId).delete().await()
     }
+
+    /*
+    fun uploadImage(uri: Uri?): Task<Uri?> {
+        val storageReference = storage.reference
+        val imageReference = storageReference.child("images/" + uri!!.lastPathSegment)
+        imageReference.putFile(uri)
+        return imageReference.downloadUrl
+        //val uploadtask = uri.let { imageReference.putFile(it) }
+    }
+
+     */
+
+    suspend fun uploadImage(uri: Uri?): String {
+        if (uri == null) throw IllegalArgumentException("URI cannot be null")
+
+        val fileName = "images/${UUID.randomUUID()}.jpg" // generate unique name
+        val imageRef = storage.reference.child(fileName)
+
+        // Upload the file
+        imageRef.putFile(uri).await()
+
+        // Get the download URL after successful upload
+        return imageRef.downloadUrl.await().toString()
+    }
+
 
     companion object {
         //        private const val OWNER_ID_FIELD = "ownerId"

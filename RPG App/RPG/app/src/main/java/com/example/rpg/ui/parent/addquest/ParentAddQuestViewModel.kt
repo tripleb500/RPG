@@ -6,20 +6,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import android.content.ContentResolver
+import android.content.Context
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.RepeatType
 import com.example.rpg.data.model.User
 import com.example.rpg.data.repository.AuthRepository
 import com.example.rpg.data.repository.QuestRepository
 import com.example.rpg.data.repository.UserRepository
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
+import androidx.core.net.toUri
 
 
 @HiltViewModel
@@ -27,7 +32,6 @@ class ParentAddQuestViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val questRepository: QuestRepository,
     private val userRepository: UserRepository
-
 ) : ViewModel() {
     private val _children = MutableStateFlow<List<User>>(emptyList())
     val children = _children.asStateFlow()
@@ -53,9 +57,14 @@ class ParentAddQuestViewModel @Inject constructor(
     private val _questImage = MutableStateFlow<Uri?>(null)
     val questImage = _questImage.asStateFlow()
 
-
     private val _dueDate = MutableStateFlow<Date?>(null)
     val dueDate = _dueDate.asStateFlow()
+
+    private val _context = MutableStateFlow<Context?>(null)
+    val context = _context.asStateFlow()
+
+    private val _questCreated = MutableStateFlow(false)
+    val questCreated: StateFlow<Boolean> = _questCreated
 
     fun setDueDate(date: Date) {
         _dueDate.value = date
@@ -101,17 +110,17 @@ class ParentAddQuestViewModel @Inject constructor(
 
     fun setCameraPhotoUri(uri: Uri?) {
         _cameraUri.value = uri
-        _quest.value = _quest.value.copy(imageUri = uri)
+        _quest.value = _quest.value.copy(imageUri = uri.toString())
     }
 
     fun setQuestImage(uri: Uri?) {
         _questImage.value = uri
-        _quest.value = _quest.value.copy(imageUri = uri)
+        _quest.value = _quest.value.copy(imageUri = uri.toString())
     }
 
     fun setGalleryPhotoUri(uri: Uri?) {
         _galleryUri.value = uri
-        _quest.value = _quest.value.copy(imageUri = uri)
+        _quest.value = _quest.value.copy(imageUri = uri.toString())
     }
 
     fun setHasImage(hasImage: Boolean) {
@@ -198,18 +207,34 @@ class ParentAddQuestViewModel @Inject constructor(
             viewModelScope.launch {
                 //questRepository.create(current)
                 try {
+                    var questToCreate = current
+
+                    if(questToCreate.imageUri != null){
+                        println("Attempting to upload Image")
+                        val uri = current.imageUri.toUri()
+                        println("IMAGE URI: " + uri)
+                        val url = questRepository.uploadImage(uri)
+                        println("IMAGE URL: " + url)
+                        questToCreate = questToCreate.copy(imageURL = url)
+
+                    }
                     if(_isAvailableToAllChildren.value) {
                         parentId?.let { id ->
-                            questRepository.createAvailableQuest(current, id)
+                            questRepository.createAvailableQuest(questToCreate, id)
                         }
                     } else {
-                        questRepository.create(current)
+                        questRepository.create(questToCreate)
                     }
+                    _questCreated.value = true
                 }catch (e: Exception) {
                     _error.value = e.message
+                    println("Error creating quest: ${e.message}")
+                    e.printStackTrace()
                 }
             }
 
         }
     }
+
+
 }
