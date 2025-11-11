@@ -11,9 +11,8 @@
     <string name="add_quest">Add Quest</string>
     <string name="unknown">Unknown</string>
     <string name="name">Name: %1$s</string>
-    <string name="title">Title: %1$s</string>
-    <string name="description">Description: %1$s</string>
-    <string name="due_date">Due Date: %1$s</string>
+    <string name="title_label">Title: %1$s</string>
+    <string name="description_label">Description: %1$s</string>
     <string name="manage_quest">Manage Quest</string>
     <string name="what_would_you_like_to_do_with">What would you like to do with \'</string>
     <string name="quote_question">\'?</string>
@@ -24,4 +23,8 @@
     <string name="cancel">Cancel</string>
     <string name="reassign">Reassign</string>
     <string name="verify_quest">Verify Quest</string>
+    <string name="title_colon_label">Title:\u0020</string>
+    <string name="description_colon_label">Description:\u0020</string>
+    <string name="due_date_colon_label">Due Date:\u0020</string>
+    <string name="completed_on_colon_label">Completed on:\u0020</string>
 </resources>
