@@ -147,6 +147,13 @@ class QuestRemoteDataSource @Inject constructor(
             .await()
     }
 
+    suspend fun updateQuestImage(questId: String, newImage: String) {
+        firestore.collection(QUEST_ITEMS_COLLECTION)
+            .document(questId)
+            .update("imageURL", newImage)
+            .await()
+    }
+
     // TODO: add more fields as needed
     suspend fun updateQuest(questId: String, updatedQuest: Quest) {
         val questRef = firestore.collection(QUEST_ITEMS_COLLECTION).document(questId)

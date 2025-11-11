@@ -88,5 +88,8 @@ class QuestRepository @Inject constructor(
         return questRemoteDataSource.uploadBitmapAndGetUrl(bitmap, questId)
     }
 
+    suspend fun updateQuestImage(questId: String, newImage: String) =
+        questRemoteDataSource.updateQuestImage(questId, newImage)
+
 //    suspend fun delete(questId: String) = questRemoteDataSource.delete(questId)
 }

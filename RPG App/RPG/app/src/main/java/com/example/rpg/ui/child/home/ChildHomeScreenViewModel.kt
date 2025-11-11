@@ -113,6 +113,10 @@ class ChildHomeScreenViewModel @Inject constructor(
     fun markQuestAsPending(quest: Quest) {
         viewModelScope.launch {
             try {
+                val url = _imageUrl.value
+                if (url != null) {
+                    questRepository.updateQuestImage(quest.id, url)
+                }
                 println("Marking quest as PENDING: ${quest.title} (ID: ${quest.id})")
                 questRepository.updateQuestStatus(quest.id, Status.PENDING)
                 // Add a small delay to see if the update propagates correctly
