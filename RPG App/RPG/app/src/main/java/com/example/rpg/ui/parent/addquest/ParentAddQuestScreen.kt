@@ -168,29 +168,43 @@ fun AddQuestContent(
     ) {
         Text(text = "Assign to",
             modifier = Modifier
-                .padding(start = 16.dp)
-                .align(Alignment.Start),
-            fontSize = 24.sp)
+                .padding(16.dp)
+                .align(Alignment.CenterHorizontally),
+            fontSize = 32.sp)
 
         val children by viewModel.children.collectAsState()
         val selectedChild by viewModel.selectedChild.collectAsState()
 
-        LazyRow(modifier = Modifier.align(Alignment.Start)) {
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .clickable {
-                            viewModel.selectChild(null)
-                        },
-                    colors = if (isAvailableToAllChildren)
-                        CardDefaults.cardColors(containerColor = Color.LightGray)
-                    else CardDefaults.cardColors()
-                ) {
-                    Text(text = "Quest Board", modifier = Modifier.padding(16.dp))
-                }
-            }
+        Card(
+            modifier = Modifier
+                .padding(8.dp)
+                .align(Alignment.CenterHorizontally)
+                .clickable {
+                    viewModel.selectChild(null)
+                },
+            colors = if (isAvailableToAllChildren)
+                CardDefaults.cardColors(containerColor = Color.LightGray)
+            else CardDefaults.cardColors()
+        ) {
+            Text(text = "Quest Board", modifier = Modifier.padding(16.dp))
+        }
+
+        LazyRow(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+//            item {
+//                Card(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(8.dp)
+//                        .clickable {
+//                            viewModel.selectChild(null)
+//                        },
+//                    colors = if (isAvailableToAllChildren)
+//                        CardDefaults.cardColors(containerColor = Color.LightGray)
+//                    else CardDefaults.cardColors()
+//                ) {
+//                    Text(text = "Quest Board", modifier = Modifier.padding(16.dp))
+//                }
+//            }
 
             items(children) { child ->
                 Card(
