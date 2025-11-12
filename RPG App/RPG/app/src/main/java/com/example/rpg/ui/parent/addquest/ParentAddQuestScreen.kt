@@ -102,22 +102,6 @@ fun AddQuestContent(
     val questLoading by viewModel.questLoading.collectAsState()
     val context = LocalContext.current
 
-    if (questLoading) {
-        AlertDialog(
-            onDismissRequest = {},
-            title = { Text("Uploading...") },
-            text = { CircularProgressIndicator() },
-            confirmButton = {}
-        )
-    }
-
-    LaunchedEffect(questCreated) {
-        if (questCreated) {
-            Toast.makeText(context, "Quest Assigned!", Toast.LENGTH_SHORT).show()
-            navController.popBackStack()
-        }
-    }
-
     val selectedImageUri by viewModel.selectedImageUri.collectAsState()
 
     val isAvailableToAllChildren by viewModel.isAvailableToAllChildren.collectAsState()
@@ -125,13 +109,11 @@ fun AddQuestContent(
 
     val dueDate by viewModel.dueDate.collectAsState()
 
-
     val quest by viewModel.quest.collectAsState()
     val cameraPermissionState: PermissionState = rememberPermissionState(Manifest.permission.CAMERA)
 
     var showDatePicker by remember { mutableStateOf(false) }
     var showTimePicker by remember { mutableStateOf(false) }
-
 
     val calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
@@ -149,6 +131,22 @@ fun AddQuestContent(
     val captureUri: Uri? =
         overlayNavController.currentBackStackEntry?.savedStateHandle?.get<Uri>("photoUri")
 
+    if (questLoading) {
+        AlertDialog(
+            onDismissRequest = {},
+            title = { Text("Uploading...") },
+            text = { CircularProgressIndicator() },
+            confirmButton = {}
+        )
+    }
+
+    LaunchedEffect(questCreated) {
+        if (questCreated) {
+            Toast.makeText(context, "Quest Assigned!", Toast.LENGTH_SHORT).show()
+            navController.popBackStack()
+        }
+    }
+
     LaunchedEffect(captureUri) {
         captureUri?.let {
             viewModel.setSelectedImage(it)
@@ -156,9 +154,9 @@ fun AddQuestContent(
             //overlayNavController.previousBackStackEntry?.savedStateHandle?.remove<Uri>("photoUri")
         }
     }
-
-
     viewModel.fetchChildren()
+
+
 
     Column(
         modifier = modifier
@@ -178,6 +176,7 @@ fun AddQuestContent(
             onValueChange = { viewModel.setQuestTitle(it) },
             label = { Text(text = "Title") },
             modifier = Modifier
+                .fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -188,21 +187,28 @@ fun AddQuestContent(
             onValueChange = { viewModel.setQuestDescription(it) },
             label = { Text(text = "Description") },
             modifier = Modifier
+                .fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         //Time and Date Buttons, Repeat Checkbox
-        Row() {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
             //Button to open Calendar
-            Button(onClick = { showDatePicker = true }) {
+            Button(
+                modifier = Modifier.padding(16.dp),
+                onClick = { showDatePicker = true }) {
                 Text(text = dueDate?.let { SimpleDateFormat("dd MMM yyyy").format(it) }
                     ?: "Select Due Date")
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Button(onClick = { showTimePicker = true }, enabled = dueDate != null) {
+            Button(
+                modifier = Modifier.padding(16.dp),
+                onClick = { showTimePicker = true }, enabled = dueDate != null) {
                 Text(text = dueDate?.let { SimpleDateFormat("h:mm a").format(it) } ?: "Select Time")
             }
 
