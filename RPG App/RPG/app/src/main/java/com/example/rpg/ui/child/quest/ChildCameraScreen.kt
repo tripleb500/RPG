@@ -2,6 +2,7 @@ package com.example.rpg.ui.child.quest
 
 import android.Manifest
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup
@@ -79,9 +80,11 @@ fun ChildCameraScreen(
                             override fun onCaptureSuccess(image: ImageProxy) {
                                 try {
                                     val bitmap = image.toBitmap()
+
+                                    val portraitBitmap = ensurePortrait(bitmap)
                                     Toast.makeText(context, "Photo captured!", Toast.LENGTH_SHORT).show()
                                     Handler(Looper.getMainLooper()).postDelayed({
-                                        onPhotoTaken(bitmap)
+                                        onPhotoTaken(portraitBitmap)
                                     }, 1000)
                                 } finally {
                                     image.close()
@@ -125,5 +128,16 @@ fun ChildCameraScreen(
         if (cameraPermissionState.status == PermissionStatus.Granted) {
             cameraController.bindToLifecycle(lifecycleOwner)
         }
+    }
+}
+
+fun ensurePortrait(bitmap: Bitmap): Bitmap {
+    return if (bitmap.width > bitmap.height) {
+        // Landscape - rotate to portrait
+        val matrix = Matrix()
+        matrix.postRotate(90f)
+        Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+    } else {
+        bitmap
     }
 }

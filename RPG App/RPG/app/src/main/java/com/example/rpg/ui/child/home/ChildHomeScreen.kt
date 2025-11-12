@@ -261,10 +261,6 @@ fun ChildHomeScreen(
             ChildInProgressQuestDialog(
                 quest = selectedQuest!!,
                 onDismissRequest = { selectedQuest = null },
-                onCompleteClicked = { completedQuest ->
-                    viewModel.markQuestAsPending(completedQuest)
-                    selectedQuest = null
-                },
             )
         }
     }
