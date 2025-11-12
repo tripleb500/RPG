@@ -166,14 +166,16 @@ fun AddQuestContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Add Quest",modifier = Modifier.padding(bottom = 16.dp), fontSize = 32.sp)
-
-        Text(text = "Assign to", modifier = Modifier.padding(top = 8.dp),fontSize = 24.sp)
+        Text(text = "Assign to",
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .align(Alignment.Start),
+            fontSize = 24.sp)
 
         val children by viewModel.children.collectAsState()
         val selectedChild by viewModel.selectedChild.collectAsState()
 
-        LazyRow {
+        LazyRow(modifier = Modifier.align(Alignment.Start)) {
             item {
                 Card(
                     modifier = Modifier
@@ -186,7 +188,7 @@ fun AddQuestContent(
                         CardDefaults.cardColors(containerColor = Color.LightGray)
                     else CardDefaults.cardColors()
                 ) {
-                    Text(text = "Quest board", modifier = Modifier.padding(16.dp))
+                    Text(text = "Quest Board", modifier = Modifier.padding(16.dp))
                 }
             }
 
