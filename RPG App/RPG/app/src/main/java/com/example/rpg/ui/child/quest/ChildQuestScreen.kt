@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -46,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
@@ -186,15 +188,16 @@ fun CardView(
             modifier = Modifier.padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(modifier = Modifier.padding(start = 12.dp)) {
-                Image(
-                    painter = painterResource(id = R.drawable.baseline_person_24),
-                    contentDescription = "Child avatar",
-                    modifier = Modifier
-                        .width(100.dp)
-                        .height(100.dp)
-                )
-            }
+
+            AsyncImage(
+                model = if (quest.imageURL.isNotBlank()) quest.imageURL else null,
+                contentDescription = "Quest Image",
+                modifier = Modifier
+                    .size(100.dp)
+                    .padding(end = 12.dp),
+                placeholder = painterResource(R.drawable.rpg_logo_parent),
+                error = painterResource(R.drawable.rpg_logo_parent)
+            )
 
             Column(modifier = Modifier.padding(start = 12.dp)) {
                 Text(
