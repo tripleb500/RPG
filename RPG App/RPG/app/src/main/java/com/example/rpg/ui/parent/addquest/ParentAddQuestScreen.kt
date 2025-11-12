@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -50,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -166,32 +168,31 @@ fun AddQuestContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Assign to",
+        Text(
+            text = "Assign to",
             modifier = Modifier
-                .padding(start = 16.dp)
-                .align(Alignment.Start),
-            fontSize = 24.sp)
+                .padding(16.dp)
+                .align(Alignment.CenterHorizontally),
+            fontSize = 32.sp
+        )
 
         val children by viewModel.children.collectAsState()
-        val selectedChild by viewModel.selectedChild.collectAsState()
 
-        LazyRow(modifier = Modifier.align(Alignment.Start)) {
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .clickable {
-                            viewModel.selectChild(null)
-                        },
-                    colors = if (isAvailableToAllChildren)
-                        CardDefaults.cardColors(containerColor = Color.LightGray)
-                    else CardDefaults.cardColors()
-                ) {
-                    Text(text = "Quest Board", modifier = Modifier.padding(16.dp))
-                }
-            }
+        Card(
+            modifier = Modifier
+                .padding(8.dp)
+                .align(Alignment.CenterHorizontally)
+                .clickable {
+                    viewModel.selectChild(null)
+                },
+            colors = if (isAvailableToAllChildren)
+                CardDefaults.cardColors(containerColor = Color.LightGray)
+            else CardDefaults.cardColors()
+        ) {
+            Text(text = "Quest Board", modifier = Modifier.padding(16.dp))
+        }
 
+        LazyRow(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             items(children) { child ->
                 Card(
                     modifier = Modifier
@@ -200,7 +201,9 @@ fun AddQuestContent(
                         .clickable {
                             viewModel.selectChild(child)
                         },
-                    colors = if (!isAvailableToAllChildren && child == selectedChild) CardDefaults.cardColors(containerColor = Color.LightGray)
+                    colors = if (!isAvailableToAllChildren && child == selectedChild) CardDefaults.cardColors(
+                        containerColor = Color.LightGray
+                    )
                     else CardDefaults.cardColors()
                 ) {
                     Text(
@@ -236,29 +239,46 @@ fun AddQuestContent(
 
         //Time and Date Buttons, Repeat Checkbox
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            //Button to open Calendar
+            // Button to open Calendar
             Button(
-                modifier = Modifier.padding(16.dp),
-                onClick = { showDatePicker = true }) {
-                Text(text = dueDate?.let { SimpleDateFormat("dd MMM yyyy").format(it) }
-                    ?: "Select Due Date")
+                onClick = { showDatePicker = true },
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .defaultMinSize(minWidth = 140.dp)
+            ) {
+                Text(
+                    text = dueDate?.let { SimpleDateFormat("dd MMM yyyy").format(it) }
+                        ?: "Select Due Date",
+                    textAlign = TextAlign.Center
+                )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-
+            // Time Button
             Button(
-                modifier = Modifier.padding(16.dp),
-                onClick = { showTimePicker = true }, enabled = dueDate != null) {
-                Text(text = dueDate?.let { SimpleDateFormat("h:mm a").format(it) } ?: "Select Time")
+                onClick = { showTimePicker = true },
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .defaultMinSize(minWidth = 140.dp),
+                enabled = dueDate != null
+            ) {
+                Text(
+                    text = dueDate?.let { SimpleDateFormat("h:mm a").format(it) }
+                        ?: "Select Time",
+                    textAlign = TextAlign.Center
+                )
             }
         }
-        Column(){
 
+        Column {
             //Repeat, If repeat is checked, user chooses repeat type and interval
             //When quest is done or past deadline, generate next deadline based on selected type and interval
-            Column() {
+            Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(
                         checked = quest.repeat, onCheckedChange = { checked ->
@@ -344,11 +364,13 @@ fun AddQuestContent(
         Box(
         ) {
             selectedImageUri?.let {
-                AsyncImage(model = it,
+                AsyncImage(
+                    model = it,
                     modifier = Modifier
                         .width(80.dp)
                         .height(80.dp),
-                    contentDescription = "Selected image")
+                    contentDescription = "Selected image"
+                )
             }
         }
 
