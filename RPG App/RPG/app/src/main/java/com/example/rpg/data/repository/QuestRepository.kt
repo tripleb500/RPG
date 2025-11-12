@@ -55,8 +55,11 @@ class QuestRepository @Inject constructor(
 
 //    suspend fun update(questItem: Quest) = questRemoteDataSource.update(questItem)
 
-    fun getAvailableQuests(currentUserIdFlow: Flow<String>): Flow<List<Quest>> =
+    fun getAvailableQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> =
         questRemoteDataSource.getAvailableQuests(currentUserIdFlow)
+
+    fun getAvailableQuestsForChild(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> =
+        questRemoteDataSource.getAvailableQuestsForChild(currentUserIdFlow)
 
     suspend fun claimQuest(questId: String, childId: String) =
         questRemoteDataSource.updateQuestAssignment(

@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
+import com.example.rpg.ui.child.stats.StatsList
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.dataObjects
@@ -138,6 +139,20 @@ class QuestRemoteDataSource @Inject constructor(
             }
         }
 
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getAvailableQuestsForChild(currentUserIdFlow: Flow<String?>) : Flow<List<Quest>> {
+        return currentUserIdFlow.flatMapLatest { childId ->
+            if(childId == null) {
+                flowOf(emptyList())
+            } else {
+                firestore.collection(QUEST_ITEMS_COLLECTION)
+                    .whereEqualTo("status", Status.AVAILABLE.name)
+                    .whereIn("assignedTo", listOf("", childId))
+                    .dataObjects()
+            }
+        }
     }
 
     // ===========================

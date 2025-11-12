@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -98,4 +99,25 @@ class ChildQuestViewModel @Inject constructor(
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = emptyList()
             )
+
+    val availableQuests: StateFlow<List<Quest>> =
+        questRepository.getAvailableQuestsForChild(authRepository.currentUserIdFlow)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyList()
+            )
+
+    fun claimQuest(questId: String) {
+        viewModelScope.launch {
+            try {
+                val childId = authRepository.currentUserIdFlow.firstOrNull()
+                if (childId != null) {
+                    questRepository.claimQuest(questId, childId)
+                }
+            } catch (e: Exception) {
+                Log.e("QuestVM", "Error claiming quest", e)
+            }
+        }
+    }
 }

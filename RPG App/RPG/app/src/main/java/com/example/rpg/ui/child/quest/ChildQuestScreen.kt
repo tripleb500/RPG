@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
@@ -57,6 +58,9 @@ fun ChildQuestScreen(
     viewModel: ChildQuestViewModel = hiltViewModel()
 ) {
     val childQuests = viewModel.childQuests.collectAsState()
+
+    val availableQuests by viewModel.availableQuests.collectAsState()
+
     var selectedTab by rememberSaveable { mutableStateOf(Status.INPROGRESS) }
     var sortOrder by rememberSaveable { mutableStateOf(SortOrder.ASCENDING) }
 
@@ -101,11 +105,15 @@ fun ChildQuestScreen(
             // Create tabs
             QuestTabBar(selected = selectedTab, onSelect = { selectedTab = it })
 
-            val filtered = childQuests.value.filter { it.status == selectedTab }
+            //val filtered = childQuests.value.filter { it.status == selectedTab }
+            val questToDisplay = when (selectedTab) {
+                Status.AVAILABLE -> availableQuests
+                else -> childQuests.value.filter { it.status == selectedTab }
+            }
 
             val sorted = when (sortOrder) {
-                SortOrder.ASCENDING -> filtered.sortedBy { it.deadlineDate }
-                SortOrder.DESCENDING -> filtered.sortedByDescending { it.deadlineDate }
+                SortOrder.ASCENDING -> questToDisplay.sortedBy { it.deadlineDate }
+                SortOrder.DESCENDING -> questToDisplay.sortedByDescending { it.deadlineDate }
             }
 
             LazyColumn {
@@ -113,7 +121,10 @@ fun ChildQuestScreen(
                     CardView(
                         quest = quest,
                         selectedTab = selectedTab,
-                        onQuestClick = { selectedQuest = quest }
+                        onQuestClick = { selectedQuest = quest },
+                        onClaimClick = if(selectedTab == Status.AVAILABLE) {
+                            {viewModel.claimQuest(quest.id)}
+                        } else null
                     )
                 }
             }
@@ -121,6 +132,7 @@ fun ChildQuestScreen(
     }
     selectedQuest?.let { quest ->
         when (selectedTab) {
+
             Status.INPROGRESS -> ChildInProgressQuestDialog(
                 quest = quest,
                 onDismissRequest = { selectedQuest = null }, // ← Clear selected quest
@@ -155,7 +167,8 @@ fun ChildQuestScreen(
 fun CardView(
     quest: Quest,
     selectedTab: Status,
-    onQuestClick: () -> Unit
+    onQuestClick: () -> Unit,
+    onClaimClick: (() -> Unit)? = null
 ) {
     Card(
         modifier = Modifier
@@ -198,6 +211,19 @@ fun CardView(
                 Text(
                     text = "Due Date: ${quest.deadlineDate}",
                 )
+
+                if (selectedTab == Status.AVAILABLE && onClaimClick != null) {
+                    IconButton(
+                        onClick = onClaimClick,
+                        modifier = Modifier.size(36.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CheckCircleOutline,
+                            contentDescription = "Claim quest",
+                            tint = Color.Green
+                        )
+                    }
+                }
             }
         }
     }
