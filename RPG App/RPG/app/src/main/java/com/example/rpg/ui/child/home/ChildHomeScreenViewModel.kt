@@ -97,6 +97,21 @@ class ChildHomeScreenViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = 0
         )
+    val questsInProgCount: StateFlow<Int> = authRepository.currentUserIdFlow
+        .filterNotNull()
+        .flatMapLatest { uid ->
+            questRepository.getQuestsByStatus(flowOf(uid), Status.INPROGRESS)
+                .map { it.size } // count them
+                .catch { error ->
+                    Log.e("ChildHomeScreenVM", "Error loading completed quests: ${error.message}")
+                    emit(0)
+                }
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = 0
+        )
     private val questParentCache = mutableMapOf<String, User>()
 
     // Function to mark a quest as pending

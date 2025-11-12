@@ -1,16 +1,19 @@
 package com.example.rpg.ui.child.stats
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -22,13 +25,17 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.rpg.data.model.User
 import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
+import com.example.rpg.ui.child.quest.ChildQuestViewModel
 
 const val totalXP = 340
 
@@ -42,13 +49,17 @@ val StatsList = mutableStateListOf(
 fun ChildStatsDialog(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
+    user: User?,
     viewModel: ChildHomeScreenViewModel = hiltViewModel(),
     authViewModel: AuthViewModel = hiltViewModel(),
+    questViewModel: ChildQuestViewModel = hiltViewModel()
 ) {
     val isLoadingStats by remember { derivedStateOf { viewModel.isLoadingStats } }
     val errorMessagesStats by remember { derivedStateOf { viewModel.errorMessageStats } }
 
     val count by viewModel.completedQuestsCount.collectAsState()
+    val inProg by viewModel.questsInProgCount.collectAsState()
+    val firstName = user?.firstname.toString()
 
     var username by remember { mutableStateOf("") }
 
@@ -71,30 +82,50 @@ fun ChildStatsDialog(
                     modifier = Modifier.fillMaxWidth(),
                     style = MaterialTheme.typography.titleLarge
                 )
-                LazyColumn {
-                    items(StatsList) { Stats ->
-                        Text(
-                            text = Stats.name,
-                            modifier = Modifier.padding(top = 16.dp)
-                        )
-                        Text(
-                            text = "Current XP: " + Stats.currentXP,
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                       /* Text(
-                            text = "Quests Accepted: $count",
-                            style = MaterialTheme.typography.bodySmall,
-                        )*/
-                        Text(
-                            text = "Quests Completed: $count",
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                        Text(
-                            text = "Quests Streak: " + Stats.questStreak,
-                            style = MaterialTheme.typography.bodySmall,
-                        )
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.LightGray
+                    )
+                ){
+                    Box(
+                        modifier = Modifier,
+                        contentAlignment = Alignment.Center
+                    ){
+                        LazyColumn(
+                            modifier = Modifier.padding(8.dp)
+                        ) {
+                            items(StatsList) { Stats ->
+                                Text(
+                                    text = firstName,
+                                    modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
+                                )
+                                Text(
+                                    text = "Current XP: " + Stats.currentXP,
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                                /* Text(
+                                     text = "Quests Accepted: $count",
+                                     style = MaterialTheme.typography.bodySmall,
+                                 )*/
+                                Text(
+                                    text = "Quests Completed: $count",
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                                Text(
+                                    text = "Quests In Progress: $inProg",
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                                Text(
+                                    text = "Quests Streak: " + Stats.questStreak,
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                            }
+                        }
                     }
+
                 }
+
                 if (errorMessagesStats != null) {
                     Text(
                         text = errorMessagesStats ?: "",

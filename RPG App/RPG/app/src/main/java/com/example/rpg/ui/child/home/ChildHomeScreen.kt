@@ -208,6 +208,7 @@ fun ChildHomeScreen(
                 if (showDialogStats) {
                     ChildStatsDialog(
                         onDismissRequest = { showDialogStats = false },
+                        user = user,
                         viewModel = viewModel,
                         authViewModel = authViewModel
                     )
