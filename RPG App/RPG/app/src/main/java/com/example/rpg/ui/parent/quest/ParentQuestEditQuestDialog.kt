@@ -80,7 +80,7 @@ fun EditQuestDialog(
                 .padding(12.dp)
                 .fillMaxWidth(0.95f)
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
                     "Edit Quest",
                     fontWeight = FontWeight.Bold,
@@ -130,19 +130,20 @@ fun EditQuestDialog(
                         }
                     }
                 }
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(2.dp),
+                Button(
+                    onClick = { showConfirmDelete = true },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Button(
-                        onClick = { showConfirmDelete = true },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-                    ) {
-                        Text("Delete", color = Color.White)
-                    }
+                    Text("Delete", color = Color.White)
+                }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     OutlinedButton(
                         onClick = onDismiss,
+                        modifier = Modifier.weight(1f)
                     ) {
                         Text("Cancel")
                     }
@@ -158,6 +159,7 @@ fun EditQuestDialog(
                             )
                             onDismiss()
                         },
+                        modifier = Modifier.weight(1f)
                     ) { Text("Save") }
                 }
             }

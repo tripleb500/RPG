@@ -1,36 +1,108 @@
 package com.example.rpg.ui.parent.quest
 
-import android.app.AlertDialog
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 
 @Composable
 fun AvailableQuestDialog(
     quest: Quest,
-    onApprove: () -> Unit,
-    onReject: () -> Unit,
-    onDismiss: () -> Unit
+    onCancel: () -> Unit,
+    onEdit: () -> Unit,
 ) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Make Quest Available to all Children?")},
-        text = {
-            Text("Do you want to post '${quest.title}' to the family quest board so any child can accept it?")
+    var showConfirmDelete by remember { mutableStateOf(false) }
 
-        },
-        confirmButton = {
-            Button(onClick = {onApprove(); onDismiss() }) {
-                Text("Approve")
-            }
-        },
-        dismissButton = {
-            Button(onClick = {onReject; onDismiss() }) {
-                Text("Cancel")
+    Dialog(onDismissRequest = onCancel) {
+        Card(
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                // Title
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = Color.White,
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .padding(vertical = 8.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.manage_quest),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 28.sp,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
+                // Message
+                Text(
+                    text = buildAnnotatedString {
+                        append(stringResource(R.string.what_would_you_like_to_do_with))
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                            append(quest.title)
+                        }
+                        append(stringResource(R.string.quote_question))
+                    },
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                // Buttons
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Button(
+                        onClick = onEdit,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF81D4FA)),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Edit")
+                    }
+                    OutlinedButton(
+                        onClick = onCancel,
+                        modifier = Modifier.fillMaxWidth()
+                    ) { Text("Cancel") }
+                }
             }
         }
-    )
+    }
+
 
 }

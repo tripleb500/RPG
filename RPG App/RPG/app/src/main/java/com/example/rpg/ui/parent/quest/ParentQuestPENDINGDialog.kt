@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -108,8 +107,8 @@ fun PendingQuestDialog(
                     ) {
                         Button(
                             onClick = { showUpdateDeadline = true },
-                            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 12.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF66BB6A)),
+                            modifier = Modifier.fillMaxWidth()
                         ) {
                             Text("Reassign")
                         }

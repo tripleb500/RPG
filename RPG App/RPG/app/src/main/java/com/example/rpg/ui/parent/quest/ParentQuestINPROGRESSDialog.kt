@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -82,22 +81,17 @@ fun InProgressQuestDialog(
 
                 // Buttons
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
+                    Button(
+                        onClick = onEdit,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF81D4FA)),
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Button(
-                            onClick = onEdit,
-                            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 12.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF81D4FA)),
-                        ) {
-                            Text("Edit")
-                        }
+                        Text("Edit")
                     }
 
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         OutlinedButton(
                             onClick = onDismiss,

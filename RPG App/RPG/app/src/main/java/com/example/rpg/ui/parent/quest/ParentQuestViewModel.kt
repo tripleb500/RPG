@@ -101,10 +101,10 @@ class ParentQuestViewModel @Inject constructor(
                         questChildCache[userId] = user
                         nameState.value = "${user.firstname} ${user.lastname}"
                     } else {
-                        nameState.value = "Unknown"
+                        nameState.value = null
                     }
                 } catch (e: Exception) {
-                    nameState.value = "Unknown"
+                    nameState.value = null
                 }
             }
         }

@@ -133,17 +133,21 @@ fun ParentQuestScreen(
 
             LazyColumn {
                 groupedByChild.forEach { (childId, quests) ->
-                    val childName by viewModel.getQuestChildName(childId)
-                    item {
-                        // Child name header
-                        Text(
-                            text = childName ?: stringResource(R.string.unknown),
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 32.sp,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        )
+                    val childNameState by viewModel.getQuestChildName(childId)
+                    val childName = childNameState
+
+                    if (!childName.isNullOrBlank()) {
+                        item {
+                            // Child name header
+                            Text(
+                                text = childName,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 32.sp,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            )
+                        }
                     }
 
                     // Display each quest for that child
@@ -155,63 +159,6 @@ fun ParentQuestScreen(
                         )
                     }
                 }
-//
-//            // Use when conditional to swap between what's being displayed
-//            when (selectedTab) {
-////                QuestTab.Overview -> {
-////                    LazyColumn {
-////                        childQuestMap.value.forEach { (assigneeId, quests) ->
-////                            // Maybe display the child's name here using assigneeId
-////
-////                            items(quests) { quest ->
-////                                CardView(quest)
-////                            }
-////                        }
-////                    }
-////                }
-//
-//                // quests with no status field in firebase currently defaults to inprogress tab (Quest.kt)
-//                Status.INPROGRESS -> {
-//                    LazyColumn {
-//                        childQuestMap.value.forEach { (assigneeId, quests) ->
-//                            items(quests.filter { it.status == Status.INPROGRESS }) { quest ->
-//                                CardView(quest)
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                Status.PENDING -> {
-//                    LazyColumn {
-//                        childQuestMap.value.forEach { (assigneeId, quests) ->
-//                            items(quests.filter { it.status == Status.PENDING }) { quest ->
-//                                CardView(quest)
-//
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                Status.COMPLETED -> {
-//                    LazyColumn {
-//                        childQuestMap.value.forEach { (assigneeId, quests) ->
-//                            items(quests.filter { it.status == Status.COMPLETED }) { quest ->
-//                                CardView(quest)
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                Status.INCOMPLETED -> {
-//                    LazyColumn {
-//                        childQuestMap.value.forEach { (assigneeId, quests) ->
-//                            items(quests.filter { it.status == Status.INCOMPLETED }) { quest ->
-//                                CardView(quest)
-//                            }
-//                        }
-//                    }
-//                }
-
             }
         }
     }
@@ -244,14 +191,15 @@ fun CardView(
         )
     }
 
-    // Base Dialogs TODO: Finish this
     if (showDialog) {
         when (selectedTab) {
             Status.AVAILABLE -> AvailableQuestDialog(
                 quest = quest,
-                onApprove = { viewModel.updateQuestStatus(quest.id, Status.COMPLETED) },
-                onReject = { viewModel.updateQuestStatus(quest.id, Status.AVAILABLE) },
-                onDismiss = { showDialog = false }
+                onEdit = {
+                    showDialog = false
+                    showEditDialog = true
+                },
+                onCancel = { showDialog = false }
             )
 
             Status.INPROGRESS -> InProgressQuestDialog(

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -109,7 +110,8 @@ fun UpdateDeadlineDialog(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = newDeadline?.let { SimpleDateFormat("dd MMM yyyy").format(it) } ?: "Select Date"
+                        text = newDeadline?.let { SimpleDateFormat("dd MMM yyyy").format(it) }
+                            ?: "Select Date"
                     )
                 }
 
@@ -120,7 +122,8 @@ fun UpdateDeadlineDialog(
                     enabled = newDeadline != null
                 ) {
                     Text(
-                        text = newDeadline?.let { SimpleDateFormat("h:mm a").format(it) } ?: "Select Time"
+                        text = newDeadline?.let { SimpleDateFormat("h:mm a").format(it) }
+                            ?: "Select Time"
                     )
                 }
 
@@ -141,6 +144,7 @@ fun UpdateDeadlineDialog(
                             onSave(quest.copy(deadlineDate = newDeadline))
                             onDismiss()
                         },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF66BB6A)),
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(stringResource(R.string.reassign), textAlign = TextAlign.Center)

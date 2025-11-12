@@ -125,7 +125,14 @@ fun IncompleteQuestDialog(
 
                 // Buttons
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    // First row: Cancel | Reassign
+                    Button(
+                        onClick = { showConfirmDelete = true },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Delete", color = Color.White, textAlign = TextAlign.Center)
+                    }
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -141,19 +148,11 @@ fun IncompleteQuestDialog(
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF66BB6A)),
                         ) { Text("Reassign", textAlign = TextAlign.Center) }
                     }
-
-                    // Second row: Delete full width
-                    Button(
-                        onClick = { showConfirmDelete = true },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("Delete", color = Color.White, textAlign = TextAlign.Center)
-                    }
                 }
             }
         }
     }
+
     if (showConfirmDelete) {
         AlertDialog(
             onDismissRequest = { showConfirmDelete = false },
