@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
@@ -121,10 +120,7 @@ fun ChildQuestScreen(
                     CardView(
                         quest = quest,
                         selectedTab = selectedTab,
-                        onQuestClick = { selectedQuest = quest },
-                        onClaimClick = if(selectedTab == Status.AVAILABLE) {
-                            {viewModel.claimQuest(quest.id)}
-                        } else null
+                        onQuestClick = { selectedQuest = quest }
                     )
                 }
             }
@@ -132,27 +128,39 @@ fun ChildQuestScreen(
     }
     selectedQuest?.let { quest ->
         when (selectedTab) {
+            Status.AVAILABLE -> ChildAvailableQuestDialog(
+                quest = quest,
+                onCancel = { selectedQuest = null },
+                onAccept = {
+                    viewModel.claimQuest(quest.id)
+                    viewModel.setAssignDate(quest.id)
+                }
+            )
 
             Status.INPROGRESS -> ChildInProgressQuestDialog(
                 quest = quest,
                 onDismissRequest = { selectedQuest = null }, // ← Clear selected quest
                 viewModel = viewModel, // ← Use the parent ViewModel
             )
+
             Status.PENDING -> ChildPendingQuestDialog(
                 quest = quest,
                 onDismissRequest = { selectedQuest = null },
                 viewModel = viewModel
             )
+
             Status.COMPLETED -> ChildCompletedQuestDialog(
                 quest = quest,
                 onDismissRequest = { selectedQuest = null },
                 viewModel = viewModel
             )
+
             Status.INCOMPLETE -> ChildIncompletedQuestDialog(
                 quest = quest,
                 onDismissRequest = { selectedQuest = null },
                 viewModel = viewModel
             )
+
             else -> {}
         }
     }
@@ -164,7 +172,6 @@ fun CardView(
     quest: Quest,
     selectedTab: Status,
     onQuestClick: () -> Unit,
-    onClaimClick: (() -> Unit)? = null
 ) {
     Card(
         modifier = Modifier
@@ -207,19 +214,6 @@ fun CardView(
                 Text(
                     text = "Due Date: ${quest.deadlineDate}",
                 )
-
-                if (selectedTab == Status.AVAILABLE && onClaimClick != null) {
-                    IconButton(
-                        onClick = onClaimClick,
-                        modifier = Modifier.size(36.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.CheckCircleOutline,
-                            contentDescription = "Claim quest",
-                            tint = Color.Green
-                        )
-                    }
-                }
             }
         }
     }

@@ -14,13 +14,11 @@ import com.example.rpg.data.repository.QuestRepository
 import com.example.rpg.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -51,6 +49,7 @@ class ChildQuestViewModel @Inject constructor(
             _isLoading.value = false
         }
     }
+
     private val questParentCache = mutableMapOf<String, User>()
 
     fun markQuestAsPending(quest: Quest) {
@@ -121,6 +120,16 @@ class ChildQuestViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 Log.e("QuestVM", "Error claiming quest", e)
+            }
+        }
+    }
+
+    fun setAssignDate(questId: String) {
+        viewModelScope.launch {
+            try {
+                questRepository.setAssignDate(questId)
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
