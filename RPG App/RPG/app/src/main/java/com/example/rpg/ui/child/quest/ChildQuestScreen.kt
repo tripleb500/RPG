@@ -1,16 +1,12 @@
 package com.example.rpg.ui.child.quest
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -20,11 +16,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
@@ -51,10 +45,7 @@ import coil.compose.AsyncImage
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
-import com.example.rpg.ui.Routes
 import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
-import com.example.rpg.ui.parent.quest.ParentQuestViewModel
-import com.example.rpg.ui.parent.quest.PendingQuestDialog
 
 enum class SortOrder { ASCENDING, DESCENDING }
 
