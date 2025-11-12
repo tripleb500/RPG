@@ -30,4 +30,6 @@
     <string name="quest_completed">Quest Completed!</string>
     <string name="assigned_on_label">Assigned On: %1$s</string>
     <string name="completed_on_label">Completed on: %1$s</string>
+    <string name="waiting_for_approval">Waiting for Approval</string>
+    <string name="quest_failed">Quest Failed</string>
 </resources>
