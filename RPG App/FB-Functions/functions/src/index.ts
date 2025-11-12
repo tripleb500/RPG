@@ -162,7 +162,7 @@ export const updateQuests = functions.pubsub
                 created++;
             }
             //If not repeatable and not already marked incomplete
-            else if (!repeat && repeatType === "NONE" && status !== "INCOMPLETE") {
+            else if (!repeat && repeatType === "NONE" && status !== "INCOMPLETE" && status !== "COMPLETED") {
                 batch.update(doc.ref, {
                     status: "INCOMPLETE",
                 });
