@@ -23,32 +23,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
-import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 
-
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun ChildInProgressQuestDialog (
+fun ChildInProgressQuestDialog(
     quest: Quest,
-    viewModel: ChildHomeScreenViewModel,
+    viewModel: ChildQuestViewModel = hiltViewModel(),
     onDismissRequest: () -> Unit,
     onCompleteClicked: (Quest) -> Unit
 ) {
     val assigneeName by viewModel.getQuestParentName(quest.assignee)
 
-    val cameraPermissionState: PermissionState = rememberPermissionState(android.Manifest.permission.CAMERA)
+    val cameraPermissionState: PermissionState =
+        rememberPermissionState(android.Manifest.permission.CAMERA)
 
     var hasPermission = cameraPermissionState.status.isGranted
     val onRequestPermission = cameraPermissionState::launchPermissionRequest
@@ -56,8 +55,6 @@ fun ChildInProgressQuestDialog (
     var showCamera by remember { mutableStateOf(false) }
 
     val imageUrl by viewModel.imageUrl.collectAsState()
-
-
 
     if (showCamera && hasPermission) {
         ChildCameraScreen(
@@ -69,7 +66,8 @@ fun ChildInProgressQuestDialog (
         return
     }
 
-    Dialog(onDismissRequest = onDismissRequest) {
+    Dialog(onDismissRequest = onDismissRequest)
+    {
         Surface(
             shape = RoundedCornerShape(16.dp),
             color = Color.White,
@@ -114,8 +112,7 @@ fun ChildInProgressQuestDialog (
                     onClick = {
                         if (hasPermission) {
                             showCamera = true
-                        }
-                        else {
+                        } else {
                             onRequestPermission()
                         }
                     },
@@ -150,7 +147,6 @@ fun ChildInProgressQuestDialog (
                         Text("Turn In Quest")
                     }
                 }
-
 
 
                 // Cancel

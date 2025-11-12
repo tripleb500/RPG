@@ -45,7 +45,6 @@ import coil.compose.AsyncImage
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
-import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 
 enum class SortOrder { ASCENDING, DESCENDING }
 
@@ -55,7 +54,7 @@ fun ChildQuestScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     overlayNavController: NavHostController,
-    viewModel: ChildHomeScreenViewModel = hiltViewModel()
+    viewModel: ChildQuestViewModel = hiltViewModel()
 ) {
     val childQuests = viewModel.childQuests.collectAsState()
     var selectedTab by rememberSaveable { mutableStateOf(Status.INPROGRESS) }
@@ -125,36 +124,40 @@ fun ChildQuestScreen(
 @Composable
 fun CardView(
     quest: Quest,
-    viewModel: ChildHomeScreenViewModel = hiltViewModel(),
-    selectedTab: Status) {
+    viewModel: ChildQuestViewModel = hiltViewModel(),
+    selectedTab: Status
+) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
 
     if (showDialog) {
         when (selectedTab) {
             Status.INPROGRESS -> ChildInProgressQuestDialog(
                 quest = quest,
-                onDismissRequest = {showDialog = false},
-                onCompleteClicked = {
-                    completedQuest ->
+                onDismissRequest = { showDialog = false },
+                viewModel = viewModel,
+                onCompleteClicked = { completedQuest ->
                     viewModel.markQuestAsPending(completedQuest)
-                },
-                viewModel = viewModel
+                }
             )
+
             Status.PENDING -> ChildPendingQuestDialog(
                 quest = quest,
-                onDismissRequest = {showDialog = false},
+                onDismissRequest = { showDialog = false },
                 viewModel = viewModel
             )
-            Status.COMPLETED -> ChildPendingQuestDialog(
+
+            Status.COMPLETED -> ChildCompletedQuestDialog(
                 quest = quest,
-                onDismissRequest = {showDialog = false},
+                onDismissRequest = { showDialog = false },
                 viewModel = viewModel
             )
-            Status.INCOMPLETE -> ChildPendingQuestDialog(
+
+            Status.INCOMPLETE -> ChildIncompletedQuestDialog(
                 quest = quest,
-                onDismissRequest = {showDialog = false},
+                onDismissRequest = { showDialog = false },
                 viewModel = viewModel
             )
+
             else -> {}
         }
     }

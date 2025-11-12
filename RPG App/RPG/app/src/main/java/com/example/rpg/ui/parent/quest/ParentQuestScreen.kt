@@ -226,7 +226,7 @@ fun CardView(
 ) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var showEditDialog by rememberSaveable { mutableStateOf(false) }
-    var questImage by rememberSaveable {mutableStateOf("")}
+    var questImage by rememberSaveable { mutableStateOf("") }
 
     // InProgress Edit Dialog
     if (showEditDialog) {
@@ -249,10 +249,11 @@ fun CardView(
         when (selectedTab) {
             Status.AVAILABLE -> AvailableQuestDialog(
                 quest = quest,
-                onApprove = {viewModel.updateQuestStatus(quest.id, Status.COMPLETED)},
-                onReject = {viewModel.updateQuestStatus(quest.id, Status.AVAILABLE)},
-                onDismiss = {showDialog = false}
+                onApprove = { viewModel.updateQuestStatus(quest.id, Status.COMPLETED) },
+                onReject = { viewModel.updateQuestStatus(quest.id, Status.AVAILABLE) },
+                onDismiss = { showDialog = false }
             )
+
             Status.INPROGRESS -> InProgressQuestDialog(
                 quest = quest,
                 onApprove = {
@@ -266,12 +267,13 @@ fun CardView(
                 },
                 onDismiss = { showDialog = false }
             )
+
             Status.PENDING -> PendingQuestDialog(
                 quest = quest,
                 onApprove = {
                     viewModel.updateQuestStatus(quest.id, Status.COMPLETED)
                     viewModel.completeQuest(quest.id)
-                            },
+                },
                 onReject = { viewModel.updateQuestStatus(quest.id, Status.INCOMPLETE) },
                 onReassign = {
                     viewModel.updateQuestDetails(it.copy(status = Status.INPROGRESS))
@@ -279,10 +281,12 @@ fun CardView(
                 },
                 onDismiss = { showDialog = false }
             )
+
             Status.COMPLETED -> CompletedQuestDialog(
                 quest = quest,
                 onDismiss = { showDialog = false }
             )
+
             Status.INCOMPLETE -> IncompleteQuestDialog(
                 quest = quest,
                 onCancel = { showDialog = false },

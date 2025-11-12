@@ -1,16 +1,12 @@
 package com.example.rpg.ui.child.quest
 
-import android.graphics.Bitmap
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -27,37 +23,32 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
-import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
-import com.example.rpg.ui.Routes
 import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 
+// DO NOT USE; left here for reference!!!
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun QuestDialog(
     quest: Quest,
     viewModel: ChildHomeScreenViewModel,
     onDismissRequest: () -> Unit,
-    onCompleteClicked: (Quest) -> Unit,
-    overlayNavController: NavHostController
+    onCompleteClicked: (Quest) -> Unit
 ) {
-
     val assigneeName by viewModel.getQuestParentName(quest.assignee)
 
-    val cameraPermissionState: PermissionState = rememberPermissionState(android.Manifest.permission.CAMERA)
+    val cameraPermissionState: PermissionState =
+        rememberPermissionState(android.Manifest.permission.CAMERA)
 
     var hasPermission = cameraPermissionState.status.isGranted
     val onRequestPermission = cameraPermissionState::launchPermissionRequest
@@ -65,7 +56,6 @@ fun QuestDialog(
     var showCamera by remember { mutableStateOf(false) }
 
     val imageUrl by viewModel.imageUrl.collectAsState()
-
 
     if (showCamera && hasPermission) {
         ChildCameraScreen(
@@ -122,8 +112,7 @@ fun QuestDialog(
                     onClick = {
                         if (hasPermission) {
                             showCamera = true
-                        }
-                        else {
+                        } else {
                             onRequestPermission()
                         }
                     },
@@ -158,7 +147,6 @@ fun QuestDialog(
                         Text("Turn In Quest")
                     }
                 }
-
 
 
                 // Cancel

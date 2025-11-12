@@ -33,7 +33,7 @@ import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 @Composable
 fun ChildCompletedQuestDialog(
     quest: Quest,
-    viewModel: ChildHomeScreenViewModel,
+    viewModel: ChildQuestViewModel,
     onDismissRequest: () -> Unit
 ) {
     val assigneeName by viewModel.getQuestParentName(quest.assignee)

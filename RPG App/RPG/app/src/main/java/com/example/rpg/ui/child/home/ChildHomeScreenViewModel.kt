@@ -107,8 +107,6 @@ class ChildHomeScreenViewModel @Inject constructor(
         )
     private val questParentCache = mutableMapOf<String, User>()
 
-
-
     // Function to mark a quest as pending
     fun markQuestAsPending(quest: Quest) {
         viewModelScope.launch {
@@ -163,6 +161,7 @@ class ChildHomeScreenViewModel @Inject constructor(
         private set
     var errorMessageStats by mutableStateOf<String?>(null)
         private set
+
     // FIX: Make currentUserFlow more robust
     val currentUserFlow: Flow<User?> = authRepository.currentUserIdFlow
         .map { uid ->

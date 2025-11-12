@@ -38,7 +38,7 @@ import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 @Composable
 fun ChildPendingQuestDialog(
     quest: Quest,
-    viewModel: ChildHomeScreenViewModel,
+    viewModel: ChildQuestViewModel,
     onDismissRequest: () -> Unit
 ) {
     val imageUrl by viewModel.imageUrl.collectAsState()
