@@ -56,7 +56,7 @@ fun ChildChangeEmailScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 colors  = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF1B2631)
+                    containerColor = Color(0xFF1A4A17)
                 ),
                 title = {
                     Text(
