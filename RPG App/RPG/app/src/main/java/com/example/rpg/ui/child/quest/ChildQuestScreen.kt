@@ -113,61 +113,55 @@ fun ChildQuestScreen(
                     CardView(
                         quest = quest,
                         selectedTab = selectedTab,
-                        viewModel = viewModel
+                        onQuestClick = { selectedQuest = quest }
                     )
                 }
             }
         }
     }
+    selectedQuest?.let { quest ->
+        when (selectedTab) {
+            Status.INPROGRESS -> ChildInProgressQuestDialog(
+                quest = quest,
+                onDismissRequest = { selectedQuest = null }, // ← Clear selected quest
+                viewModel = viewModel, // ← Use the parent ViewModel
+                onCompleteClicked = { completedQuest ->
+                    viewModel.markQuestAsPending(completedQuest)
+                    selectedQuest = null // ← Close dialog after action
+                }
+            )
+            Status.PENDING -> ChildPendingQuestDialog(
+                quest = quest,
+                onDismissRequest = { selectedQuest = null },
+                viewModel = viewModel
+            )
+            Status.COMPLETED -> ChildCompletedQuestDialog(
+                quest = quest,
+                onDismissRequest = { selectedQuest = null },
+                viewModel = viewModel
+            )
+            Status.INCOMPLETE -> ChildIncompletedQuestDialog(
+                quest = quest,
+                onDismissRequest = { selectedQuest = null },
+                viewModel = viewModel
+            )
+            else -> {}
+        }
+    }
 }
+
 
 @Composable
 fun CardView(
     quest: Quest,
-    viewModel: ChildQuestViewModel = hiltViewModel(),
-    selectedTab: Status
+    selectedTab: Status,
+    onQuestClick: () -> Unit
 ) {
-    var showDialog by rememberSaveable { mutableStateOf(false) }
-
-    if (showDialog) {
-        when (selectedTab) {
-            Status.INPROGRESS -> ChildInProgressQuestDialog(
-                quest = quest,
-                onDismissRequest = { showDialog = false },
-                viewModel = viewModel,
-                onCompleteClicked = { completedQuest ->
-                    viewModel.markQuestAsPending(completedQuest)
-                }
-            )
-
-            Status.PENDING -> ChildPendingQuestDialog(
-                quest = quest,
-                onDismissRequest = { showDialog = false },
-                viewModel = viewModel
-            )
-
-            Status.COMPLETED -> ChildCompletedQuestDialog(
-                quest = quest,
-                onDismissRequest = { showDialog = false },
-                viewModel = viewModel
-            )
-
-            Status.INCOMPLETE -> ChildIncompletedQuestDialog(
-                quest = quest,
-                onDismissRequest = { showDialog = false },
-                viewModel = viewModel
-            )
-
-            else -> {}
-        }
-    }
-
-
     Card(
         modifier = Modifier
             .fillMaxSize()
             .padding(12.dp)
-            .clickable { showDialog = true },
+            .clickable { onQuestClick() },
         colors = CardDefaults.cardColors(
             containerColor = when (selectedTab) {
                 Status.COMPLETED -> Color(0xFFB2DFDB)

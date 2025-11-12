@@ -14,6 +14,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,6 +57,15 @@ fun ChildInProgressQuestDialog(
 
     val imageUrl by viewModel.imageUrl.collectAsState()
 
+    LaunchedEffect(cameraPermissionState.status) {
+        if (showCamera && cameraPermissionState.status.isGranted) {
+            // Permission granted, camera will show
+        } else if (showCamera && !cameraPermissionState.status.isGranted) {
+            // Permission not granted, hide camera
+            showCamera = false
+        }
+    }
+
     if (showCamera && hasPermission) {
         ChildCameraScreen(
             onPhotoTaken = { bitmap ->
@@ -94,7 +104,12 @@ fun ChildInProgressQuestDialog(
                 Text(stringResource(R.string.amount_label, quest.rewardAmount))
 
                 // Due Date
-                Text(stringResource(R.string.due_date_label, quest.deadlineDate ?: "No deadline"))
+                Text(
+                    stringResource(
+                        R.string.due_date_label,
+                        quest.deadlineDate ?: "No deadline"
+                    )
+                )
 
                 // Assignee
                 Text(

@@ -57,15 +57,15 @@ fun QuestDialog(
 
     val imageUrl by viewModel.imageUrl.collectAsState()
 
-    if (showCamera && hasPermission) {
-        ChildCameraScreen(
-            onPhotoTaken = { bitmap ->
-                viewModel.uploadImageForQuest(quest.id, bitmap)
-                showCamera = false
-            }
-        )
-        return
-    }
+//    if (showCamera && hasPermission) {
+//        ChildCameraScreen(
+//            onPhotoTaken = { bitmap ->
+//                viewModel.uploadImageForQuest(quest.id, bitmap)
+//                showCamera = false
+//            }
+//        )
+//        return
+//    }
 
     Dialog(onDismissRequest = onDismissRequest) {
         Surface(

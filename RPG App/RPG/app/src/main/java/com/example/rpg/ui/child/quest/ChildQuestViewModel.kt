@@ -43,6 +43,7 @@ class ChildQuestViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
     fun uploadImageForQuest(questId: String, bitmap: Bitmap) {
+        _imageUrl.value = null
         viewModelScope.launch {
             _isLoading.value = true
             _imageUrl.value = questRepository.uploadBitmapAndGetUrl(bitmap, questId)

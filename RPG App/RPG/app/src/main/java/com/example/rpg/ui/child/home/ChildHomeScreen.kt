@@ -55,6 +55,7 @@ import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.child.achievements.ChildAchievementsDialog
 import com.example.rpg.ui.child.quest.CardView
 import com.example.rpg.ui.child.quest.ChildInProgressQuestDialog
+import com.example.rpg.ui.child.quest.ChildQuestViewModel
 import com.example.rpg.ui.child.quest.SortOrder
 import com.example.rpg.ui.child.stats.ChildStatsDialog
 import com.example.rpg.ui.parent.home.Family
@@ -248,7 +249,7 @@ fun ChildHomeScreen(
                     items(sortedQuests) { quest ->
                         CardView(
                             quest = quest,
-                            viewModel = viewModel
+                            onQuestClick = { selectedQuest = quest }
                         )
                     }
                 }
@@ -263,7 +264,7 @@ fun ChildHomeScreen(
                 onCompleteClicked = { completedQuest ->
                     viewModel.markQuestAsPending(completedQuest)
                     selectedQuest = null
-                }
+                },
             )
         }
     }
@@ -283,23 +284,16 @@ fun ProgressIndicator(
 @Composable
 fun CardView(
     quest: Quest,
-    viewModel: ChildHomeScreenViewModel = hiltViewModel()
+    onQuestClick: () -> Unit
 ) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
 
-    if (showDialog) {
-        ChildInProgressQuestDialog(
-            quest = quest,
-            onDismissRequest = { showDialog = false },
-            onCompleteClicked = { viewModel.markQuestAsPending(quest) },
-        )
-    }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { showDialog = true },
+            .clickable { onQuestClick() },
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFFBBDEFB)
         )
