@@ -147,22 +147,7 @@ fun ChildQuestScreen(
             QuestTabBar(selected = selectedTab, onSelect = { selectedTab = it })
 
             val filtered = childQuests.value.filter { it.status == selectedTab }
-
-//            val selectedDateAsDate = Date.from(
-//                selectedDate?.atStartOfDay(ZoneId.systemDefault())
-//                    ?.toInstant()
-//            )
-//
-//            val dateFiltered = if (selectedDate != null) {
-//                childQuests.value.filter { quest ->
-//                    quest.deadlineDate?.date == selectedDateAsDate.date
-//                }
-//            }
-//                else {
-//                    childQuests.value
-//                }
-
-
+            
             val sorted = when (sortBy) {
                 SortBy.STATUS -> when (sortOrder) {
                     SortOrder.ASCENDING -> filtered.sortedBy { it.deadlineDate }
