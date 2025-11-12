@@ -1,7 +1,9 @@
 package com.example.rpg.ui.child.quest
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,11 +12,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,14 +31,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
 fun ChildPendingQuestDialog(
@@ -45,47 +57,93 @@ fun ChildPendingQuestDialog(
 
     val assigneeName by viewModel.getQuestParentName(quest.assignee)
 
-
     Dialog(onDismissRequest = onDismissRequest) {
-        Surface(
+        Card(
             shape = RoundedCornerShape(16.dp),
-            color = Color.White,
-            tonalElevation = 4.dp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
             Column(
-                modifier = Modifier.padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Title
-                Text(
-                    text = quest.title,
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold
-                )
-
-                // Reward
-                Text(stringResource(R.string.reward_label, quest.rewardType))
-
-                // Amount
-                Text(stringResource(R.string.amount_label, quest.rewardAmount))
-
-                // Due Date
-                Text(stringResource(R.string.due_date_label, quest.deadlineDate ?: "No deadline"))
-
-                // Assignee
-                Text(
-                    stringResource(
-                        R.string.assigned_by_label,
-                        assigneeName ?: stringResource(R.string.loading)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = Color(0xFFFFF9C4),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .padding(vertical = 8.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.waiting_for_approval),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 28.sp,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
                     )
-                )
+                }
 
-                Spacer(Modifier.height(16.dp))
+                // Quest information
+                CompositionLocalProvider(LocalContentColor provides Color.Black) {
+                    val assignDateFormatted = quest.assignDate?.let {
+                        SimpleDateFormat("MM/dd/yy hh:mm a", Locale.getDefault()).format(it)
+                    } ?: "N/A"
 
-                //Will display the image if there is one
+                    val completionDateFormatted = quest.completionDate?.let {
+                        SimpleDateFormat("MM/dd/yy hh:mm a", Locale.getDefault()).format(it)
+                    } ?: "N/A"
+
+                    val deadlineDateFormatted = quest.deadlineDate?.let {
+                        SimpleDateFormat("MM/dd/yy hh:mm a", Locale.getDefault()).format(it)
+                    } ?: "N/A"
+
+                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text(
+                            buildAnnotatedString {
+                                withStyle(SpanStyle(fontWeight = FontWeight.SemiBold)) { append("Assigned By: ") }
+                                append(assigneeName)
+                            },
+                            color = Color.Black
+                        )
+                        Text(
+                            buildAnnotatedString {
+                                withStyle(SpanStyle(fontWeight = FontWeight.SemiBold)) { append("Title: ") }
+                                append(quest.title)
+                            },
+                            color = Color.Black
+                        )
+                        Text(
+                            buildAnnotatedString {
+                                withStyle(SpanStyle(fontWeight = FontWeight.SemiBold)) { append("Description: ") }
+                                append(quest.description)
+                            },
+                            color = Color.Black
+                        )
+                        Text(
+                            buildAnnotatedString {
+                                withStyle(SpanStyle(fontWeight = FontWeight.SemiBold)) { append("Assigned On: ") }
+                                append(assignDateFormatted)
+                            },
+                            color = Color.Black
+                        )
+                        Text(
+                            buildAnnotatedString {
+                                withStyle(SpanStyle(fontWeight = FontWeight.SemiBold)) { append("Due Date: ") }
+                                append(deadlineDateFormatted)
+                            },
+                            color = Color.Black
+                        )
+                        Text(
+                            buildAnnotatedString {
+                                withStyle(SpanStyle(fontWeight = FontWeight.SemiBold)) { append("Completed On: ") }
+                                append(completionDateFormatted)
+                            },
+                            color = Color.Black
+                        )
+                    }
+                }
 
                 AsyncImage(
                     model = if (quest.imageURL.isNotBlank()) quest.imageURL else null,
@@ -97,14 +155,12 @@ fun ChildPendingQuestDialog(
                     error = painterResource(R.drawable.rpg_logo_parent)
                 )
 
-
-
-                // Close
-                TextButton(
+                // OK button
+                Button(
                     onClick = onDismissRequest,
-                    modifier = Modifier.align(Alignment.End)
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Close", color = Color.Red)
+                    Text("OK", textAlign = TextAlign.Center)
                 }
             }
         }
