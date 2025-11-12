@@ -166,7 +166,47 @@ fun AddQuestContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Add Quest", fontSize = 32.sp)
+        Text(text = "Add Quest",modifier = Modifier.padding(bottom = 16.dp), fontSize = 32.sp)
+
+        Text(text = "Assign to", modifier = Modifier.padding(top = 8.dp),fontSize = 24.sp)
+
+        val children by viewModel.children.collectAsState()
+        val selectedChild by viewModel.selectedChild.collectAsState()
+
+        LazyRow {
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clickable {
+                            viewModel.selectChild(null)
+                        },
+                    colors = if (isAvailableToAllChildren)
+                        CardDefaults.cardColors(containerColor = Color.LightGray)
+                    else CardDefaults.cardColors()
+                ) {
+                    Text(text = "Quest board", modifier = Modifier.padding(16.dp))
+                }
+            }
+
+            items(children) { child ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clickable {
+                            viewModel.selectChild(child)
+                        },
+                    colors = if (!isAvailableToAllChildren && child == selectedChild) CardDefaults.cardColors(containerColor = Color.LightGray)
+                    else CardDefaults.cardColors()
+                ) {
+                    Text(
+                        text = child.firstname, modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -211,12 +251,12 @@ fun AddQuestContent(
                 onClick = { showTimePicker = true }, enabled = dueDate != null) {
                 Text(text = dueDate?.let { SimpleDateFormat("h:mm a").format(it) } ?: "Select Time")
             }
-
-            Spacer(modifier = Modifier.height(8.dp))
+        }
+        Column(){
 
             //Repeat, If repeat is checked, user chooses repeat type and interval
             //When quest is done or past deadline, generate next deadline based on selected type and interval
-            Row() {
+            Column() {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(
                         checked = quest.repeat, onCheckedChange = { checked ->
@@ -300,8 +340,6 @@ fun AddQuestContent(
 
         //This is where images are currently displayed
         Box(
-            modifier = Modifier
-                .size(80.dp)
         ) {
             selectedImageUri?.let {
                 AsyncImage(model = it,
@@ -321,48 +359,8 @@ fun AddQuestContent(
         ) {
             Text("Assign Quest")
         }
-        //navController.popBackStack()
 
-        val children by viewModel.children.collectAsState()
-        val selectedChild by viewModel.selectedChild.collectAsState()
 
-        //val children = listOf(User(firstname="Alice"), User(firstname="Bob"))
-        //var selectedChild by remember { mutableStateOf<User?>(children.firstOrNull()) }
-
-        LazyRow {
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .clickable {
-                            viewModel.selectChild(null)
-                        },
-                    colors = if (isAvailableToAllChildren)
-                        CardDefaults.cardColors(containerColor = Color.LightGray)
-                    else CardDefaults.cardColors()
-                ) {
-                    Text(text = "Quest board")
-                }
-            }
-
-            items(children) { child ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .clickable {
-                            viewModel.selectChild(child)
-                        },
-                    colors = if (!isAvailableToAllChildren && child == selectedChild) CardDefaults.cardColors(containerColor = Color.LightGray)
-                    else CardDefaults.cardColors()
-                ) {
-                    Text(
-                        text = child.firstname, modifier = Modifier.padding(16.dp)
-                    )
-                }
-            }
-        }
 
         if (showDatePicker) {
             val dialog = DatePickerDialog(
