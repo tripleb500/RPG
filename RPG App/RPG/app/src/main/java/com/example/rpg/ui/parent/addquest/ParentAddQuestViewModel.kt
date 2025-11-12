@@ -202,6 +202,8 @@ class ParentAddQuestViewModel @Inject constructor(
                             questRepository.createAvailableQuest(questToCreate, id)
                         }
                     } else {
+                        val timestamp = Date()
+                        questToCreate = questToCreate.copy(assignDate = timestamp)
                         questRepository.create(questToCreate)
                     }
                     _questCreated.value = true
