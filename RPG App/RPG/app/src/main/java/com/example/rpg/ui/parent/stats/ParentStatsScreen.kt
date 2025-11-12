@@ -63,10 +63,6 @@ fun ParentStatsScreen(
     authViewModel: AuthViewModel = hiltViewModel(),
     statViewModel: ParentStatsViewModel = viewModel(),
 ) {
-    /*
-
-
-    */
     val children by viewModel.children.collectAsState()
     val parentId = authViewModel.currentUser?.uid
 
@@ -233,34 +229,5 @@ fun childStats(
                 fontSize = 16.sp
             )
         }
-    }
-
-}
-
-
-/*
-Column(
-            modifier = modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(paddingValues),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Card(
-                modifier = Modifier
-            ){
-                Text("Hello World", fontSize = 40.sp)
-            }
-        }
- */
-
-@Preview
-@Composable
-fun PreviewParentQuestScreen() {
-    RPGTheme {
-        ParentStatsScreen(
-            navController = rememberNavController(), overlayNavController = rememberNavController()
-        )
     }
 }
