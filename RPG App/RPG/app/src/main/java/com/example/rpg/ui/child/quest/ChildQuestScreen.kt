@@ -149,17 +149,19 @@ fun ChildQuestScreen(
             // Create tabs
             QuestTabBar(selected = selectedTab, onSelect = { selectedTab = it })
 
-            val filtered = childQuests.value.filter { it.status == selectedTab }
-            
+            val questToDisplay = when (selectedTab) {
+                Status.AVAILABLE -> availableQuests
+                else -> childQuests.value.filter { it.status == selectedTab }
+            }
+
             val sorted = when (sortBy) {
                 SortBy.STATUS -> when (sortOrder) {
-                    SortOrder.ASCENDING -> filtered.sortedBy { it.deadlineDate }
-                    SortOrder.DESCENDING -> filtered.sortedByDescending { it.deadlineDate }
+                    SortOrder.ASCENDING -> questToDisplay.sortedBy { it.deadlineDate }
+                    SortOrder.DESCENDING -> questToDisplay.sortedByDescending { it.deadlineDate }
                 }
-
                 SortBy.DEADLINE -> when (sortOrder) {
-                    SortOrder.ASCENDING -> filtered.sortedBy { it.deadlineDate }
-                    SortOrder.DESCENDING -> filtered.sortedByDescending { it.deadlineDate }
+                    SortOrder.ASCENDING -> questToDisplay.sortedBy { it.deadlineDate }
+                    SortOrder.DESCENDING -> questToDisplay.sortedByDescending { it.deadlineDate }
                 }
             }
 
