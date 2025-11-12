@@ -1,5 +1,6 @@
 package com.example.rpg.ui.parent.addquest
 
+import android.app.ProgressDialog
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -64,6 +65,9 @@ class ParentAddQuestViewModel @Inject constructor(
 
     private val _questCreated = MutableStateFlow(false)
     val questCreated: StateFlow<Boolean> = _questCreated
+
+    private val _questLoading = MutableStateFlow(false)
+    val questLoading: StateFlow<Boolean> = _questLoading
 
     fun setDueDate(date: Date) {
         _dueDate.value = date
@@ -191,6 +195,7 @@ class ParentAddQuestViewModel @Inject constructor(
             viewModelScope.launch {
                 try {
                     var questToCreate = current
+                    _questLoading.value = true
 
                     if(questToCreate.imageUri != null){
                         val uri = current.imageUri.toUri()
@@ -206,8 +211,10 @@ class ParentAddQuestViewModel @Inject constructor(
                         questToCreate = questToCreate.copy(assignDate = timestamp)
                         questRepository.create(questToCreate)
                     }
+                    _questLoading.value = false
                     _questCreated.value = true
                 }catch (e: Exception) {
+                    _questLoading.value = false
                     _error.value = e.message
                     println("Error creating quest: ${e.message}")
                     e.printStackTrace()

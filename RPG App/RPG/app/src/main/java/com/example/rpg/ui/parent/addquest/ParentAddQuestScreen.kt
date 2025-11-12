@@ -2,11 +2,13 @@ package com.example.rpg.ui.parent.addquest
 
 import android.Manifest
 import android.app.DatePickerDialog
+import android.app.ProgressDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.text.format.DateFormat
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -26,10 +28,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -57,6 +61,7 @@ import com.example.rpg.ui.auth.AuthViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberPermissionState
+import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
@@ -93,15 +98,29 @@ fun AddQuestContent(
 ) {
 
     val questCreated by viewModel.questCreated.collectAsState()
+    val questLoading by viewModel.questLoading.collectAsState()
+    val context = LocalContext.current
+
+    if (questLoading) {
+        AlertDialog(
+            onDismissRequest = {},
+            title = { Text("Uploading...") },
+            text = { CircularProgressIndicator() },
+            confirmButton = {}
+        )
+    }
+
     LaunchedEffect(questCreated) {
         if (questCreated) {
+            Toast.makeText(context, "Quest Assigned!", Toast.LENGTH_SHORT).show()
             navController.popBackStack()
         }
     }
+
     val selectedImageUri by viewModel.selectedImageUri.collectAsState()
 
     val dueDate by viewModel.dueDate.collectAsState()
-    val context = LocalContext.current
+
 
     val quest by viewModel.quest.collectAsState()
     val cameraPermissionState: PermissionState = rememberPermissionState(Manifest.permission.CAMERA)
