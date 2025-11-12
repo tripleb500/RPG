@@ -1,15 +1,12 @@
 package com.example.rpg.ui.child.quest
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -19,11 +16,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
@@ -46,13 +41,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
-import com.example.rpg.ui.Routes
-import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
-import com.example.rpg.ui.parent.quest.ParentQuestViewModel
-import com.example.rpg.ui.parent.quest.PendingQuestDialog
 
 enum class SortOrder { ASCENDING, DESCENDING }
 
@@ -62,7 +54,7 @@ fun ChildQuestScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     overlayNavController: NavHostController,
-    viewModel: ChildHomeScreenViewModel = hiltViewModel()
+    viewModel: ChildQuestViewModel = hiltViewModel()
 ) {
     val childQuests = viewModel.childQuests.collectAsState()
     var selectedTab by rememberSaveable { mutableStateOf(Status.INPROGRESS) }
@@ -121,57 +113,55 @@ fun ChildQuestScreen(
                     CardView(
                         quest = quest,
                         selectedTab = selectedTab,
-                        viewModel = viewModel
+                        onQuestClick = { selectedQuest = quest }
                     )
                 }
             }
         }
     }
-}
-
-@Composable
-fun CardView(
-    quest: Quest,
-    viewModel: ChildHomeScreenViewModel = hiltViewModel(),
-    selectedTab: Status) {
-    var showDialog by rememberSaveable { mutableStateOf(false) }
-
-    if (showDialog) {
+    selectedQuest?.let { quest ->
         when (selectedTab) {
             Status.INPROGRESS -> ChildInProgressQuestDialog(
                 quest = quest,
-                onDismissRequest = {showDialog = false},
-                onCompleteClicked = {
-                    completedQuest ->
+                onDismissRequest = { selectedQuest = null }, // ← Clear selected quest
+                viewModel = viewModel, // ← Use the parent ViewModel
+                onCompleteClicked = { completedQuest ->
                     viewModel.markQuestAsPending(completedQuest)
-                },
-                viewModel = viewModel
+                    selectedQuest = null // ← Close dialog after action
+                }
             )
             Status.PENDING -> ChildPendingQuestDialog(
                 quest = quest,
-                onDismissRequest = {showDialog = false},
+                onDismissRequest = { selectedQuest = null },
                 viewModel = viewModel
             )
-            Status.COMPLETED -> ChildPendingQuestDialog(
+            Status.COMPLETED -> ChildCompletedQuestDialog(
                 quest = quest,
-                onDismissRequest = {showDialog = false},
+                onDismissRequest = { selectedQuest = null },
                 viewModel = viewModel
             )
-            Status.INCOMPLETE -> ChildPendingQuestDialog(
+            Status.INCOMPLETE -> ChildIncompletedQuestDialog(
                 quest = quest,
-                onDismissRequest = {showDialog = false},
+                onDismissRequest = { selectedQuest = null },
                 viewModel = viewModel
             )
             else -> {}
         }
     }
+}
 
 
+@Composable
+fun CardView(
+    quest: Quest,
+    selectedTab: Status,
+    onQuestClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxSize()
             .padding(12.dp)
-            .clickable { showDialog = true },
+            .clickable { onQuestClick() },
         colors = CardDefaults.cardColors(
             containerColor = when (selectedTab) {
                 Status.COMPLETED -> Color(0xFFB2DFDB)
@@ -186,15 +176,16 @@ fun CardView(
             modifier = Modifier.padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(modifier = Modifier.padding(start = 12.dp)) {
-                Image(
-                    painter = painterResource(id = R.drawable.baseline_person_24),
-                    contentDescription = "Child avatar",
-                    modifier = Modifier
-                        .width(100.dp)
-                        .height(100.dp)
-                )
-            }
+
+            AsyncImage(
+                model = if (quest.imageURL.isNotBlank()) quest.imageURL else null,
+                contentDescription = "Quest Image",
+                modifier = Modifier
+                    .size(100.dp)
+                    .padding(end = 12.dp),
+                placeholder = painterResource(R.drawable.rpg_logo_parent),
+                error = painterResource(R.drawable.rpg_logo_parent)
+            )
 
             Column(modifier = Modifier.padding(start = 12.dp)) {
                 Text(

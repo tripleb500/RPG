@@ -57,7 +57,10 @@ class QuestRemoteDataSource @Inject constructor(
 
                     val listener = query.addSnapshotListener { snapshot, error ->
                         if (error != null) {
-                            Log.e("QuestRemoteDataSource", "Error fetching quests: ${error.message}")
+                            Log.e(
+                                "QuestRemoteDataSource",
+                                "Error fetching quests: ${error.message}"
+                            )
                             trySend(emptyList())
                             return@addSnapshotListener
                         }
@@ -72,10 +75,11 @@ class QuestRemoteDataSource @Inject constructor(
 //                        trySend(quests)
 
 //                         If you need sorting, use this instead:
-                         trySend(quests.sortedWith(
-                             compareBy<Quest> { it.deadlineDate == null }
-                                 .thenBy { it.deadlineDate ?: Date(Long.MAX_VALUE) }
-                         ))
+                        trySend(
+                            quests.sortedWith(
+                            compareBy<Quest> { it.deadlineDate == null }
+                                .thenBy { it.deadlineDate ?: Date(Long.MAX_VALUE) }
+                        ))
                     }
 
                     awaitClose {
@@ -104,11 +108,11 @@ class QuestRemoteDataSource @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getAssignedQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> {
         return currentUserIdFlow.flatMapLatest { parentId ->
-                firestore
-                    .collection(QUEST_ITEMS_COLLECTION)
-                    .whereEqualTo("assignee", parentId)
-                    .dataObjects()
-            }
+            firestore
+                .collection(QUEST_ITEMS_COLLECTION)
+                .whereEqualTo("assignee", parentId)
+                .dataObjects()
+        }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -124,7 +128,7 @@ class QuestRemoteDataSource @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getAvailableQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> {
         return currentUserIdFlow.flatMapLatest { parentId ->
-            if(parentId == null) {
+            if (parentId == null) {
                 flowOf(emptyList())
             } else {
                 firestore.collection(QUEST_ITEMS_COLLECTION)

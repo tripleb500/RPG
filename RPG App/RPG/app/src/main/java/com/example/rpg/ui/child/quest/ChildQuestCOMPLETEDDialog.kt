@@ -19,10 +19,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
@@ -31,7 +33,7 @@ import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 @Composable
 fun ChildCompletedQuestDialog(
     quest: Quest,
-    viewModel: ChildHomeScreenViewModel,
+    viewModel: ChildQuestViewModel,
     onDismissRequest: () -> Unit
 ) {
     val assigneeName by viewModel.getQuestParentName(quest.assignee)
@@ -79,19 +81,15 @@ fun ChildCompletedQuestDialog(
                 Spacer(Modifier.height(16.dp))
 
                 //Will display the image is there is on
-                if (imageUrl != null) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "Photo",
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Medium
-                    )
-                    Image(
-                        painter = rememberAsyncImagePainter(imageUrl),
-                        contentDescription = "Uploaded image",
-                        modifier = Modifier.size(200.dp)
-                    )
-                }
+                AsyncImage(
+                    model = if (quest.imageURL.isNotBlank()) quest.imageURL else null,
+                    contentDescription = "Quest Image",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .padding(end = 12.dp),
+                    placeholder = painterResource(R.drawable.rpg_logo_parent),
+                    error = painterResource(R.drawable.rpg_logo_parent)
+                )
 
 
 

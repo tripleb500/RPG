@@ -4,6 +4,7 @@ import android.Manifest
 import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Looper
+import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -12,9 +13,13 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -31,14 +36,19 @@ import com.google.accompanist.permissions.rememberPermissionState
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 import com.google.accompanist.permissions.PermissionStatus
+import com.google.accompanist.permissions.isGranted
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -52,16 +62,11 @@ fun ChildCameraScreen(
     val cameraController = remember { LifecycleCameraController(context) }
     val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
 
-
-    LaunchedEffect(cameraPermissionState.status) {
-        if (cameraPermissionState.status == PermissionStatus.Granted) {
-            cameraController.bindToLifecycle(lifecycleOwner)
-        }
-    }
-
-
+    // FIX: Properly constrained Scaffold
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black), // Black background for full screen
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 text = { Text(text = "Take Photo") },
@@ -71,47 +76,54 @@ fun ChildCameraScreen(
                     cameraController.takePicture(
                         mainExecutor,
                         object : ImageCapture.OnImageCapturedCallback() {
-                            override fun onCaptureSuccess(image: ImageProxy) { // Fixed: lowercase 'o'
+                            override fun onCaptureSuccess(image: ImageProxy) {
                                 try {
                                     val bitmap = image.toBitmap()
-                                    // Process your image here
-
-                                    // Show success message then close
                                     Toast.makeText(context, "Photo captured!", Toast.LENGTH_SHORT).show()
-
-                                    // Close after a short delay to show the toast
                                     Handler(Looper.getMainLooper()).postDelayed({
                                         onPhotoTaken(bitmap)
-                                    }, 1000) // 1 second delay
-
+                                    }, 1000)
                                 } finally {
                                     image.close()
                                 }
                             }
 
                             override fun onError(exception: ImageCaptureException) {
-                                // Handle error
-                                println("Error capturing image: ${exception.message}")
+                                Toast.makeText(context, "Error: ${exception.message}", Toast.LENGTH_SHORT).show()
                             }
                         }
                     )
                 },
             )
-        }
+        },
+        containerColor = Color.Black // Make scaffold background black
     ) { paddingValues: PaddingValues ->
-        AndroidView(
+        // FIX: Use Box to ensure full screen coverage
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
-            factory = { context ->
-                PreviewView(context).apply {
-                    layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-                    scaleType = PreviewView.ScaleType.FILL_START
-                }.also { previewView ->
-                    previewView.controller = cameraController
-                    cameraController.bindToLifecycle(lifecycleOwner)
+                .padding(paddingValues)
+        ) {
+            AndroidView(
+                modifier = Modifier.fillMaxSize(),
+                factory = { context ->
+                    PreviewView(context).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                        scaleType = PreviewView.ScaleType.FILL_CENTER // Changed to FILL_CENTER
+                        controller = cameraController
+                    }
                 }
-            }
-        )
+            )
+        }
+    }
+
+    // Handle permission and camera binding
+    LaunchedEffect(cameraPermissionState.status) {
+        if (cameraPermissionState.status == PermissionStatus.Granted) {
+            cameraController.bindToLifecycle(lifecycleOwner)
+        }
     }
 }
