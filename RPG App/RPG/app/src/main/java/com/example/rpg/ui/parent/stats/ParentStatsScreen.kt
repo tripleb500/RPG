@@ -48,9 +48,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.R
+import com.example.rpg.data.model.Status
 import com.example.rpg.data.model.User
 import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.parent.home.ParentHomeScreenViewModel
+import com.example.rpg.ui.parent.quest.ParentQuestViewModel
 import com.example.rpg.ui.theme.RPGTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,13 +68,12 @@ fun ParentStatsScreen(
     val children by viewModel.children.collectAsState()
     val parentId = authViewModel.currentUser?.uid
 
+
     LaunchedEffect(parentId) {
         if (parentId != null) {
             viewModel.loadChildren(parentId)
         }
     }
-
-
 
     Scaffold(
         topBar = {
@@ -107,6 +108,7 @@ fun ParentStatsScreen(
 @Composable
 fun childStats(
     children: List<User>,
+    questViewModel: ParentQuestViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
     ){
 
@@ -118,6 +120,11 @@ fun childStats(
     }
 
     val currentChild = children[currentChildIndex]
+    val assignedQuests = questViewModel.assignedQuests.collectAsState()
+    val completed = assignedQuests.value.filter { it.status == Status.COMPLETED }
+    val inProgress = assignedQuests.value.filter { it.status == Status.INPROGRESS }
+    val completedQuests = completed.filter{it.assignedTo == currentChild.id}.size
+    val currentQuests = inProgress.filter{it.assignedTo == currentChild.id}.size
     Card(
         modifier = Modifier
             .padding(
@@ -204,12 +211,12 @@ fun childStats(
                 .padding(8.dp)
         ){
             Text(
-                "Quests in Progress: ",
+                "Quests in Progress: " + currentQuests,
                 modifier = Modifier,
                 fontSize = 16.sp
             )
             Text(
-                "Quests Completed: ",
+                "Quests Completed: " + completedQuests,
                 modifier = Modifier,
                 fontSize = 16.sp
             )
