@@ -41,7 +41,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 @Composable
 fun QuestDialog(
     quest: Quest,
-    viewModel: ChildHomeScreenViewModel,
+    viewModel: ChildQuestViewModel,
     onDismissRequest: () -> Unit,
     onCompleteClicked: (Quest) -> Unit
 ) {

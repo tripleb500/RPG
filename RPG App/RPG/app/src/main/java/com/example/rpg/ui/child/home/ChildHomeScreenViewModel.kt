@@ -15,6 +15,7 @@ import com.example.rpg.data.repository.AuthRepository
 import com.example.rpg.data.repository.QuestRepository
 import com.example.rpg.data.repository.StatsRepository
 import com.example.rpg.data.repository.UserRepository
+import com.example.rpg.ui.child.quest.ChildQuestViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -66,19 +67,10 @@ class ChildHomeScreenViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
-    private val _imageUrl = MutableStateFlow<String?>(null)
-    val imageUrl: StateFlow<String?> = _imageUrl.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    fun uploadImageForQuest(questId: String, bitmap: Bitmap) {
-        viewModelScope.launch {
-            _isLoading.value = true
-            _imageUrl.value = questRepository.uploadBitmapAndGetUrl(bitmap, questId)
-            _isLoading.value = false
-        }
-    }
 
     val childQuests: StateFlow<List<Quest>> =
         questRepository.getChildQuests(authRepository.currentUserIdFlow)
@@ -108,22 +100,6 @@ class ChildHomeScreenViewModel @Inject constructor(
     private val questParentCache = mutableMapOf<String, User>()
 
     // Function to mark a quest as pending
-    fun markQuestAsPending(quest: Quest) {
-        viewModelScope.launch {
-            try {
-                val url = _imageUrl.value
-                if (url != null) {
-                    questRepository.updateQuestImage(quest.id, url)
-                }
-                println("Marking quest as PENDING: ${quest.title} (ID: ${quest.id})")
-                questRepository.updateQuestStatus(quest.id, Status.PENDING)
-                // Add a small delay to see if the update propagates correctly
-                delay(100)
-            } catch (e: Exception) {
-                Log.e("QuestVM", "Error updating quest", e)
-            }
-        }
-    }
 
     // retrieves parent's name when loading quest
     fun getQuestParentName(userId: String): State<String?> {

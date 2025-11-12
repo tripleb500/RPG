@@ -125,10 +125,6 @@ fun ChildQuestScreen(
                 quest = quest,
                 onDismissRequest = { selectedQuest = null }, // ← Clear selected quest
                 viewModel = viewModel, // ← Use the parent ViewModel
-                onCompleteClicked = { completedQuest ->
-                    viewModel.markQuestAsPending(completedQuest)
-                    selectedQuest = null // ← Close dialog after action
-                }
             )
             Status.PENDING -> ChildPendingQuestDialog(
                 quest = quest,

@@ -42,8 +42,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 fun ChildInProgressQuestDialog(
     quest: Quest,
     viewModel: ChildQuestViewModel = hiltViewModel(),
-    onDismissRequest: () -> Unit,
-    onCompleteClicked: (Quest) -> Unit
+    onDismissRequest: () -> Unit
 ) {
     val assigneeName by viewModel.getQuestParentName(quest.assignee)
 
@@ -153,7 +152,7 @@ fun ChildInProgressQuestDialog(
                     )
                     Button(
                         onClick = {
-                            onCompleteClicked(quest)
+                            viewModel.markQuestAsPending(quest)
                             onDismissRequest()
                         },
                         modifier = Modifier.fillMaxWidth()
