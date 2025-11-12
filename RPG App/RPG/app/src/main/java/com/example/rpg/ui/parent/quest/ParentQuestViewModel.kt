@@ -14,7 +14,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,6 +36,13 @@ class ParentQuestViewModel @Inject constructor(
                 initialValue = emptyList()
             )
 
+    val availableQuests: StateFlow<List<Quest>> =
+        questRepository.getAvailableQuests(authRepository.currentUserIdFlow.filterNotNull())
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyList()
+            )
     private val _selectedChild = MutableStateFlow<User?>(null)
     val selectedChild = _selectedChild.asStateFlow()
 

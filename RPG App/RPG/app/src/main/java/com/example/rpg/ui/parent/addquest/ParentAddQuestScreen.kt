@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -118,6 +119,9 @@ fun AddQuestContent(
     }
 
     val selectedImageUri by viewModel.selectedImageUri.collectAsState()
+
+    val isAvailableToAllChildren by viewModel.isAvailableToAllChildren.collectAsState()
+    val selectedChild by viewModel.selectedChild.collectAsState()
 
     val dueDate by viewModel.dueDate.collectAsState()
 
@@ -320,15 +324,31 @@ fun AddQuestContent(
         //var selectedChild by remember { mutableStateOf<User?>(children.firstOrNull()) }
 
         LazyRow {
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clickable {
+                            viewModel.selectChild(null)
+                        },
+                    colors = if (isAvailableToAllChildren)
+                        CardDefaults.cardColors(containerColor = Color.LightGray)
+                    else CardDefaults.cardColors()
+                ) {
+                    Text(text = "Quest board")
+                }
+            }
+
             items(children) { child ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
                         .clickable {
-                            viewModel.setChild(child)
+                            viewModel.selectChild(child)
                         },
-                    colors = if (child == selectedChild) CardDefaults.cardColors(containerColor = Color.LightGray)
+                    colors = if (!isAvailableToAllChildren && child == selectedChild) CardDefaults.cardColors(containerColor = Color.LightGray)
                     else CardDefaults.cardColors()
                 ) {
                     Text(
