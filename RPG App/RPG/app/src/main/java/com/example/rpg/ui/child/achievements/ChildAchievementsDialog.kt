@@ -62,8 +62,8 @@ fun ChildAchievementsDialog(
     viewModel: ChildHomeScreenViewModel = hiltViewModel(),
     authViewModel: AuthViewModel = hiltViewModel(),
 ) {
-    val isLoadingAchievements by remember { derivedStateOf { viewModel.isLoadingAchievements } }
-    val errorMessagesAchievements by remember { derivedStateOf { viewModel.errorMessageAchievements } }
+//    val isLoadingAchievements by remember { derivedStateOf { viewModel.isLoadingAchievements } }
+//    val errorMessagesAchievements by remember { derivedStateOf { viewModel.errorMessageAchievements } }
 
     val count by viewModel.completedQuestsCount.collectAsState()
     Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -155,13 +155,13 @@ fun ChildAchievementsDialog(
                         }
                     }
                 }
-                if (errorMessagesAchievements != null) {
-                    Text(
-                        text = errorMessagesAchievements ?: "",
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
+//                if (errorMessagesAchievements != null) {
+//                    Text(
+//                        text = errorMessagesAchievements ?: "",
+//                        color = MaterialTheme.colorScheme.error,
+//                        style = MaterialTheme.typography.bodyMedium
+//                    )
+//                }
 //                OutlinedTextField(
 //                    value = accessCode,
 //                    onValueChange = { accessCode = it },

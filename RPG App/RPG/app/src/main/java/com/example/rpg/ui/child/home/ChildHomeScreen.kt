@@ -23,6 +23,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,15 +54,10 @@ import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
 import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.child.achievements.ChildAchievementsDialog
-import com.example.rpg.ui.child.quest.CardView
 import com.example.rpg.ui.child.quest.ChildInProgressQuestDialog
-import com.example.rpg.ui.child.quest.ChildQuestViewModel
 import com.example.rpg.ui.child.quest.SortOrder
 import com.example.rpg.ui.child.stats.ChildStatsDialog
-import com.example.rpg.ui.parent.home.Family
 import com.example.rpg.ui.parent.home.ProgressIndicator
-import com.example.rpg.ui.parent.quest.InProgressQuestDialog
-import com.example.rpg.ui.parent.quest.ParentQuestViewModel
 import com.example.rpg.ui.theme.RPGTheme
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -83,6 +79,12 @@ fun ChildHomeScreen(
     val questList = viewModel.childQuests.collectAsState()
     var selectedQuest by remember { mutableStateOf<Quest?>(null) }
     var sortOrder by rememberSaveable { mutableStateOf(SortOrder.ASCENDING) }
+
+    LaunchedEffect(questList.value, user) {
+        user?.let {
+            viewModel.recalculateStats(it.id, questList.value)
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -209,7 +211,6 @@ fun ChildHomeScreen(
                     ChildStatsDialog(
                         onDismissRequest = { showDialogStats = false },
                         viewModel = viewModel,
-                        authViewModel = authViewModel
                     )
                 }
 

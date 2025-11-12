@@ -1,7 +1,6 @@
 package com.example.rpg.ui.parent.stats
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,17 +8,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.PhotoCamera
-import androidx.compose.material.icons.materialIcon
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -112,7 +106,7 @@ fun ParentStatsScreen(
 fun childStats(
     children: List<User>,
     modifier: Modifier = Modifier
-    ){
+) {
 
     var currentChildIndex by remember { mutableStateOf(0) }
 
@@ -128,7 +122,8 @@ fun childStats(
                 start = 16.dp,
                 top = 16.dp,
                 bottom = 8.dp,
-                end = 16.dp)
+                end = 16.dp
+            )
             .fillMaxWidth()
             .height(100.dp)
     ) {
@@ -136,13 +131,13 @@ fun childStats(
             modifier = Modifier
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
-        ){
+        ) {
             Row(
                 modifier = Modifier,
-            ){
+            ) {
                 IconButton(
                     onClick = {
-                        currentChildIndex = (currentChildIndex - 1 + children.size ) % children.size
+                        currentChildIndex = (currentChildIndex - 1 + children.size) % children.size
                     },
                     modifier = Modifier
                         .width(100.dp)
@@ -181,10 +176,11 @@ fun childStats(
             .padding(
                 start = 16.dp,
                 bottom = 8.dp,
-                end = 16.dp)
+                end = 16.dp
+            )
             .fillMaxWidth()
             .height(50.dp)
-    ){
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxSize(),
@@ -199,14 +195,14 @@ fun childStats(
     }
     Card(
         modifier = Modifier
-            .padding(start = 16.dp, bottom = 8.dp ,end = 16.dp)
+            .padding(start = 16.dp, bottom = 8.dp, end = 16.dp)
             .fillMaxWidth()
 
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .padding(8.dp)
-        ){
+        ) {
             Text(
                 "Quests in Progress: ",
                 modifier = Modifier,

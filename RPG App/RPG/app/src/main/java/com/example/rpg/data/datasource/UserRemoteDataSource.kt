@@ -1,24 +1,35 @@
 package com.example.rpg.data.datasource
 
 
+import com.example.rpg.data.model.Stats
 import com.example.rpg.data.model.User
+import com.example.rpg.data.repository.StatsRepository
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+
 
 /**
  *  This data source is responsible for saving userprofile to Firebase Firestore.
  */
 
 class UserRemoteDataSource @Inject constructor(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val statsRepository: StatsRepository  // inject repository
 ) {
-    suspend fun createProfile(user: User) {  // Saves user object into Firestore
-        firestore.collection(USERS_COLLECTION)  // "users" collection in firestore
-            .document(user.id) // Specifies document ID is equal to user's ID.
-            .set(user)  // Saves user object as document
-            .await()
+    suspend fun createProfile(user: User) {
+        firestore.runTransaction { transaction ->
+
+            val userRef = firestore.collection(USERS_COLLECTION).document(user.id)
+            transaction.set(userRef, user)
+
+            if (user.familyRole == "child") {
+                val statsRef = firestore.collection("stats").document(user.id)
+                val stats = Stats()
+                transaction.set(statsRef, stats)
+            }
+        }.await()
     }
 
     suspend fun getProfile(id: String): User? {

@@ -11,10 +11,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -22,13 +24,16 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.rpg.data.model.Status
 import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
+import kotlinx.coroutines.flow.map
 
 const val totalXP = 340
 
@@ -43,18 +48,20 @@ fun ChildStatsDialog(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
     viewModel: ChildHomeScreenViewModel = hiltViewModel(),
-    authViewModel: AuthViewModel = hiltViewModel(),
 ) {
+    // Observe stats
+    val stats by viewModel.stats.collectAsState()
+    val completedCount by viewModel.completedQuestsCount.collectAsState(initial = 0)
+    val inProgressCount by viewModel.childQuests
+        .map { quests -> quests.count { it.status == Status.INPROGRESS } }
+        .collectAsState(initial = 0)
+
     val isLoadingStats by remember { derivedStateOf { viewModel.isLoadingStats } }
-    val errorMessagesStats by remember { derivedStateOf { viewModel.errorMessageStats } }
+    val errorMessageStats by remember { derivedStateOf { viewModel.errorMessageStats } }
 
-    val count by viewModel.completedQuestsCount.collectAsState()
-
-    var username by remember { mutableStateOf("") }
-
-    Dialog(onDismissRequest = { onDismissRequest() }) {
+    Dialog(onDismissRequest = onDismissRequest) {
         Card(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             shape = RoundedCornerShape(16.dp),
@@ -71,53 +78,46 @@ fun ChildStatsDialog(
                     modifier = Modifier.fillMaxWidth(),
                     style = MaterialTheme.typography.titleLarge
                 )
-                LazyColumn {
-                    items(StatsList) { Stats ->
-                        Text(
-                            text = Stats.name,
-                            modifier = Modifier.padding(top = 16.dp)
-                        )
-                        Text(
-                            text = "Current XP: " + Stats.currentXP,
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                       /* Text(
-                            text = "Quests Accepted: $count",
-                            style = MaterialTheme.typography.bodySmall,
-                        )*/
-                        Text(
-                            text = "Quests Completed: $count",
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                        Text(
-                            text = "Quests Streak: " + Stats.questStreak,
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                    }
-                }
-                if (errorMessagesStats != null) {
+
+                if (isLoadingStats) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                } else if (stats != null) {
+                    // Display quest stats
                     Text(
-                        text = errorMessagesStats ?: "",
+                        text = "Quests Completed: $completedCount",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        text = "Quests In Progress: $inProgressCount",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+
+                    // Optional: additional stats from Stats data class
+//                    Text(
+//                        text = "Current XP: ${stats!!.currentXP}",
+//                        style = MaterialTheme.typography.bodySmall
+//                    )
+//                    Text(
+//                        text = "Quest Streak: ${stats!!.questStreak}",
+//                        style = MaterialTheme.typography.bodySmall
+//                    )
+                }
+
+                if (!errorMessageStats.isNullOrEmpty()) {
+                    Text(
+                        text = errorMessageStats ?: "",
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
-//                OutlinedTextField(
-//                    value = accessCode,
-//                    onValueChange = { accessCode = it },
-//                    label = { Text("Access Code") },
-//                    singleLine = true,
-//                    modifier = Modifier.fillMaxWidth()
-//                )
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    TextButton(onClick = { onDismissRequest() }) {
-                        Text("Cancel")
+                    TextButton(onClick = onDismissRequest) {
+                        Text("Close")
                     }
-                    Spacer(modifier = Modifier.width(8.dp))
-
                 }
             }
         }

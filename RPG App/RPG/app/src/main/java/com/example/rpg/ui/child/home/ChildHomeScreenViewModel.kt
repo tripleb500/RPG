@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rpg.data.model.Quest
+import com.example.rpg.data.model.Stats
 import com.example.rpg.data.model.Status
 import com.example.rpg.data.model.User
 import com.example.rpg.data.repository.AuthRepository
@@ -48,29 +49,44 @@ class ChildHomeScreenViewModel @Inject constructor(
     private val questRepository: QuestRepository,
     private val statsRepository: StatsRepository
 ) : ViewModel() {
-    // Flow of all in-progress quests for the current child
 
+    // -------------------
+    // Stats
+    // -------------------
+    private val _stats = MutableStateFlow<Stats?>(null)
+    val stats: StateFlow<Stats?> = _stats
 
-    val inProgressQuestsFlow: StateFlow<List<Quest>> = authRepository.currentUserIdFlow
-        .filterNotNull()
-        .flatMapLatest { uid ->
-            println("User ID received: $uid")
-            questRepository.getQuestsByStatus(flowOf(uid), Status.INPROGRESS)
-                .catch { error ->
-                    Log.e("ChildHomeScreenVM", "Error loading quests: ${error.message}")
-                    emit(emptyList())
-                }
+    var isLoadingStats by mutableStateOf(false)
+        private set
+    var errorMessageStats by mutableStateOf<String?>(null)
+        private set
+
+    fun loadStats(userId: String) {
+        viewModelScope.launch {
+            try {
+                isLoadingStats = true
+                val result = statsRepository.getStats(userId)
+                _stats.value = result
+                errorMessageStats = null
+            } catch (e: Exception) {
+                errorMessageStats = e.message
+            } finally {
+                isLoadingStats = false
+            }
         }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
-        )
+    }
 
+    fun recalculateStats(userId: String, quests: List<Quest>) {
+        viewModelScope.launch {
+            statsRepository.recalculateStats(userId, quests)
+        }
+    }
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-
+    // -------------------
+    // Child Quests
+    // -------------------
+    private val _isLoadingQuests = MutableStateFlow(false)
+    val isLoadingQuests: StateFlow<Boolean> = _isLoadingQuests.asStateFlow()
 
     val childQuests: StateFlow<List<Quest>> =
         questRepository.getChildQuests(authRepository.currentUserIdFlow)
@@ -80,8 +96,7 @@ class ChildHomeScreenViewModel @Inject constructor(
                 initialValue = emptyList()
             )
 
-
-    // Count of completed quests for the current child account
+    // Count of completed quests
     val completedQuestsCount: StateFlow<Int> = authRepository.currentUserIdFlow
         .filterNotNull()
         .flatMapLatest { uid ->
@@ -97,16 +112,16 @@ class ChildHomeScreenViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = 0
         )
+
+    // -------------------
+    // Quest parent cache
+    // -------------------
     private val questParentCache = mutableMapOf<String, User>()
 
-    // Function to mark a quest as pending
-
-    // retrieves parent's name when loading quest
     fun getQuestParentName(userId: String): State<String?> {
         val nameState = mutableStateOf<String?>(null)
 
         viewModelScope.launch {
-            // Check cache first
             val cached = questParentCache[userId]
             if (cached != null) {
                 nameState.value = "${cached.firstname} ${cached.lastname}"
@@ -117,10 +132,10 @@ class ChildHomeScreenViewModel @Inject constructor(
                         questParentCache[userId] = user
                         nameState.value = "${user.firstname} ${user.lastname}"
                     } else {
-                        nameState.value = "Unknown"
+                        nameState.value = null
                     }
                 } catch (e: Exception) {
-                    nameState.value = "Unknown"
+                    nameState.value = null
                 }
             }
         }
@@ -128,17 +143,9 @@ class ChildHomeScreenViewModel @Inject constructor(
         return nameState
     }
 
-    // Achievement and Stats Dialogs
-    var isLoadingAchievements by mutableStateOf(false)
-        private set
-    var errorMessageAchievements by mutableStateOf<String?>(null)
-        private set
-    var isLoadingStats by mutableStateOf(false)
-        private set
-    var errorMessageStats by mutableStateOf<String?>(null)
-        private set
-
-    // FIX: Make currentUserFlow more robust
+    // -------------------
+    // Current user flow
+    // -------------------
     val currentUserFlow: Flow<User?> = authRepository.currentUserIdFlow
         .map { uid ->
             try {
