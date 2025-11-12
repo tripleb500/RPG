@@ -1,5 +1,7 @@
 package com.example.rpg.ui.child.quest
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -15,7 +18,10 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +29,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -35,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -45,9 +54,17 @@ import coil.compose.AsyncImage
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
+import com.example.rpg.ui.Routes
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.Date
+import java.util.TimeZone
 
 enum class SortOrder { ASCENDING, DESCENDING }
+enum class SortBy {DEADLINE, STATUS}
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChildQuestScreen(
@@ -58,9 +75,15 @@ fun ChildQuestScreen(
 ) {
     val childQuests = viewModel.childQuests.collectAsState()
     var selectedTab by rememberSaveable { mutableStateOf(Status.INPROGRESS) }
+
+    var sortBy by remember { mutableStateOf(SortBy.DEADLINE) }
     var sortOrder by rememberSaveable { mutableStateOf(SortOrder.ASCENDING) }
 
     var selectedQuest by remember { mutableStateOf<Quest?>(null) }
+
+    var showCalendar by remember { mutableStateOf(false)}
+
+    var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
 
     Scaffold(
         // Topbar, visual signifier for users to know where they are.
@@ -89,6 +112,20 @@ fun ChildQuestScreen(
                     }
                 }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    showCalendar = true
+                },
+                modifier = Modifier.width(100.dp)
+            ) {
+                Text(
+                    text = "Choose Date",
+                    modifier = Modifier,
+                    fontSize = 16.sp
+                )
+            }
         }
     ) { paddingValues ->
         Column(
@@ -103,9 +140,31 @@ fun ChildQuestScreen(
 
             val filtered = childQuests.value.filter { it.status == selectedTab }
 
-            val sorted = when (sortOrder) {
-                SortOrder.ASCENDING -> filtered.sortedBy { it.deadlineDate }
-                SortOrder.DESCENDING -> filtered.sortedByDescending { it.deadlineDate }
+            val selectedDateAsDate = Date.from(
+                selectedDate?.atStartOfDay(ZoneId.systemDefault())
+                    ?.toInstant()
+            )
+
+            val dateFiltered = if (selectedDate != null) {
+                childQuests.value.filter { quest ->
+                    quest.deadlineDate?.date == selectedDateAsDate.date
+                }
+            }
+                else {
+                    childQuests.value
+                }
+
+
+
+            val sorted = when (sortBy) {
+                SortBy.STATUS -> when (sortOrder) {
+                    SortOrder.ASCENDING -> filtered.sortedBy { it.deadlineDate }
+                    SortOrder.DESCENDING -> filtered.sortedByDescending { it.deadlineDate }
+                }
+                SortBy.DEADLINE -> when (sortOrder) {
+                    SortOrder.ASCENDING -> filtered.sortedBy { it.deadlineDate }
+                     SortOrder.DESCENDING -> filtered.sortedByDescending { it.deadlineDate }
+                }
             }
 
             LazyColumn {
@@ -144,6 +203,31 @@ fun ChildQuestScreen(
             else -> {}
         }
     }
+
+//    if (showCalendar) {
+//        val datePickerState = rememberDatePickerState()
+//
+//        DatePickerDialog(
+//            onDismissRequest = { showCalendar = false },
+//            confirmButton = {
+//                TextButton(
+//                    onClick = {
+//                        val date = datePickerState.selectedDateMillis?.let { millis ->
+//                            Instant.ofEpochMilli(millis)
+//                                .atZone(ZoneId.systemDefault())
+//                                .toLocalDate()
+//                        }
+//                        selectedDate = date // Store the selected date
+//                        showCalendar = false
+//                    }
+//                ) {
+//                    Text("OK")
+//                }
+//            }
+//        ) {
+//            DatePicker(state = datePickerState)
+//        }
+//    }
 }
 
 
