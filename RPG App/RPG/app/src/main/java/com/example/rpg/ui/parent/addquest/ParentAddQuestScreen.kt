@@ -102,22 +102,6 @@ fun AddQuestContent(
     val questLoading by viewModel.questLoading.collectAsState()
     val context = LocalContext.current
 
-    if (questLoading) {
-        AlertDialog(
-            onDismissRequest = {},
-            title = { Text("Uploading...") },
-            text = { CircularProgressIndicator() },
-            confirmButton = {}
-        )
-    }
-
-    LaunchedEffect(questCreated) {
-        if (questCreated) {
-            Toast.makeText(context, "Quest Assigned!", Toast.LENGTH_SHORT).show()
-            navController.popBackStack()
-        }
-    }
-
     val selectedImageUri by viewModel.selectedImageUri.collectAsState()
 
     val isAvailableToAllChildren by viewModel.isAvailableToAllChildren.collectAsState()
@@ -125,13 +109,11 @@ fun AddQuestContent(
 
     val dueDate by viewModel.dueDate.collectAsState()
 
-
     val quest by viewModel.quest.collectAsState()
     val cameraPermissionState: PermissionState = rememberPermissionState(Manifest.permission.CAMERA)
 
     var showDatePicker by remember { mutableStateOf(false) }
     var showTimePicker by remember { mutableStateOf(false) }
-
 
     val calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
@@ -149,6 +131,22 @@ fun AddQuestContent(
     val captureUri: Uri? =
         overlayNavController.currentBackStackEntry?.savedStateHandle?.get<Uri>("photoUri")
 
+    if (questLoading) {
+        AlertDialog(
+            onDismissRequest = {},
+            title = { Text("Uploading...") },
+            text = { CircularProgressIndicator() },
+            confirmButton = {}
+        )
+    }
+
+    LaunchedEffect(questCreated) {
+        if (questCreated) {
+            Toast.makeText(context, "Quest Assigned!", Toast.LENGTH_SHORT).show()
+            navController.popBackStack()
+        }
+    }
+
     LaunchedEffect(captureUri) {
         captureUri?.let {
             viewModel.setSelectedImage(it)
@@ -156,9 +154,9 @@ fun AddQuestContent(
             //overlayNavController.previousBackStackEntry?.savedStateHandle?.remove<Uri>("photoUri")
         }
     }
-
-
     viewModel.fetchChildren()
+
+
 
     Column(
         modifier = modifier
@@ -168,7 +166,49 @@ fun AddQuestContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Add Quest", fontSize = 32.sp)
+        Text(text = "Assign to",
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .align(Alignment.Start),
+            fontSize = 24.sp)
+
+        val children by viewModel.children.collectAsState()
+        val selectedChild by viewModel.selectedChild.collectAsState()
+
+        LazyRow(modifier = Modifier.align(Alignment.Start)) {
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clickable {
+                            viewModel.selectChild(null)
+                        },
+                    colors = if (isAvailableToAllChildren)
+                        CardDefaults.cardColors(containerColor = Color.LightGray)
+                    else CardDefaults.cardColors()
+                ) {
+                    Text(text = "Quest Board", modifier = Modifier.padding(16.dp))
+                }
+            }
+
+            items(children) { child ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clickable {
+                            viewModel.selectChild(child)
+                        },
+                    colors = if (!isAvailableToAllChildren && child == selectedChild) CardDefaults.cardColors(containerColor = Color.LightGray)
+                    else CardDefaults.cardColors()
+                ) {
+                    Text(
+                        text = child.firstname, modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -178,6 +218,7 @@ fun AddQuestContent(
             onValueChange = { viewModel.setQuestTitle(it) },
             label = { Text(text = "Title") },
             modifier = Modifier
+                .fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -188,29 +229,36 @@ fun AddQuestContent(
             onValueChange = { viewModel.setQuestDescription(it) },
             label = { Text(text = "Description") },
             modifier = Modifier
+                .fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         //Time and Date Buttons, Repeat Checkbox
-        Row() {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
             //Button to open Calendar
-            Button(onClick = { showDatePicker = true }) {
+            Button(
+                modifier = Modifier.padding(16.dp),
+                onClick = { showDatePicker = true }) {
                 Text(text = dueDate?.let { SimpleDateFormat("dd MMM yyyy").format(it) }
                     ?: "Select Due Date")
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Button(onClick = { showTimePicker = true }, enabled = dueDate != null) {
+            Button(
+                modifier = Modifier.padding(16.dp),
+                onClick = { showTimePicker = true }, enabled = dueDate != null) {
                 Text(text = dueDate?.let { SimpleDateFormat("h:mm a").format(it) } ?: "Select Time")
             }
-
-            Spacer(modifier = Modifier.height(8.dp))
+        }
+        Column(){
 
             //Repeat, If repeat is checked, user chooses repeat type and interval
             //When quest is done or past deadline, generate next deadline based on selected type and interval
-            Row() {
+            Column() {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(
                         checked = quest.repeat, onCheckedChange = { checked ->
@@ -294,8 +342,6 @@ fun AddQuestContent(
 
         //This is where images are currently displayed
         Box(
-            modifier = Modifier
-                .size(80.dp)
         ) {
             selectedImageUri?.let {
                 AsyncImage(model = it,
@@ -315,48 +361,8 @@ fun AddQuestContent(
         ) {
             Text("Assign Quest")
         }
-        //navController.popBackStack()
 
-        val children by viewModel.children.collectAsState()
-        val selectedChild by viewModel.selectedChild.collectAsState()
 
-        //val children = listOf(User(firstname="Alice"), User(firstname="Bob"))
-        //var selectedChild by remember { mutableStateOf<User?>(children.firstOrNull()) }
-
-        LazyRow {
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .clickable {
-                            viewModel.selectChild(null)
-                        },
-                    colors = if (isAvailableToAllChildren)
-                        CardDefaults.cardColors(containerColor = Color.LightGray)
-                    else CardDefaults.cardColors()
-                ) {
-                    Text(text = "Quest board")
-                }
-            }
-
-            items(children) { child ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .clickable {
-                            viewModel.selectChild(child)
-                        },
-                    colors = if (!isAvailableToAllChildren && child == selectedChild) CardDefaults.cardColors(containerColor = Color.LightGray)
-                    else CardDefaults.cardColors()
-                ) {
-                    Text(
-                        text = child.firstname, modifier = Modifier.padding(16.dp)
-                    )
-                }
-            }
-        }
 
         if (showDatePicker) {
             val dialog = DatePickerDialog(
