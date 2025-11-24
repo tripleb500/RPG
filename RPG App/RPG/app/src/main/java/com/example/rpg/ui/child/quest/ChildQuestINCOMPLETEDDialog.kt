@@ -42,7 +42,7 @@ fun ChildIncompletedQuestDialog(
 ) {
     val assigneeName by viewModel.getQuestParentName(quest.assignee)
 
-    val imageUrl by viewModel.imageUrl.collectAsState()
+    val imageUrl by viewModel.submittedImage.collectAsState()
 
     Dialog(onDismissRequest = onDismissRequest) {
         Card(

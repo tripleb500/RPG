@@ -173,7 +173,7 @@ fun CardView(
 ) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var showEditDialog by rememberSaveable { mutableStateOf(false) }
-    var questImage by rememberSaveable { mutableStateOf("") }
+    //var questImage by rememberSaveable { mutableStateOf("") }
 
     // InProgress Edit Dialog
     if (showEditDialog) {

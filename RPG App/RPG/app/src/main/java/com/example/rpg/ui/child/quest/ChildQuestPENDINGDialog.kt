@@ -1,34 +1,24 @@
 package com.example.rpg.ui.child.quest
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -40,10 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
-import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -53,7 +41,7 @@ fun ChildPendingQuestDialog(
     viewModel: ChildQuestViewModel,
     onDismissRequest: () -> Unit
 ) {
-    val imageUrl by viewModel.imageUrl.collectAsState()
+    val imageUrl by viewModel.submittedImage.collectAsState()
 
     val assigneeName by viewModel.getQuestParentName(quest.assignee)
 
@@ -145,15 +133,19 @@ fun ChildPendingQuestDialog(
                     }
                 }
 
-                AsyncImage(
-                    model = if (quest.imageURL.isNotBlank()) quest.imageURL else null,
-                    contentDescription = "Quest Image",
+                Column(
                     modifier = Modifier
-                        .size(100.dp)
-                        .padding(end = 12.dp),
-                    placeholder = painterResource(R.drawable.rpg_logo_parent),
-                    error = painterResource(R.drawable.rpg_logo_parent)
-                )
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally){
+                    AsyncImage(
+                        model = if (quest.submittedImageUrl.isNotBlank()) quest.submittedImageUrl else null,
+                        contentDescription = "Quest Image",
+                        modifier = Modifier
+                            .size(100.dp),
+                        placeholder = painterResource(R.drawable.rpg_logo_parent),
+                        error = painterResource(R.drawable.rpg_logo_parent)
+                    )
+                }
 
                 // OK button
                 Button(

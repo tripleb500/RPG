@@ -23,7 +23,8 @@ data class Quest(
     val assignedTo: String = User().id,
     val status: Status = Status.INPROGRESS,
     val imageUri : String? = null,
-    var imageURL : String = ""
+    var imageURL : String = "",
+    var submittedImageUrl : String = ""
 )
 
 /** Representation of Statuses a quest can have:

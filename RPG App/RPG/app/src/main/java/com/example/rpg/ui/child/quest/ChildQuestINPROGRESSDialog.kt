@@ -54,7 +54,7 @@ fun ChildInProgressQuestDialog(
 
     var showCamera by remember { mutableStateOf(false) }
 
-    val imageUrl by viewModel.imageUrl.collectAsState()
+    val imageUrl by viewModel.submittedImage.collectAsState()
 
     LaunchedEffect(cameraPermissionState.status) {
         if (showCamera && cameraPermissionState.status.isGranted) {

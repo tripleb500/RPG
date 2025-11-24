@@ -30,7 +30,6 @@ import androidx.compose.ui.window.Dialog
 import coil.compose.rememberAsyncImagePainter
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
-import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
@@ -55,7 +54,7 @@ fun QuestDialog(
 
     var showCamera by remember { mutableStateOf(false) }
 
-    val imageUrl by viewModel.imageUrl.collectAsState()
+    val imageUrl by viewModel.submittedImage.collectAsState()
 
 //    if (showCamera && hasPermission) {
 //        ChildCameraScreen(

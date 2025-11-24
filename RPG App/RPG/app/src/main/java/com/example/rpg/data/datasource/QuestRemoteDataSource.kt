@@ -169,7 +169,7 @@ class QuestRemoteDataSource @Inject constructor(
     suspend fun updateQuestImage(questId: String, newImage: String) {
         firestore.collection(QUEST_ITEMS_COLLECTION)
             .document(questId)
-            .update("imageURL", newImage)
+            .update("submittedImageUrl", newImage)
             .await()
     }
 

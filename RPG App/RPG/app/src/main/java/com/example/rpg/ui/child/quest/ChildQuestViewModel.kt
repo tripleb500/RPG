@@ -37,15 +37,15 @@ class ChildQuestViewModel @Inject constructor(
         _capturedImage.value = bitmap
     }
 
-    private val _imageUrl = MutableStateFlow<String?>(null)
-    val imageUrl: StateFlow<String?> = _imageUrl.asStateFlow()
+    private val _submittedImage = MutableStateFlow<String?>(null)
+    val submittedImage: StateFlow<String?> = _submittedImage.asStateFlow()
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
     fun uploadImageForQuest(questId: String, bitmap: Bitmap) {
-        _imageUrl.value = null
+        _submittedImage.value = null
         viewModelScope.launch {
             _isLoading.value = true
-            _imageUrl.value = questRepository.uploadBitmapAndGetUrl(bitmap, questId)
+            _submittedImage.value = questRepository.uploadBitmapAndGetUrl(bitmap, questId)
             _isLoading.value = false
         }
     }
@@ -55,7 +55,7 @@ class ChildQuestViewModel @Inject constructor(
     fun markQuestAsPending(quest: Quest) {
         viewModelScope.launch {
             try {
-                var image = _imageUrl.value
+                var image = _submittedImage.value
                 if (image != null) {
                     questRepository.updateQuestImage(quest.id, image)
                 }

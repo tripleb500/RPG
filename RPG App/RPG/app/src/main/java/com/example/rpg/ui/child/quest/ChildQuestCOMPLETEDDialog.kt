@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -42,7 +43,7 @@ fun ChildCompletedQuestDialog(
 ) {
     val assigneeName by viewModel.getQuestParentName(quest.assignee)
 
-    val imageUrl by viewModel.imageUrl.collectAsState()
+    val imageUrl by viewModel.submittedImage.collectAsState()
 
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
@@ -133,15 +134,19 @@ fun ChildCompletedQuestDialog(
                     }
                 }
 
-                AsyncImage(
-                    model = if (quest.imageURL.isNotBlank()) quest.imageURL else null,
-                    contentDescription = "Quest Image",
+                Column(
                     modifier = Modifier
-                        .size(100.dp)
-                        .padding(end = 12.dp),
-                    placeholder = painterResource(R.drawable.rpg_logo_parent),
-                    error = painterResource(R.drawable.rpg_logo_parent)
-                )
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally){
+                    AsyncImage(
+                        model = if (quest.submittedImageUrl.isNotBlank()) quest.submittedImageUrl else null,
+                        contentDescription = "Quest Image",
+                        modifier = Modifier
+                            .size(100.dp),
+                        placeholder = painterResource(R.drawable.rpg_logo_parent),
+                        error = painterResource(R.drawable.rpg_logo_parent)
+                    )
+                }
 
                 // OK button
                 Button(
