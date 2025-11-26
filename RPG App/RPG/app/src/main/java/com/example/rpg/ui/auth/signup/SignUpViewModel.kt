@@ -76,22 +76,20 @@ class SignUpViewModel @Inject constructor(
                     email = email,
                     familyRole = role
                 )
-                val stats = Stats(
-                    id = userId,
-                    questsCompleted = 0,
-                    questsAccepted = 0,
-                    questsStreak = 0,
-                    totalXP = 0,
-                    rewardsEarned = emptyList()
-                )
                 userRepository.createProfile(user)  // Calls UserRepository to save the profile to Firestore database. Ensures that we have a user profile instead of just user authentication.
                 onSuccess(
                     true,
                     role
                 )  // Tells UI that signup was successful. Role is passed so UI can navigate to Parent or Child screen based upon selection.
 
-                if (role == "child")
-                    statsRepository.createStats(stats)
+                if (role == "Child") {
+                    val stats = Stats()
+
+                    statsRepository.createStats(
+                        userId = userId,
+                        stats = stats
+                    )
+                }
 
             } catch (e: Exception) {
                 _errorMessage.value = e.message ?: "An error occurred"

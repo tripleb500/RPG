@@ -8,9 +8,12 @@ import kotlinx.coroutines.flow.Flow
 class StatsRepository @Inject constructor(
     private val statsRemoteDataSource: StatsRemoteDataSource
 ) {
+    suspend fun createStats(userId: String, stats: Stats) =
+        statsRemoteDataSource.createStats(userId, stats)
 
-    suspend fun createStats(Stats: Stats) = statsRemoteDataSource.createStats(Stats)
-    //suspend fun updateStats(statItem: String, newCount: Stats) = statsRemoteDataSource.updateStats(statItem, newCount)
+    suspend fun updateStats(userId: String, updates: Map<String, Any>) =
+        statsRemoteDataSource.updateStats(userId, updates)
 
-
+    suspend fun getStats(userId: String) =
+        statsRemoteDataSource.getStats(userId)
 }

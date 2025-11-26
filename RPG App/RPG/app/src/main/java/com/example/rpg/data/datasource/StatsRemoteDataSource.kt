@@ -13,18 +13,29 @@ import javax.inject.Inject
 class StatsRemoteDataSource @Inject constructor(
     private val firestore: FirebaseFirestore
 ) {
-    suspend fun createStats(Stats: Stats): String {
-        return firestore.collection(STAT_ITEMS_COLLECTION).add(Stats).await().id
-    }
-    /*suspend fun updateStats(statItem: String, newCount: Stats) {
+    suspend fun createStats(userId: String, stats: Stats) {
         firestore.collection(STAT_ITEMS_COLLECTION)
-            .document(statItem)
-            .update("questsCompleted", newCount)
+            .document(userId)      // SAME ID as user
+            .set(stats)
             .await()
+    }
 
-    }*/
+    suspend fun updateStats(userId: String, updates: Map<String, Any>) {
+        firestore.collection(STAT_ITEMS_COLLECTION)
+            .document(userId)
+            .update(updates)
+            .await()
+    }
+
+    suspend fun getStats(userId: String): Stats? {
+        return firestore.collection(STAT_ITEMS_COLLECTION)
+            .document(userId)
+            .get()
+            .await()
+            .toObject(Stats::class.java)
+    }
 
     companion object {
-        private const val STAT_ITEMS_COLLECTION = "statItem" //Name of the collection for quest items
+        private const val STAT_ITEMS_COLLECTION = "stats" //Name of the collection for quest items
     }
 }
