@@ -11,9 +11,13 @@ class StatsRepository @Inject constructor(
     suspend fun createStats(userId: String, stats: Stats) =
         statsRemoteDataSource.createStats(userId, stats)
 
+
     suspend fun updateStats(userId: String, updates: Map<String, Any>) =
         statsRemoteDataSource.updateStats(userId, updates)
 
     suspend fun getStats(userId: String) =
         statsRemoteDataSource.getStats(userId)
+
+    fun getStatsFlow(userIdFlow: Flow<String?>): Flow<Stats> =
+        statsRemoteDataSource.getStatsFlow(userIdFlow)
 }

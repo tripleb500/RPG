@@ -42,58 +42,29 @@ class QuestRemoteDataSource @Inject constructor(
 
     // this generic function is used to get quests for a specified user, along with optional status filter
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun getQuests(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> {
-        return currentUserIdFlow.flatMapLatest { ownerId ->
-            if (ownerId == null) {
-                flowOf(emptyList())
-            } else {
-                callbackFlow {
-                    println("Setting up Firestore listener for user: $ownerId")
+    fun getQuests(uid: String): Flow<List<Quest>> = callbackFlow {
+        val query = firestore.collection(QUEST_ITEMS_COLLECTION)
+            .whereEqualTo(ASSIGNED_TO_ID_FIELD, uid)
 
-                    val query = firestore
-                        .collection(QUEST_ITEMS_COLLECTION)
-                        .whereEqualTo(ASSIGNED_TO_ID_FIELD, ownerId)
-                    // REMOVE the orderBy if it's causing issues, or add index
-                    // .orderBy("deadlineDate", Query.Direction.ASCENDING)
-
-                    val listener = query.addSnapshotListener { snapshot, error ->
-                        if (error != null) {
-                            Log.e(
-                                "QuestRemoteDataSource",
-                                "Error fetching quests: ${error.message}"
-                            )
-                            trySend(emptyList())
-                            return@addSnapshotListener
-                        }
-
-                        val quests = snapshot?.toObjects(Quest::class.java) ?: emptyList()
-                        println("Firestore update received: ${quests.size} quests")
-                        quests.forEach { quest ->
-                            println("   - ${quest.title} (Status: ${quest.status})")
-                        }
-
-                        // Try without sorting first to see if that's the issue
-//                        trySend(quests)
-
-//                         If you need sorting, use this instead:
-                        trySend(
-                            quests.sortedWith(
-                            compareBy<Quest> { it.deadlineDate == null }
-                                .thenBy { it.deadlineDate ?: Date(Long.MAX_VALUE) }
-                        ))
-                    }
-
-                    awaitClose {
-                        println("Removing Firestore listener")
-                        listener.remove()
-                    }
-                }
+        val listener = query.addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                trySend(emptyList())
+                return@addSnapshotListener
             }
-        }.catch { error ->
-            Log.e("QuestRemoteDataSource", "Stream error: ${error.message}")
-            emit(emptyList())
+
+            val quests = snapshot?.toObjects(Quest::class.java) ?: emptyList()
+
+            trySend(
+                quests.sortedWith(
+                    compareBy<Quest> { it.deadlineDate == null }
+                        .thenBy { it.deadlineDate ?: Date(Long.MAX_VALUE) }
+                )
+            )
         }
+
+        awaitClose { listener.remove() }
     }
+
 
     // TODO: Delete, this gets all quests even if not a child
     // This function is useful for parents to view all their children's quests

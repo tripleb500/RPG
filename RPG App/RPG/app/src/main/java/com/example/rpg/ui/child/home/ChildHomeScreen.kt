@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -148,11 +149,12 @@ fun ChildHomeScreen(
                 ) {
                     Row(Modifier.padding(16.dp)) {
                         Image(
-                            painter = painterResource(id = R.drawable.outline_photo_camera_back_24),
+                            painter = painterResource(id = R.drawable.outline_trophy_24),
                             contentDescription = "Photo of achievement symbol",
                             modifier = Modifier
                                 .width(100.dp)
-                                .height(100.dp)
+                                .height(100.dp),
+                            colorFilter = ColorFilter.tint(Color(0xFFFFD700)) // gold color
                         )
                         Column(
                             Modifier
@@ -177,11 +179,12 @@ fun ChildHomeScreen(
                 ) {
                     Row(Modifier.padding(16.dp)) {
                         Image(
-                            painter = painterResource(id = R.drawable.outline_photo_camera_back_24),
+                            painter = painterResource(id = R.drawable.baseline_auto_graph_24),
                             contentDescription = "Photo of stat symbol",
                             modifier = Modifier
                                 .width(100.dp)
-                                .height(100.dp)
+                                .height(100.dp),
+                            colorFilter = ColorFilter.tint(Color.White) // gold color
                         )
                         Column(
                             Modifier
@@ -201,7 +204,6 @@ fun ChildHomeScreen(
                     ChildAchievementsDialog(
                         onDismissRequest = { showDialogAchievements = false },
                         viewModel = viewModel,
-                        authViewModel = authViewModel
                     )
                 }
 

@@ -12,29 +12,11 @@ import javax.inject.Inject
 class QuestRepository @Inject constructor(
     private val questRemoteDataSource: QuestRemoteDataSource
 ) {
-    fun getQuestsByStatus(
-        currentUserIdFlow: Flow<String?>,
-        status: Status
-    ): Flow<List<Quest>> =
-        questRemoteDataSource.getQuests(currentUserIdFlow)
-            .map { quests ->
-                val filteredQuests = quests.filter { it.status == status }
-                println("Filtering quests - Total: ${quests.size}, $status: ${filteredQuests.size}")
-                quests.forEach { quest ->
-                    println("   - Quest: ${quest.title}, Status: ${quest.status}, ID: ${quest.id}")
-                }
-                filteredQuests
-            }
+    fun getQuestsByStatus(uid: String, status: Status): Flow<List<Quest>> =
+        questRemoteDataSource.getQuests(uid).map { it.filter { q -> q.status == status } }
 
-    fun getCompletedQuestsByChild(
-        currentUserIdFlow: Flow<String?>,
-    ): Flow<List<Quest>> =
-        questRemoteDataSource.getQuests(currentUserIdFlow)
-            .map { quests ->
-                val filteredQuests = quests.filter { it.status == Status.COMPLETED }
-
-                filteredQuests
-            }
+    fun getChildQuests(uid: String): Flow<List<Quest>> =
+        questRemoteDataSource.getQuests(uid)
 
     // TODO: Delete, this gets all quests even if not a child
     // This function is useful for parents to view all their children's quests

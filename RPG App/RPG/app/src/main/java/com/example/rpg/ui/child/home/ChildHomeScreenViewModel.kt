@@ -1,6 +1,5 @@
 package com.example.rpg.ui.child.home
 
-import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -15,9 +14,7 @@ import com.example.rpg.data.repository.AuthRepository
 import com.example.rpg.data.repository.QuestRepository
 import com.example.rpg.data.repository.StatsRepository
 import com.example.rpg.data.repository.UserRepository
-import com.example.rpg.ui.child.quest.ChildQuestViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -48,70 +45,28 @@ class ChildHomeScreenViewModel @Inject constructor(
     private val questRepository: QuestRepository,
     private val statsRepository: StatsRepository
 ) : ViewModel() {
-    // Flow of all in-progress quests for the current child
-
-
-    val inProgressQuestsFlow: StateFlow<List<Quest>> = authRepository.currentUserIdFlow
+    val childQuests = authRepository.currentUserIdFlow
         .filterNotNull()
-        .flatMapLatest { uid ->
-            println("User ID received: $uid")
-            questRepository.getQuestsByStatus(flowOf(uid), Status.INPROGRESS)
-                .catch { error ->
-                    Log.e("ChildHomeScreenVM", "Error loading quests: ${error.message}")
-                    emit(emptyList())
-                }
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
-        )
+        .flatMapLatest { uid -> questRepository.getChildQuests(uid) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    // Count of completed quests for the current child account
+    val completedQuestsCount = childQuests
+        .map { list -> list.count { it.status == Status.COMPLETED } }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, 0)
+
+    val questsInProgCount = childQuests
+        .map { list -> list.count { it.status == Status.INPROGRESS } }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, 0)
+
+    // Flow of all in-progress quests for the current child
+    val inProgressQuestsFlow = childQuests
+        .map { list -> list.filter { it.status == Status.INPROGRESS } }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-
-    val childQuests: StateFlow<List<Quest>> =
-        questRepository.getChildQuests(authRepository.currentUserIdFlow)
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = emptyList()
-            )
-
-
-    // Count of completed quests for the current child account
-    val completedQuestsCount: StateFlow<Int> = authRepository.currentUserIdFlow
-        .filterNotNull()
-        .flatMapLatest { uid ->
-            questRepository.getQuestsByStatus(flowOf(uid), Status.COMPLETED)
-                .map { it.size } // count them
-                .catch { error ->
-                    Log.e("ChildHomeScreenVM", "Error loading completed quests: ${error.message}")
-                    emit(0)
-                }
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = 0
-        )
-    val questsInProgCount: StateFlow<Int> = authRepository.currentUserIdFlow
-        .filterNotNull()
-        .flatMapLatest { uid ->
-            questRepository.getQuestsByStatus(flowOf(uid), Status.INPROGRESS)
-                .map { it.size } // count them
-                .catch { error ->
-                    Log.e("ChildHomeScreenVM", "Error loading completed quests: ${error.message}")
-                    emit(0)
-                }
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = 0
-        )
     private val questParentCache = mutableMapOf<String, User>()
 
     // Function to mark a quest as pending
@@ -142,6 +97,22 @@ class ChildHomeScreenViewModel @Inject constructor(
 
         return nameState
     }
+
+    val currentLevel: StateFlow<Int> =
+        statsRepository.getStatsFlow(authRepository.currentUserIdFlow)
+            .map { stats ->
+                stats.totalXP / 100
+            }
+            .catch { e ->
+                Log.e("ChildHomeVM", "Stats error: ${e.message}")
+                emit(0)
+            }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                0
+            )
+
 
     // Achievement and Stats Dialogs
     var isLoadingAchievements by mutableStateOf(false)
