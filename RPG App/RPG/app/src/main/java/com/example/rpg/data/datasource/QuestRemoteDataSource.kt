@@ -2,21 +2,17 @@ package com.example.rpg.data.datasource
 
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
-import com.example.rpg.ui.child.stats.StatsList
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageMetadata
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.tasks.await
@@ -113,9 +109,9 @@ class QuestRemoteDataSource @Inject constructor(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun getAvailableQuestsForChild(currentUserIdFlow: Flow<String?>) : Flow<List<Quest>> {
+    fun getAvailableQuestsForChild(currentUserIdFlow: Flow<String?>): Flow<List<Quest>> {
         return currentUserIdFlow.flatMapLatest { childId ->
-            if(childId == null) {
+            if (childId == null) {
                 flowOf(emptyList())
             } else {
                 firestore.collection(QUEST_ITEMS_COLLECTION)

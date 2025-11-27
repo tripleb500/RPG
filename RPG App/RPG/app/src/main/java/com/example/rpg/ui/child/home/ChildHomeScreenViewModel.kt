@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rpg.data.model.Quest
+import com.example.rpg.data.model.Stats
 import com.example.rpg.data.model.Status
 import com.example.rpg.data.model.User
 import com.example.rpg.data.repository.AuthRepository
@@ -113,6 +114,30 @@ class ChildHomeScreenViewModel @Inject constructor(
                 0
             )
 
+    val currentStats: StateFlow<Stats> = authRepository.currentUserIdFlow
+        .filterNotNull()
+        .flatMapLatest { uid ->
+            statsRepository.getStatsFlow(flowOf(uid))
+                .catch { e ->
+                    errorMessageStats = e.message
+                    emit(
+                        Stats(
+                            id = uid,
+                            questsCompleted = 0,
+                            questsStreak = 0,
+                            totalXP = 0,
+                            rewardsEarned = emptyList()
+                        )
+                    )
+                }
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = Stats(
+                id = "", questsCompleted = 0, questsStreak = 0, totalXP = 0, rewardsEarned = emptyList()
+            )
+        )
 
     // Achievement and Stats Dialogs
     var isLoadingAchievements by mutableStateOf(false)

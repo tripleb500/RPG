@@ -9,6 +9,7 @@ import com.example.rpg.data.model.Status
 import com.example.rpg.data.model.User
 import com.example.rpg.data.repository.AuthRepository
 import com.example.rpg.data.repository.QuestRepository
+import com.example.rpg.data.repository.StatsRepository
 import com.example.rpg.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +26,8 @@ import javax.inject.Inject
 class ParentQuestViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val questRepository: QuestRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val statsRepository: StatsRepository
 ) : ViewModel() {
     // Retrieve assignedQuests
     val assignedQuests: StateFlow<List<Quest>> =
@@ -59,10 +61,17 @@ class ParentQuestViewModel @Inject constructor(
         }
     }
 
-    fun completeQuest(questId: String) {
+    fun completeQuest(questId: String, childId: String) {
         viewModelScope.launch {
             try {
                 questRepository.completeQuest(questId)
+
+                statsRepository.incrementStats(
+                    userId = childId,
+                    questsCompletedInc = 1,
+                    questsStreakInc = 1,
+                    totalXPInc = 10 // 10 XP per quest
+                )
             } catch (e: Exception) {
                 e.printStackTrace()
             }

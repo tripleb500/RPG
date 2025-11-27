@@ -207,7 +207,7 @@ fun CardView(
                 onApprove = {
                     // Mark quest as completed
                     viewModel.updateQuestStatus(quest.id, Status.COMPLETED)
-                    viewModel.completeQuest(quest.id)
+                    viewModel.completeQuest(quest.id, quest.assignedTo)
                 },
                 onEdit = {
                     showDialog = false
@@ -220,7 +220,7 @@ fun CardView(
                 quest = quest,
                 onApprove = {
                     viewModel.updateQuestStatus(quest.id, Status.COMPLETED)
-                    viewModel.completeQuest(quest.id)
+                    viewModel.completeQuest(quest.id, quest.assignedTo)
                 },
                 onReject = { viewModel.updateQuestStatus(quest.id, Status.INCOMPLETE) },
                 onReassign = {

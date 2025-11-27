@@ -145,6 +145,9 @@ fun ChildHomeScreen(
                         .fillMaxWidth()
                         .height(115.dp)
                         .padding(12.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFF2B6A2B)
+                    ),
                     onClick = { showDialogAchievements = true }, // open dialog on card tap
                 ) {
                     Row(Modifier.padding(16.dp)) {
@@ -165,7 +168,9 @@ fun ChildHomeScreen(
                         ) {
                             Text(
                                 text = "Achievements",
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 24.sp
                             )
                         }
                     }
@@ -175,6 +180,9 @@ fun ChildHomeScreen(
                         .fillMaxWidth()
                         .height(115.dp)
                         .padding(12.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFF2B6A2B)
+                    ),
                     onClick = { showDialogStats = true }, // open dialog on card tap
                 ) {
                     Row(Modifier.padding(16.dp)) {
@@ -194,7 +202,9 @@ fun ChildHomeScreen(
                         ) {
                             Text(
                                 text = "Stats",
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 24.sp
                             )
                         }
                     }
@@ -210,9 +220,7 @@ fun ChildHomeScreen(
                 if (showDialogStats) {
                     ChildStatsDialog(
                         onDismissRequest = { showDialogStats = false },
-                        user = user,
                         viewModel = viewModel,
-                        authViewModel = authViewModel
                     )
                 }
 
