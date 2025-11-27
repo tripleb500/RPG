@@ -94,4 +94,7 @@ dependencies {
 
     //Image loading for image previews
     implementation("io.coil-kt:coil-compose:2.6.0")
+
+    // Firebase Messaging Notifications
+    implementation ("com.google.firebase:firebase-messaging")
 }
