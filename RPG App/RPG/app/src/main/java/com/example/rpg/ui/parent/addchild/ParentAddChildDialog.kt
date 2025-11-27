@@ -76,13 +76,6 @@ fun ParentAddChildDialog(
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
-//                OutlinedTextField(
-//                    value = accessCode,
-//                    onValueChange = { accessCode = it },
-//                    label = { Text("Access Code") },
-//                    singleLine = true,
-//                    modifier = Modifier.fillMaxWidth()
-//                )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End

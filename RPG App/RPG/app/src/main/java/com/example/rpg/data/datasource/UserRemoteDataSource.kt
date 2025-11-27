@@ -2,8 +2,14 @@ package com.example.rpg.data.datasource
 
 
 import com.example.rpg.data.model.User
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FieldPath
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -14,54 +20,95 @@ import javax.inject.Inject
 class UserRemoteDataSource @Inject constructor(
     private val firestore: FirebaseFirestore
 ) {
-    suspend fun createProfile(user: User) {  // Saves user object into Firestore
-        firestore.collection(USERS_COLLECTION)  // "users" collection in firestore
-            .document(user.id) // Specifies document ID is equal to user's ID.
-            .set(user)  // Saves user object as document
+    private val usersCollection = firestore.collection(USERS_COLLECTION)
+
+    suspend fun createProfile(user: User) {
+        usersCollection
+            .document(user.id)
+            .set(user)
             .await()
     }
 
     suspend fun getProfile(id: String): User? {
-        return firestore.collection(USERS_COLLECTION)
+        return usersCollection
             .document(id)
             .get()
             .await()
             .toObject(User::class.java)
     }
 
-    suspend fun addChild(parentId: String, childId: String) {
-        val parentRef = firestore.collection(USERS_COLLECTION).document(parentId)
-        firestore.runTransaction { transaction ->
-            val snapshot = transaction.get(parentRef)
-            val currentList = (snapshot.get("childrenIds") as? List<*>)   // Use star projection
-                ?.mapNotNull { it as? String } ?: emptyList()            // Safely map to String
-
-            if (childId !in currentList) {
-                transaction.update(parentRef, "childrenIds", currentList + childId)
+    fun getProfileFlow(id: String): Flow<User?> = callbackFlow {
+        val listener = usersCollection.document(id)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                trySend(snapshot?.toObject(User::class.java))
             }
-        }.await()
+
+        awaitClose { listener.remove() }
     }
 
     suspend fun getUserByUsername(username: String): User? {
-        val result = firestore.collection(USERS_COLLECTION)
+        val result = usersCollection
             .whereEqualTo("username", username)
             .get()
             .await()
-        return if (result.documents.isNotEmpty()) {
-            result.documents[0].toObject(User::class.java)
-        } else {
-            null
-        }
+
+        return result.documents.firstOrNull()?.toObject(User::class.java)
+    }
+
+    fun getUserByUsernameFlow(username: String): Flow<User?> = callbackFlow {
+        val listener = usersCollection
+            .whereEqualTo("username", username)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+
+                val user = snapshot?.documents?.firstOrNull()?.toObject(User::class.java)
+                trySend(user)
+            }
+
+        awaitClose { listener.remove() }
     }
 
     suspend fun getUserByUid(uid: String): User? {
-        val doc = FirebaseFirestore.getInstance()
-            .collection("users")
+        val doc = usersCollection
             .document(uid)
             .get()
-            .await()  // from kotlinx-coroutines-play-services
+            .await()
 
-        return if (doc.exists()) doc.toObject(User::class.java) else null
+        return doc.toObject(User::class.java)
+    }
+
+    fun getUserByUidFlow(uid: String): Flow<User?> = callbackFlow {
+        val listener = usersCollection.document(uid)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                trySend(snapshot?.toObject(User::class.java))
+            }
+
+        awaitClose { listener.remove() }
+    }
+
+    suspend fun addChild(parentId: String, childId: String) {
+        val parentRef = usersCollection.document(parentId)
+
+        firestore.runTransaction { transaction ->
+            val snapshot = transaction.get(parentRef)
+            val currentList = snapshot.get("childrenIds") as? List<*> ?: emptyList<Any>()
+            val safeList = currentList.mapNotNull { it as? String }
+
+            if (childId !in safeList) {
+                transaction.update(parentRef, "childrenIds", safeList + childId)
+            }
+        }.await()
     }
 
     suspend fun getChildren(parentId: String): List<User> {
@@ -70,16 +117,86 @@ class UserRemoteDataSource @Inject constructor(
 
         if (childrenIds.isEmpty()) return emptyList()
 
-        val children = firestore.collection(USERS_COLLECTION)
+        return usersCollection
             .whereIn(FieldPath.documentId(), childrenIds)
             .get()
             .await()
             .toObjects(User::class.java)
-
-        return children
     }
 
-    companion object {  // Defines constant for Firestore collection name: "users".
+    fun getChildrenFlow(parentId: String): Flow<List<User>> = callbackFlow {
+        val listener = usersCollection.document(parentId)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+
+                val ids = snapshot?.get("childrenIds") as? List<String> ?: emptyList()
+
+                if (ids.isEmpty()) {
+                    trySend(emptyList())
+                    return@addSnapshotListener
+                }
+
+                // Firestore WHERE IN supports up to 10 IDs per query
+                val batches = ids.chunked(10)
+
+                val tasks = batches.map { chunk ->
+                    usersCollection.whereIn(FieldPath.documentId(), chunk).get()
+                }
+
+                Tasks.whenAllSuccess<QuerySnapshot>(tasks)
+                    .addOnSuccessListener { results ->
+                        val users = results.flatMap { it.toObjects(User::class.java) }
+                        trySend(users)
+                    }
+                    .addOnFailureListener { e -> close(e) }
+            }
+
+        awaitClose { listener.remove() }
+    }
+
+
+    fun getFriends(userId: String): Flow<List<User>> = callbackFlow {
+        val listener = usersCollection.document(userId)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+
+                val friendsIds = snapshot?.get("friends") as? List<String> ?: emptyList()
+
+                if (friendsIds.isEmpty()) {
+                    trySend(emptyList())
+                    return@addSnapshotListener
+                }
+
+                val batches = friendsIds.chunked(10)
+
+                val tasks = batches.map { chunk ->
+                    usersCollection.whereIn(FieldPath.documentId(), chunk).get()
+                }
+
+                Tasks.whenAllSuccess<QuerySnapshot>(tasks)
+                    .addOnSuccessListener { results ->
+                        val friends = results.flatMap { it.toObjects(User::class.java) }
+                        trySend(friends)
+                    }
+                    .addOnFailureListener { e -> close(e) }
+            }
+
+        awaitClose { listener.remove() }
+    }
+
+    suspend fun addFriend(userId: String, friendId: String) {
+        usersCollection.document(userId)
+            .update("friends", FieldValue.arrayUnion(friendId))
+            .await()
+    }
+
+    companion object {
         private const val USERS_COLLECTION = "users"
     }
 }

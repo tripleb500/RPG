@@ -30,14 +30,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
-@HiltViewModel
-class ChildHomeViewModel @Inject constructor(
-private val authRepository: AuthRepository
-) : ViewModel(){
-
-}
- **/
 
 @HiltViewModel
 class ChildHomeScreenViewModel @Inject constructor(
