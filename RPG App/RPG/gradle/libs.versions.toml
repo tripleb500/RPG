@@ -19,6 +19,7 @@ cameraCore = "1.5.1"
 navigationCompose = "2.9.6"
 foundation = "1.9.4"
 material3 = "1.4.0"
+foundationLayoutVersion = "1.9.5"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -48,6 +49,7 @@ androidx-camera-core = { group = "androidx.camera", name = "camera-core", versio
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+androidx-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayoutVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

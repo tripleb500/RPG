@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,11 +16,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -31,6 +35,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -42,28 +47,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
-import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.child.achievements.ChildAchievementsDialog
-import com.example.rpg.ui.child.quest.CardView
 import com.example.rpg.ui.child.quest.ChildInProgressQuestDialog
-import com.example.rpg.ui.child.quest.ChildQuestViewModel
-import com.example.rpg.ui.child.quest.SortOrder
 import com.example.rpg.ui.child.stats.ChildStatsDialog
-import com.example.rpg.ui.parent.home.Family
-import com.example.rpg.ui.parent.home.ProgressIndicator
-import com.example.rpg.ui.parent.quest.InProgressQuestDialog
-import com.example.rpg.ui.parent.quest.ParentQuestViewModel
-import com.example.rpg.ui.theme.RPGTheme
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -76,9 +70,10 @@ fun ChildHomeScreen(
     navController: NavHostController,
     overlayNavController: NavHostController,
     viewModel: ChildHomeScreenViewModel = hiltViewModel(),
-    authViewModel: AuthViewModel = hiltViewModel()
 ) {
     val user by viewModel.currentUserFlow.collectAsState(initial = null)
+    val stats by viewModel.statsFlow.collectAsState()
+
     var showDialogAchievements by remember { mutableStateOf(false) }
     var showDialogStats by remember { mutableStateOf(false) }
     val questList = viewModel.childQuests.collectAsState()
@@ -114,22 +109,62 @@ fun ChildHomeScreen(
                     )
                 }
             )
-            Row {
-                Image(
-                    painter = painterResource(id = R.drawable.baseline_person_24),
-                    contentDescription = "Photo of Avatar",
-                    modifier = Modifier
-                        .width(100.dp)
-                        .height(100.dp)
-                )
-                Column(
-                    modifier = Modifier.padding(top = 50.dp),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.Start
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    ProgressIndicator(
-                        progress = 99999999f
+                    // Avatar
+                    Image(
+                        painter = painterResource(id = R.drawable.baseline_person_24),
+                        contentDescription = "Photo of Avatar",
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(CircleShape)
                     )
+
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    // Level info
+                    Column {
+                        val level = stats.totalXP / 100
+                        val xpForNextLevel = stats.totalXP % 100
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Level: $level",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 24.sp
+                            )
+
+                            Spacer(modifier = Modifier.weight(1f))
+
+                            Text(
+                                text = "$xpForNextLevel / 100",
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 14.sp
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        // Progress bar
+                        LinearProgressIndicator(
+                            progress = { xpForNextLevel / 100f },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(12.dp)
+                                .clip(RoundedCornerShape(6.dp)),
+                            color = Color(0xFF2B6A2B),      // green
+                            trackColor = Color(0xFFBBDEFB),  // light blue
+                            strokeCap = ProgressIndicatorDefaults.LinearStrokeCap,
+                        )
+                    }
                 }
             }
 
@@ -278,24 +313,10 @@ fun ChildHomeScreen(
 }
 
 @Composable
-fun ProgressIndicator(
-    progress: Float,
-    modifier: Modifier = Modifier
-) {
-    LinearProgressIndicator(
-        progress = { progress },
-        modifier = modifier,
-    )
-}
-
-@Composable
 fun CardView(
     quest: Quest,
     onQuestClick: () -> Unit
 ) {
-    var showDialog by rememberSaveable { mutableStateOf(false) }
-
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -310,7 +331,7 @@ fun CardView(
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = if (quest.imageURL.isNotBlank()) quest.imageURL else null,
+                model = quest.imageURL.ifBlank { null },
                 contentDescription = "Quest Image",
                 modifier = Modifier
                     .size(100.dp)
@@ -368,16 +389,5 @@ fun CardView(
                 }
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun PreviewChildHomeScreen() {
-    RPGTheme {
-        ChildHomeScreen(
-            navController = rememberNavController(),
-            overlayNavController = rememberNavController()
-        )
     }
 }

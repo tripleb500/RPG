@@ -139,6 +139,24 @@ class ChildHomeScreenViewModel @Inject constructor(
             )
         )
 
+    val statsFlow: StateFlow<Stats> = authRepository.currentUserIdFlow
+        .flatMapLatest { uid ->
+            if (uid == null) {
+                flowOf(Stats()) // default stats if user not signed in
+            } else {
+                statsRepository.getStatsFlow(flowOf(uid))
+                    .catch { e ->
+                        Log.e("ChildHomeScreenVM", "Error loading stats: ${e.message}")
+                        emit(Stats()) // fallback in case of error
+                    }
+            }
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = Stats() // default initial value
+        )
+
     // Achievement and Stats Dialogs
     var isLoadingAchievements by mutableStateOf(false)
         private set
