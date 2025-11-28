@@ -30,12 +30,20 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Minimize
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -213,7 +221,73 @@ fun AddQuestContent(
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        //Logic for setting reward amount for a quest
+        var rewardText by remember{mutableStateOf("5")}
+        val rewardAmount = rewardText.toIntOrNull() ?: 5
+
+        Text(
+            text = "Reward Amount",
+            modifier = Modifier
+                .padding(8.dp)
+                .align(Alignment.CenterHorizontally),
+            fontSize = 16.sp
+        )
+        Row(
+            modifier = modifier
+                .padding(bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
+            IconButton(
+                onClick = {
+                    val temp = maxOf(5, rewardAmount - 5)
+                    viewModel.setQuestRewardAmount(temp)
+                    rewardText = temp.toString()
+                },
+                modifier = Modifier
+                    .width(50.dp)
+                    .height(50.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Remove,
+                    contentDescription = "Decrement"
+                )
+            }
+            OutlinedTextField(
+                value = rewardText,
+                onValueChange = { input ->
+                    // Allow only digits
+                    if (input.isEmpty() || input.all { it.isDigit() }) {
+                        rewardText = input
+                        val temp = maxOf(5, input.toInt() - 5)
+                        viewModel.setQuestRewardAmount(temp)
+                    }
+                },
+                singleLine = true,
+                textStyle = LocalTextStyle.current.copy(
+                    textAlign = TextAlign.Center
+                ),
+                modifier = Modifier
+                    .size(56.dp)
+            )
+
+            IconButton(
+                onClick = {
+                    val temp = rewardAmount + 5
+                    viewModel.setQuestRewardAmount(temp)
+                    rewardText = temp.toString()
+                },
+                modifier = Modifier
+                    .width(50.dp)
+                    .height(50.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Increment"
+                )
+            }
+        }
+
 
         //Text Field For Quest Title
         OutlinedTextField(

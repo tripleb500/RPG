@@ -98,6 +98,10 @@ class ParentAddQuestViewModel @Inject constructor(
         _quest.value = _quest.value.copy(title = newTitle)
     }
 
+    fun setQuestReward(newReward: Int){
+        _quest.value = _quest.value.copy(rewardAmount = newReward)
+    }
+
     fun setQuestDescription(newDescription: String) {
         _quest.value = _quest.value.copy(description = newDescription)
     }
