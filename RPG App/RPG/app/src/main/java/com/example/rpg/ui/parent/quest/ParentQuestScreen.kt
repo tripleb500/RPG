@@ -205,9 +205,10 @@ fun CardView(
             Status.INPROGRESS -> InProgressQuestDialog(
                 quest = quest,
                 onApprove = {
+                    val reward = quest.rewardAmount
                     // Mark quest as completed
                     viewModel.updateQuestStatus(quest.id, Status.COMPLETED)
-                    viewModel.completeQuest(quest.id, quest.assignedTo)
+                    viewModel.completeQuest(quest.id, quest.assignedTo, reward)
                 },
                 onEdit = {
                     showDialog = false
@@ -219,8 +220,10 @@ fun CardView(
             Status.PENDING -> PendingQuestDialog(
                 quest = quest,
                 onApprove = {
+                    val reward = quest.rewardAmount
                     viewModel.updateQuestStatus(quest.id, Status.COMPLETED)
-                    viewModel.completeQuest(quest.id, quest.assignedTo)
+                    viewModel.completeQuest(quest.id, quest.assignedTo, reward)
+
                 },
                 onReject = { viewModel.updateQuestStatus(quest.id, Status.INCOMPLETE) },
                 onReassign = {

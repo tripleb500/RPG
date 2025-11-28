@@ -7,5 +7,6 @@ data class Stats(
     val questsCompleted: Int = 0,
     val questsStreak: Int = 0,
     val totalXP: Int = 0,
-    val rewardsEarned: List<String> = emptyList()
+    val rewardsEarned: List<String> = emptyList(),
+    val gameRewards: Int = 0
 )

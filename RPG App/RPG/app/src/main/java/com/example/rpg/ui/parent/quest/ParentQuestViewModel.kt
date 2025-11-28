@@ -61,7 +61,8 @@ class ParentQuestViewModel @Inject constructor(
         }
     }
 
-    fun completeQuest(questId: String, childId: String) {
+
+    fun completeQuest(questId: String, childId: String, reward: Int) {
         viewModelScope.launch {
             try {
                 questRepository.completeQuest(questId)
@@ -70,7 +71,8 @@ class ParentQuestViewModel @Inject constructor(
                     userId = childId,
                     questsCompletedInc = 1,
                     questsStreakInc = 1,
-                    totalXPInc = 10 // 10 XP per quest
+                    totalXPInc = 10, // 10 XP per quest
+                    gameRewardsInc = reward
                 )
             } catch (e: Exception) {
                 e.printStackTrace()

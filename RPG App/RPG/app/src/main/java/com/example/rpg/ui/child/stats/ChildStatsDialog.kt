@@ -68,7 +68,8 @@ fun ChildStatsDialog(
                         "Level" to currentLevel.toString(),
                         "Total XP" to s.totalXP.toString(),
                         "Quests Completed" to s.questsCompleted.toString(),
-                        "Quests Streak" to s.questsStreak.toString()
+                        "Quests Streak" to s.questsStreak.toString(),
+                        "Total Rewards" to s.gameRewards.toString()
                     )
 
                     LazyColumn(

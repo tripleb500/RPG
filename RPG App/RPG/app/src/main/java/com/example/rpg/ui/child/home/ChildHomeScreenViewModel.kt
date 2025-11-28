@@ -118,7 +118,8 @@ class ChildHomeScreenViewModel @Inject constructor(
                             questsCompleted = 0,
                             questsStreak = 0,
                             totalXP = 0,
-                            rewardsEarned = emptyList()
+                            rewardsEarned = emptyList(),
+                            gameRewards = 0
                         )
                     )
                 }

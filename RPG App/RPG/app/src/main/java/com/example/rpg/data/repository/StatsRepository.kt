@@ -16,12 +16,14 @@ class StatsRepository @Inject constructor(
         userId: String,
         questsCompletedInc: Int = 0,
         questsStreakInc: Int = 0,
-        totalXPInc: Int = 0
+        totalXPInc: Int = 0,
+        gameRewardsInc: Int = 0
     ) {
         val updates = mutableMapOf<String, Any>()
         if (questsCompletedInc != 0) updates["questsCompleted"] = FieldValue.increment(questsCompletedInc.toLong())
         if (questsStreakInc != 0) updates["questsStreak"] = FieldValue.increment(questsStreakInc.toLong())
         if (totalXPInc != 0) updates["totalXP"] = FieldValue.increment(totalXPInc.toLong())
+        if (gameRewardsInc != 0) updates["gameRewards"] = FieldValue.increment(gameRewardsInc.toLong())
 
         updateStats(userId, updates)
     }
