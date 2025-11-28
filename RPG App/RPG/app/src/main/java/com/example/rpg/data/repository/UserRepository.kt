@@ -30,4 +30,6 @@ class UserRepository @Inject constructor(
         remoteDataSource.createProfile(updateUser)
     }
 
+    suspend fun updateFCMToken(uid: String) =
+        remoteDataSource.updateFCMToken(uid)
 }

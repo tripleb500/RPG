@@ -17,5 +17,6 @@ data class User(
     val lastname: String = "",
     val familyRole: String = "",
     val email: String = "",
-    val childrenIds: List<String> = emptyList()
+    val childrenIds: List<String> = emptyList(),
+    val fcmToken: String? = null
 )

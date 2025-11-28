@@ -4,6 +4,7 @@ package com.example.rpg.data.datasource
 import com.example.rpg.data.model.User
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -12,7 +13,8 @@ import javax.inject.Inject
  */
 
 class UserRemoteDataSource @Inject constructor(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val messaging: FirebaseMessaging
 ) {
     suspend fun createProfile(user: User) {  // Saves user object into Firestore
         firestore.collection(USERS_COLLECTION)  // "users" collection in firestore
@@ -81,5 +83,14 @@ class UserRemoteDataSource @Inject constructor(
 
     companion object {  // Defines constant for Firestore collection name: "users".
         private const val USERS_COLLECTION = "users"
+    }
+
+    // Firebase Messaging Handling (FCMToken is a device identifier)
+    suspend fun updateFCMToken(uid: String) {
+        val token = messaging.token.await()
+        firestore.collection(USERS_COLLECTION)
+            .document(uid)
+            .update("fcmToken", token)
+            .await()
     }
 }
