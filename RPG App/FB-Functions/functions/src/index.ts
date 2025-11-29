@@ -31,11 +31,23 @@ setGlobalOptions({ maxInstances: 10 });
 //   response.send("Hello from Firebase!");
 // });
 
+/**
+ * Note for RPG TEAM [How to deploy firebase functions from terminal] 
+ * 1. firebase login
+ * 2. now cd to root folder (you'll see firebase.json)
+ * 3. firebase deploy
+ * 4. or firebase deploy --only functions
+ */
 import * as functions from 'firebase-functions/v1';
 import * as admin from "firebase-admin";
 
-admin.initializeApp();
+admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
+    projectId: "rpg-database-project",
+});
 const db = admin.firestore();
+
+//AUTOMATIC QUEST STATUS UPDATING
 
 type RepeatType = "NONE" | "DAY" | "WEEK" | "MONTH" | "YEAR";
 
@@ -179,5 +191,69 @@ export const updateQuests = functions.pubsub
             `processQuestsSchedule: updated=${updated}, created=${created}`
         );
 
+        return null;
+    });
+
+//QUEST REMINDER NOTIFICATIONS
+
+interface QuestReminder {
+    questId: string;
+    childId: string;
+    parentId: string;
+    notificationMessage: string;
+    createdAt?: admin.firestore.Timestamp;
+}
+
+//When a reminder document is created, send a push notification
+export const sendQuestReminder = functions.firestore
+    .document("questReminders/{reminderId}")
+    .onCreate(async (snap, context) => {
+        console.log("sendQuestReminder TRIGGERED, doc ID:", snap.id);
+        const data = snap.data() as QuestReminder;
+        const { childId, questId, notificationMessage } = data;
+
+        if (!childId) {
+            console.log("No childId in reminder, skipping");
+            return null;
+        }
+
+        //Get child's user doc
+        const userDoc = await db.collection("users").doc(childId).get();
+        if (!userDoc.exists) {
+            console.log("Child not found:", childId);
+            return null;
+        }
+
+        //Read doc for FCM Token
+        const userData = userDoc.data() as { fcmToken?: string };
+        const token = userData.fcmToken;
+
+        //DO NOT USE THIS UNLESS NECESSARY
+        //console.log("Token extracted:", token ?? "NULL");
+
+        if (!token) {
+            console.log("No fcmToken for child:", childId);
+            return null;
+        }
+
+        //Notification payload, fallback to string if no message
+        const message: admin.messaging.Message = {
+            token: token,
+            notification: {
+                title: "Quest Reminder",
+                body: notificationMessage || "Remember to do your quests!",
+            },
+            data: {
+                questId: questId ?? "",
+                type: "QUEST_REMINDER",
+            },
+        };
+
+        try {
+            const result = await admin.messaging().send(message);
+            console.log("FCM send success:", result);
+        } catch (error) {
+            console.error("FCM send error:", error);
+        }
         return null;
     });
