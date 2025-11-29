@@ -1,0 +1,102 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\tripl\\Documents\\Fall2025\\491B\\gameStuff\\clickerTypeBeat\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|C:\\Users\\tripl\\Documents\\Fall2025\\491B\\gameStuff\\clickerTypeBeat\\assets\\scripts\\mainbuttonclick.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\mainbuttonclick.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|c:\\users\\tripl\\documents\\fall2025\\491b\\gamestuff\\clickertypebeat\\assets\\scripts\\purchaselog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\purchaselog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|C:\\Users\\tripl\\Documents\\Fall2025\\491B\\gameStuff\\clickerTypeBeat\\assets\\scripts\\autocookie.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\autocookie.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|C:\\Users\\tripl\\Documents\\Fall2025\\491B\\gameStuff\\clickerTypeBeat\\assets\\scripts\\globaldestroyer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\globaldestroyer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|C:\\Users\\tripl\\Documents\\Fall2025\\491B\\gameStuff\\clickerTypeBeat\\assets\\scripts\\globalcookies.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\globalcookies.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GlobalDestroyer.cs",
+              "DocumentMoniker": "C:\\Users\\tripl\\Documents\\Fall2025\\491B\\gameStuff\\clickerTypeBeat\\Assets\\Scripts\\GlobalDestroyer.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\GlobalDestroyer.cs",
+              "ToolTip": "C:\\Users\\tripl\\Documents\\Fall2025\\491B\\gameStuff\\clickerTypeBeat\\Assets\\Scripts\\GlobalDestroyer.cs",
+              "RelativeToolTip": "Assets\\Scripts\\GlobalDestroyer.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwA4AAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T08:15:21.467Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PurchaseLog.cs",
+              "DocumentMoniker": "C:\\Users\\tripl\\Documents\\Fall2025\\491B\\gameStuff\\clickerTypeBeat\\Assets\\Scripts\\PurchaseLog.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\PurchaseLog.cs",
+              "ToolTip": "C:\\Users\\tripl\\Documents\\Fall2025\\491B\\gameStuff\\clickerTypeBeat\\Assets\\Scripts\\PurchaseLog.cs",
+              "RelativeToolTip": "Assets\\Scripts\\PurchaseLog.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T04:59:22.796Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AutoCookie.cs",
+              "DocumentMoniker": "C:\\Users\\tripl\\Documents\\Fall2025\\491B\\gameStuff\\clickerTypeBeat\\Assets\\Scripts\\AutoCookie.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\AutoCookie.cs",
+              "ToolTip": "C:\\Users\\tripl\\Documents\\Fall2025\\491B\\gameStuff\\clickerTypeBeat\\Assets\\Scripts\\AutoCookie.cs",
+              "RelativeToolTip": "Assets\\Scripts\\AutoCookie.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T04:49:36.878Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "GlobalCookies.cs",
+              "DocumentMoniker": "C:\\Users\\tripl\\Documents\\Fall2025\\491B\\gameStuff\\clickerTypeBeat\\Assets\\Scripts\\GlobalCookies.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\GlobalCookies.cs",
+              "ToolTip": "C:\\Users\\tripl\\Documents\\Fall2025\\491B\\gameStuff\\clickerTypeBeat\\Assets\\Scripts\\GlobalCookies.cs",
+              "RelativeToolTip": "Assets\\Scripts\\GlobalCookies.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T03:05:04.732Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainButtonClick.cs",
+              "DocumentMoniker": "C:\\Users\\tripl\\Documents\\Fall2025\\491B\\gameStuff\\clickerTypeBeat\\Assets\\Scripts\\MainButtonClick.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MainButtonClick.cs",
+              "ToolTip": "C:\\Users\\tripl\\Documents\\Fall2025\\491B\\gameStuff\\clickerTypeBeat\\Assets\\Scripts\\MainButtonClick.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MainButtonClick.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T02:38:42.628Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

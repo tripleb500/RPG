@@ -1,0 +1,373 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.0/staging' branch; Version is '6000.0.62f1 (f99f05b3e950) revision 16359173'; Using compiler version '193933523'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26100) 64bit Core' Language: 'en' Physical Memory: 15775 MB
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-bD0xdu3FwmSmiMABVEG_m" at "2025-11-28T22:58:39.9480434Z"
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+Date: 2025-11-28T22:58:39Z
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.0.62f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker8
+-projectPath
+C:/Users/tripl/Documents/Fall2025/491B/gameStuff/clickerTypeBeat
+-logFile
+Logs/AssetImportWorker8.log
+-srvPort
+65454
+-licensingIpc
+LicenseClient-bD0xdu3FwmSmiMABVEG_m
+-job-worker-count
+7
+-background-job-worker-count
+8
+-gc-helper-count
+1
+-name
+AssetImport
+Successfully changed project path to: C:/Users/tripl/Documents/Fall2025/491B/gameStuff/clickerTypeBeat
+C:/Users/tripl/Documents/Fall2025/491B/gameStuff/clickerTypeBeat
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [22444]  Target information:
+
+Player connection [22444]  * "[IP] 192.168.1.27 [Port] 0 [Flags] 2 [Guid] 3112930856 [EditorId] 3112930856 [Version] 1048832 [Id] WindowsEditor(7,LAPTOP-VNGNBODA) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [22444] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [22444] Host joined alternative multi-casting on [225.0.0.222:34997]...
+JobSystem: Creating JobQueue using job-worker-count value 7
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 15836, path: "C:/Program Files/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.17.3+a4e98f1
+  Session Id:              e0440a9f81a941c18f495d99b50ee6bb
+  Correlation Id:          793e3737b899719d70c590e2cd964430
+  External correlation Id: 2419587561247461782
+  Machine Id:              /C8nSsCuibwem9X+sW5Dv6Ah4vk=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-bD0xdu3FwmSmiMABVEG_m" (connect: 0.00s, validation: 0.00s, handshake: 0.09s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-bD0xdu3FwmSmiMABVEG_m-notifications" at "2025-11-28T22:58:40.0485599Z"
+[Licensing::Module] Licensing Background thread has ended after 0.10s
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 1374905318206-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+Refreshing native plugins compatible for Editor in 6.99 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.0.62f1 (f99f05b3e950)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/tripl/Documents/Fall2025/491B/gameStuff/clickerTypeBeat/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: AMD Radeon(TM) Graphics (ID=0x1638)
+    Vendor:   ATI
+    VRAM:     7887 MB
+    Driver:   31.0.21916.1002
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56428
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.011624 seconds.
+- Loaded All Assemblies, in  1.047 seconds
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 586 ms
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.617 seconds
+Domain Reload Profiling: 2660ms
+	BeginReloadAssembly (344ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (2ms)
+	RebuildCommonClasses (89ms)
+	RebuildNativeTypeToScriptingClass (34ms)
+	initialDomainReloadingComplete (134ms)
+	LoadAllAssembliesAndSetupDomain (440ms)
+		LoadAssemblies (339ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (431ms)
+			TypeCache.Refresh (427ms)
+				TypeCache.ScanAssembly (390ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (1ms)
+	FinalizeReload (1618ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (1461ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (859ms)
+			SetLoadedEditorAssemblies (9ms)
+			BeforeProcessingInitializeOnLoad (159ms)
+			ProcessInitializeOnLoadAttributes (291ms)
+			ProcessInitializeOnLoadMethodAttributes (143ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+========================================================================
+Worker process is ready to serve import requests
+Import Worker Mode flag is 0x00
+Begin MonoManager ReloadAssembly
+[Licensing::Client] Successfully resolved entitlement details
+- Loaded All Assemblies, in  2.129 seconds
+Refreshing native plugins compatible for Editor in 3.31 ms, found 4 plugins.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Package Manager log level set to [2]
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.976 seconds
+Domain Reload Profiling: 4092ms
+	BeginReloadAssembly (458ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (29ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (58ms)
+	RebuildCommonClasses (91ms)
+	RebuildNativeTypeToScriptingClass (29ms)
+	initialDomainReloadingComplete (95ms)
+	LoadAllAssembliesAndSetupDomain (1441ms)
+		LoadAssemblies (937ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (777ms)
+			TypeCache.Refresh (455ms)
+				TypeCache.ScanAssembly (419ms)
+			BuildScriptInfoCaches (283ms)
+			ResolveRequiredComponents (28ms)
+	FinalizeReload (1977ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (1610ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (26ms)
+			SetLoadedEditorAssemblies (12ms)
+			BeforeProcessingInitializeOnLoad (349ms)
+			ProcessInitializeOnLoadAttributes (961ms)
+			ProcessInitializeOnLoadMethodAttributes (253ms)
+			AfterProcessingInitializeOnLoad (10ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (29ms)
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.03 seconds
+Refreshing native plugins compatible for Editor in 5.17 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 32 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6766 unused Assets / (7.3 MB). Loaded Objects now: 7454.
+Memory consumption went from 148.8 MB to 141.5 MB.
+Total: 19.024300 ms (FindLiveObjects: 1.269400 ms CreateObjectMapping: 1.122100 ms MarkObjects: 10.098900 ms  DeleteObjects: 6.531800 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 166346.435908 seconds.
+  path: Assets/Settings/UniversalRP.asset
+  artifactKey: Guid(681886c5eb7344803b6206f758bf0b1c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Settings/UniversalRP.asset using Guid(681886c5eb7344803b6206f758bf0b1c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '910a3316ce45b604f98c2ad003aa3cfb') in 0.0225098 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 896.699546 seconds.
+  path: Assets/Real Stars Skybox/StarSkybox04/Materials
+  artifactKey: Guid(2a27354917628eb47a765014a3d9ee03) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Real Stars Skybox/StarSkybox04/Materials using Guid(2a27354917628eb47a765014a3d9ee03) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '664e83ea8bd376a3f1ffd993870b3562') in 0.0009977 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Real Stars Skybox/StarSkybox04/Materials/CubemapStars.mat
+  artifactKey: Guid(cfb342e745531d342995a3dfea5818aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Real Stars Skybox/StarSkybox04/Materials/CubemapStars.mat using Guid(cfb342e745531d342995a3dfea5818aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5b06fc98e48ae91e745f457b9f497309') in 1.245561 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 2
+
+========================================================================
+Received Import Request.
+  Time since last request: 428.322974 seconds.
+  path: Assets/Scripts/PurchaseLog.cs
+  artifactKey: Guid(797dd5b031b2b28429c6b5b52f43d163) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Scripts/PurchaseLog.cs using Guid(797dd5b031b2b28429c6b5b52f43d163) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'd6305a20e7217e323904363ce4279032') in 0.2273134 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000037 seconds.
+  path: Assets/Real Stars Skybox/StarSkybox04NamedConstell/StarSkybox04NamedConstell3.png
+  artifactKey: Guid(9cd21000384bca14bbac1e6d1c07063d) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Real Stars Skybox/StarSkybox04NamedConstell/StarSkybox04NamedConstell3.png using Guid(9cd21000384bca14bbac1e6d1c07063d) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)[Licensing::Client] Successfully resolved entitlement details
+ -> (artifact id: '936c71f6d08ebe779042bdb22ca718ea') in 0.0883642 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/Real Stars Skybox/StarSkybox04NamedConstell/CubemapStarsNamedConstellations.cubemap
+  artifactKey: Guid(f57e241cdb19d3c4788594fdd1e24c73) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Real Stars Skybox/StarSkybox04NamedConstell/CubemapStarsNamedConstellations.cubemap using Guid(f57e241cdb19d3c4788594fdd1e24c73) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '51e8936cefe9836f3393af41122e9d06') in 1.3812481 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/Real Stars Skybox/StarSkybox04NamedConstell/StarSkybox04NamedConstell4.png
+  artifactKey: Guid(a286e1629b6f5414d8cc5f6f27dbc131) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Real Stars Skybox/StarSkybox04NamedConstell/StarSkybox04NamedConstell4.png using Guid(a286e1629b6f5414d8cc5f6f27dbc131) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '1225d966092847f9a40f62d9daa7d5c7') in 0.0491768 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000035 seconds.
+  path: Assets/Real Stars Skybox/StarSkybox04/StarSkybox044.png
+  artifactKey: Guid(d4d865ffc05192e4d8a5e8a52a02eb3c) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Real Stars Skybox/StarSkybox04/StarSkybox044.png using Guid(d4d865ffc05192e4d8a5e8a52a02eb3c) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '2fb07c689f9d4347e888d7205e7c9b3e') in 0.0417035 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Real Stars Skybox/StarSkybox04NamedConstell/StarSkybox04NamedConstell1.png
+  artifactKey: Guid(14dc5b7e061db634287a9d257530bb56) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Real Stars Skybox/StarSkybox04NamedConstell/StarSkybox04NamedConstell1.png using Guid(14dc5b7e061db634287a9d257530bb56) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'eae53905bf3f5a7a3c7fa1a051115c34') in 0.0559481 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Real Stars Skybox/StarSkybox04/StarSkybox043.png
+  artifactKey: Guid(ea43e4f309217a34b8d06ce34f5da50e) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Real Stars Skybox/StarSkybox04/StarSkybox043.png using Guid(ea43e4f309217a34b8d06ce34f5da50e) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '0282aa6bb65d120f51f300c4883fe024') in 0.0482884 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Scenes/MainScene
+  artifactKey: Guid(e6fde665268e8314d88e6dca3e708fd0) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Scenes/MainScene using Guid(e6fde665268e8314d88e6dca3e708fd0) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '8bfb1f607f146d58bee221db0930ef64') in 0.0145529 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/Real Stars Skybox/Demo Scene/Documentation.txt
+  artifactKey: Guid(476a9587e4967394ca2db1925a05b2e1) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Real Stars Skybox/Demo Scene/Documentation.txt using Guid(476a9587e4967394ca2db1925a05b2e1) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '259255496ad47152744a174d72aebfdd') in 0.0255443 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000054 seconds.
+  path: Assets/Real Stars Skybox/StarSkybox04/StarSkybox042.png
+  artifactKey: Guid(31ec1046449e0724ab9f74f07c8d0bb6) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Real Stars Skybox/StarSkybox04/StarSkybox042.png using Guid(31ec1046449e0724ab9f74f07c8d0bb6) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '03c503820c717209b4bbda184bb952fb') in 0.0453806 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Real Stars Skybox/StarSkybox04Named/CubemapStarsNamed.cubemap
+  artifactKey: Guid(ec138a587ef5adc488cf01a681a9e4c2) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Real Stars Skybox/StarSkybox04Named/CubemapStarsNamed.cubemap using Guid(ec138a587ef5adc488cf01a681a9e4c2) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '59ecaec5e579c8b81dc5ddc2a4b12204') in 1.2285344 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Real Stars Skybox/StarSkybox04NamedConstell/StarSkybox04NamedConstell6.png
+  artifactKey: Guid(8618acc75ce91dc4494071915deab9c0) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Real Stars Skybox/StarSkybox04NamedConstell/StarSkybox04NamedConstell6.png using Guid(8618acc75ce91dc4494071915deab9c0) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '8f30e1dd770c894f7d45ed7e5c991bc6') in 0.0490265 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000039 seconds.
+  path: Assets/Real Stars Skybox/StarSkybox04Named/StarSkybox04Named5.png
+  artifactKey: Guid(5a335a020961242499ce58f2b87ea0d5) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Real Stars Skybox/StarSkybox04Named/StarSkybox04Named5.png using Guid(5a335a020961242499ce58f2b87ea0d5) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '30ab55eb89c7b9f6ed4ba16de381b8fb') in 0.0439031 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Real Stars Skybox/StarSkybox04/StarSkybox045.png
+  artifactKey: Guid(bc8f9c3d8de49024bab7c4052cbd81b0) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Real Stars Skybox/StarSkybox04/StarSkybox045.png using Guid(bc8f9c3d8de49024bab7c4052cbd81b0) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '2bd8fa44cd69926d79680c8a687f0f9f') in 0.0464866 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Real Stars Skybox/StarSkybox04/StarSkybox041.png
+  artifactKey: Guid(fcd92899f9fb6a0468bcb56a38dd4a4d) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Real Stars Skybox/StarSkybox04/StarSkybox041.png using Guid(fcd92899f9fb6a0468bcb56a38dd4a4d) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '5f68012a4534d8785ce77829c901d432') in 0.0419469 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Real Stars Skybox/StarSkybox04NamedConstell/StarSkybox04NamedConstell.mat
+  artifactKey: Guid(281ddd71b990ce9449efecec53925061) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Real Stars Skybox/StarSkybox04NamedConstell/StarSkybox04NamedConstell.mat using Guid(281ddd71b990ce9449efecec53925061) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'ba951febb440d2af6e8c1074426c9530') in 0.1645222 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 7
+
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0
