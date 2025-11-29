@@ -5,6 +5,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.messaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
 import dagger.Module
@@ -33,4 +35,7 @@ object FireBaseHiltModule {  // Object Declaration, only one instance of this ob
 
     @Provides
     fun storage(): FirebaseStorage = Firebase.storage
+
+    @Provides
+    fun messaging(): FirebaseMessaging = Firebase.messaging
 }

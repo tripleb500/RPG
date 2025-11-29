@@ -53,4 +53,7 @@ class UserRepository @Inject constructor(
         val updated = currentUser.copy(username = newUsername)
         remoteDataSource.createProfile(updated)
     }
+
+    suspend fun updateFCMToken(uid: String) =
+        remoteDataSource.updateFCMToken(uid)
 }
