@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
@@ -79,6 +80,8 @@ fun ChildHomeScreen(
     val questList = viewModel.childQuests.collectAsState()
     var selectedQuest by remember { mutableStateOf<Quest?>(null) }
     var sortOrder by rememberSaveable { mutableStateOf(SortOrder.ASCENDING) }
+
+    var showProfilePictureDialog by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -307,6 +310,13 @@ fun ChildHomeScreen(
             ChildInProgressQuestDialog(
                 quest = selectedQuest!!,
                 onDismissRequest = { selectedQuest = null },
+            )
+        }
+
+        if (showProfilePictureDialog) {
+            ProfilePictureDialog(
+                onDismissRequest = { showProfilePictureDialog = false },
+                user = user!!
             )
         }
     }

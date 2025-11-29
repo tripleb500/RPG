@@ -1,5 +1,6 @@
 package com.example.rpg.data.repository
 
+import android.graphics.Bitmap
 import com.example.rpg.data.datasource.UserRemoteDataSource
 import com.example.rpg.data.model.User
 import kotlinx.coroutines.flow.Flow
@@ -53,4 +54,11 @@ class UserRepository @Inject constructor(
         val updated = currentUser.copy(username = newUsername)
         remoteDataSource.createProfile(updated)
     }
+
+    suspend fun uploadBitmapAndGetUrl(bitmap: Bitmap, userId: String): String? {
+        return remoteDataSource.uploadBitmapAndGetUrl(bitmap, userId)
+    }
+
+    suspend fun updateProfilePicture(userId: String, newImage: String) =
+        remoteDataSource.updateProfilePicture(userId, newImage)
 }
