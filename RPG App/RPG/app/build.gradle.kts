@@ -99,4 +99,6 @@ dependencies {
 
     // Firebase Messaging Notifications
     implementation ("com.google.firebase:firebase-messaging")
+
+    implementation("androidx.datastore:datastore-preferences:1.1.0-alpha06")
 }

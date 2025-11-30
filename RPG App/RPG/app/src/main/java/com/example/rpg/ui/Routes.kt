@@ -38,6 +38,7 @@ sealed class Routes(val route: String) {
     object ChildGameScreen : Routes("childGame")
     object ChildSettingsScreen : Routes("childSettings")
     object ChildAccountSettingsScreen: Routes("childAccount")
+    object ChildNotificationsScreen: Routes("childNotifications")
     object ChildChangeUsernameScreen: Routes("childChangeUsername")
     object ChildChangeEmailScreen : Routes("childChangeEmail")
     object ChildChangePasswordScreen : Routes("childChangePassword")
