@@ -74,7 +74,8 @@ dependencies {
     // Enables Hilt dependency injection, with support for jetpack compose nav, and compile-time code generation via KSP.
     implementation("com.google.dagger:hilt-android:2.57.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
-    ksp("com.google.dagger:hilt-android-compiler:2.57.2")
+    //ksp("com.google.dagger:hilt-android-compiler:2.57.2")
+    ksp("com.google.dagger:hilt-compiler:2.57.2")
 
     // Import the BoM (Bill of Materials) for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
@@ -95,4 +96,9 @@ dependencies {
 
     //Image loading for image previews
     implementation("io.coil-kt:coil-compose:2.6.0")
+
+    // Firebase Messaging Notifications
+    implementation ("com.google.firebase:firebase-messaging")
+
+    implementation("androidx.datastore:datastore-preferences:1.1.0-alpha06")
 }

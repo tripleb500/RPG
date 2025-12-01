@@ -169,7 +169,8 @@ fun ParentQuestScreen(
 fun CardView(
     quest: Quest,
     selectedTab: Status,
-    viewModel: ParentQuestViewModel = hiltViewModel()
+    viewModel: ParentQuestViewModel = hiltViewModel(),
+    reminderViewModel: ParentQuestReminderViewModel = hiltViewModel()
 ) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var showEditDialog by rememberSaveable { mutableStateOf(false) }
@@ -213,6 +214,10 @@ fun CardView(
                 onEdit = {
                     showDialog = false
                     showEditDialog = true
+                },
+                onSendReminder = {
+                    reminderViewModel.createQuestReminderDoc(quest)
+                    showDialog = false
                 },
                 onDismiss = { showDialog = false }
             )

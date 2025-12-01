@@ -1,5 +1,6 @@
 package com.example.rpg.ui.child.home
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -16,6 +17,7 @@ import com.example.rpg.data.repository.QuestRepository
 import com.example.rpg.data.repository.StatsRepository
 import com.example.rpg.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -59,6 +61,35 @@ class ChildHomeScreenViewModel @Inject constructor(
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+    //Variables and function to save profile image into Firebase
+    private val _submittedImage = MutableStateFlow<String?>(null)
+    val submittedImage: StateFlow<String?> = _submittedImage.asStateFlow()
+
+    fun uploadImageForProfile(userId: String, bitmap: Bitmap) {
+        _submittedImage.value = null
+        viewModelScope.launch {
+            _isLoading.value = true
+            _submittedImage.value = userRepository.uploadBitmapAndGetUrl(bitmap, userId)
+            _isLoading.value = false
+        }
+    }
+
+    fun updateProfilePicture(user: User) {
+        viewModelScope.launch {
+            try {
+                val image = _submittedImage.value
+                if (image != null) {
+                    userRepository.updateProfilePicture(user.id, image)
+                }
+                delay(100)
+            } catch (e: Exception) {
+                Log.e("QuestVM", "Error updating quest", e)
+            }
+        }
+    }
+
+
 
     private val questParentCache = mutableMapOf<String, User>()
 

@@ -34,6 +34,7 @@ class SignInViewModel @Inject constructor(
                 authRepository.signIn(email, password)
                 val userId = authRepository.currentUser?.uid
                 if (userId != null) {
+                    userRepository.updateFCMToken(userId)
                     val user = userRepository.getProfile(userId)
                     val role = user?.familyRole
                     onSuccess(true, role)

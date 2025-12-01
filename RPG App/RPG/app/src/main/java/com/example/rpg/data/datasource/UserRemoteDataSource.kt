@@ -1,16 +1,21 @@
 package com.example.rpg.data.datasource
 
 
+import android.graphics.Bitmap
+import com.example.rpg.data.injection.FireBaseHiltModule.storage
 import com.example.rpg.data.model.User
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.tasks.await
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 /**
@@ -18,7 +23,9 @@ import javax.inject.Inject
  */
 
 class UserRemoteDataSource @Inject constructor(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val storage: FirebaseStorage,
+    private val messaging: FirebaseMessaging
 ) {
     private val usersCollection = firestore.collection(USERS_COLLECTION)
 
@@ -198,5 +205,41 @@ class UserRemoteDataSource @Inject constructor(
 
     companion object {
         private const val USERS_COLLECTION = "users"
+    }
+
+    suspend fun uploadBitmapAndGetUrl(
+        bitmap: Bitmap,
+        userId: String
+    ): String? { // Just return String? (null if failed)
+        return try {
+            val baos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos)
+            val imageData = baos.toByteArray()
+
+            val path = "users/$userId/images/camera_${System.currentTimeMillis()}.jpg"
+            val storageRef = storage.reference.child(path)
+
+            storageRef.putBytes(imageData).await()
+            storageRef.downloadUrl.await().toString()
+
+        } catch (e: Exception) {
+            null // Just return null if anything fails
+        }
+    }
+
+    suspend fun updateProfilePicture(userId: String, newImage: String) {
+        firestore.collection(USERS_COLLECTION)
+            .document(userId)
+            .update("profilePicture", newImage)
+            .await()
+    }
+
+    // Firebase Messaging Handling (FCMToken is a device identifier)
+    suspend fun updateFCMToken(uid: String) {
+        val token = messaging.token.await()
+        firestore.collection(USERS_COLLECTION)
+            .document(uid)
+            .update("fcmToken", token)
+            .await()
     }
 }

@@ -82,6 +82,9 @@ class SignUpViewModel @Inject constructor(
                     role
                 )  // Tells UI that signup was successful. Role is passed so UI can navigate to Parent or Child screen based upon selection.
 
+                // Generate FCM Token for push notifications
+                userRepository.updateFCMToken(userId)
+
                 if (role == "Child") {
                     val stats = Stats()
 

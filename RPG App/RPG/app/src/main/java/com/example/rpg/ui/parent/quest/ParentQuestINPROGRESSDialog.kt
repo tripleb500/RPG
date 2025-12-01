@@ -33,6 +33,7 @@ fun InProgressQuestDialog(
     quest: Quest,
     onApprove: () -> Unit,
     onEdit: () -> Unit,
+    onSendReminder: () -> Unit,
     onDismiss: () -> Unit
 ) {
     Dialog(onDismissRequest = onDismiss) {
@@ -87,6 +88,14 @@ fun InProgressQuestDialog(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("Edit")
+                    }
+
+                    Button(
+                        onClick = onSendReminder,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFCC80)),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Send Reminder")
                     }
 
                     Row(

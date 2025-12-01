@@ -39,6 +39,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -49,6 +50,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
@@ -79,6 +81,8 @@ fun ChildHomeScreen(
     val questList = viewModel.childQuests.collectAsState()
     var selectedQuest by remember { mutableStateOf<Quest?>(null) }
     var sortOrder by rememberSaveable { mutableStateOf(SortOrder.ASCENDING) }
+
+    var showProfilePictureDialog by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -117,12 +121,17 @@ fun ChildHomeScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     // Avatar
-                    Image(
-                        painter = painterResource(id = R.drawable.baseline_person_24),
-                        contentDescription = "Photo of Avatar",
+                    AsyncImage(
+                        model = user?.profilePicture?.takeIf { it.isNotBlank() } ?: null,
+                        contentDescription = "Profile Picture",
                         modifier = Modifier
-                            .size(100.dp)
-                            .clip(CircleShape)
+                            .padding(end = 12.dp)
+                            .size(80.dp)
+                            .clip(CircleShape) // This makes it a perfect circle
+                            .clickable { showProfilePictureDialog = true },
+                        contentScale = ContentScale.Crop,
+                        placeholder = painterResource(id = R.drawable.baseline_person_24),
+                        error = painterResource(id = R.drawable.baseline_person_24)
                     )
 
                     Spacer(modifier = Modifier.width(16.dp))
@@ -307,6 +316,13 @@ fun ChildHomeScreen(
             ChildInProgressQuestDialog(
                 quest = selectedQuest!!,
                 onDismissRequest = { selectedQuest = null },
+            )
+        }
+
+        if (showProfilePictureDialog) {
+            ProfilePictureDialog(
+                onDismissRequest = { showProfilePictureDialog = false },
+                user = user!!
             )
         }
     }
