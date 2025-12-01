@@ -50,6 +50,9 @@ import androidx.navigation.NavHostController
 import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
+import androidx.compose.material3.FabPosition
+
+
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -99,7 +102,7 @@ fun ChildCameraScreen(
                 },
             )
         },
-        containerColor = Color.Black // Make scaffold background black
+        floatingActionButtonPosition = FabPosition.Center
     ) { paddingValues: PaddingValues ->
         // FIX: Use Box to ensure full screen coverage
         Box(

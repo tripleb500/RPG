@@ -39,6 +39,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -124,9 +125,11 @@ fun ChildHomeScreen(
                         model = user?.profilePicture?.takeIf { it.isNotBlank() } ?: null,
                         contentDescription = "Profile Picture",
                         modifier = Modifier
-                            .size(100.dp)
                             .padding(end = 12.dp)
-                            .clickable{ showProfilePictureDialog = true},
+                            .size(100.dp)
+                            .clip(CircleShape) // This makes it a perfect circle
+                            .clickable { showProfilePictureDialog = true },
+                        contentScale = ContentScale.Crop,
                         placeholder = painterResource(id = R.drawable.baseline_person_24),
                         error = painterResource(id = R.drawable.baseline_person_24)
                     )
