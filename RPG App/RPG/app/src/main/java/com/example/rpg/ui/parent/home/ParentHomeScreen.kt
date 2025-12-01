@@ -1,12 +1,14 @@
 package com.example.rpg.ui.parent.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -38,9 +40,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.rpg.R
 import com.example.rpg.data.model.User
 import com.example.rpg.ui.auth.AuthViewModel
+import com.example.rpg.ui.child.home.ProfilePictureDialog
 import com.example.rpg.ui.parent.addchild.ParentAddChildDialog
 
 
@@ -60,7 +64,11 @@ fun ParentHomeScreen(
     val children by viewModel.children.collectAsState()
     val parentId = authViewModel.currentUser?.uid
 
+    val user by viewModel.currentUserFlow.collectAsState(initial = null)
+
     var showDialog by remember { mutableStateOf(false) }
+
+    var showProfilePictureDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(parentId) {
         if (parentId != null) {
@@ -103,12 +111,15 @@ fun ParentHomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Image(
-                painter = painterResource(id = R.drawable.baseline_person_24),
-                contentDescription = "Parent Avatar",
+            AsyncImage(
+                model = user?.profilePicture?.takeIf { it.isNotBlank() } ?: null,
+                contentDescription = "Profile Picture",
                 modifier = Modifier
-                    .width(100.dp)
-                    .height(100.dp)
+                    .size(100.dp)
+                    .padding(end = 12.dp)
+                    .clickable{ showProfilePictureDialog = true},
+                placeholder = painterResource(id = R.drawable.baseline_person_24),
+                error = painterResource(id = R.drawable.baseline_person_24)
             )
 
             LazyColumn {
@@ -131,6 +142,13 @@ fun ParentHomeScreen(
                 authViewModel = authViewModel
             )
         }
+
+        if (showProfilePictureDialog) {
+            ParentProfilePictureDialog(
+                onDismissRequest = { showProfilePictureDialog = false },
+                parentId = parentId
+            )
+        }
     }
 }
 
@@ -147,12 +165,14 @@ fun CardView(user: User) {
             modifier = Modifier.padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.baseline_person_24),
-                contentDescription = "Child avatar",
+            AsyncImage(
+                model = user?.profilePicture?.takeIf { it.isNotBlank() } ?: null,
+                contentDescription = "Profile Picture",
                 modifier = Modifier
-                    .width(100.dp)
-                    .height(100.dp)
+                    .size(100.dp)
+                    .padding(end = 12.dp),
+                placeholder = painterResource(id = R.drawable.baseline_person_24),
+                error = painterResource(id = R.drawable.baseline_person_24)
             )
             Column(modifier = Modifier.padding(start = 12.dp)) {
                 Text(

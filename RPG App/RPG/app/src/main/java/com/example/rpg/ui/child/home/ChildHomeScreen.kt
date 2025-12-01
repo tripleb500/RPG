@@ -120,12 +120,15 @@ fun ChildHomeScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     // Avatar
-                    Image(
-                        painter = painterResource(id = R.drawable.baseline_person_24),
-                        contentDescription = "Photo of Avatar",
+                    AsyncImage(
+                        model = user?.profilePicture?.takeIf { it.isNotBlank() } ?: null,
+                        contentDescription = "Profile Picture",
                         modifier = Modifier
                             .size(100.dp)
-                            .clip(CircleShape)
+                            .padding(end = 12.dp)
+                            .clickable{ showProfilePictureDialog = true},
+                        placeholder = painterResource(id = R.drawable.baseline_person_24),
+                        error = painterResource(id = R.drawable.baseline_person_24)
                     )
 
                     Spacer(modifier = Modifier.width(16.dp))

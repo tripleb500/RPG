@@ -66,7 +66,7 @@ class ChildHomeScreenViewModel @Inject constructor(
     private val _submittedImage = MutableStateFlow<String?>(null)
     val submittedImage: StateFlow<String?> = _submittedImage.asStateFlow()
 
-    fun uploadImageForQuest(userId: String, bitmap: Bitmap) {
+    fun uploadImageForProfile(userId: String, bitmap: Bitmap) {
         _submittedImage.value = null
         viewModelScope.launch {
             _isLoading.value = true
@@ -78,7 +78,7 @@ class ChildHomeScreenViewModel @Inject constructor(
     fun updateProfilePicture(user: User) {
         viewModelScope.launch {
             try {
-                var image = _submittedImage.value
+                val image = _submittedImage.value
                 if (image != null) {
                     userRepository.updateProfilePicture(user.id, image)
                 }

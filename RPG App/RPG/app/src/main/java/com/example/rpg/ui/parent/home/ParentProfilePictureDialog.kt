@@ -1,4 +1,4 @@
-package com.example.rpg.ui.child.home
+package com.example.rpg.ui.parent.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,10 +26,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.rpg.data.model.User
+import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 import com.example.rpg.ui.child.quest.ChildCameraScreen
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
@@ -38,10 +38,10 @@ import com.google.accompanist.permissions.rememberPermissionState
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun ProfilePictureDialog(
+fun ParentProfilePictureDialog(
     onDismissRequest: () -> Unit,
-    viewModel: ChildHomeScreenViewModel = hiltViewModel(),
-    user: User
+    viewModel: ParentHomeScreenViewModel = hiltViewModel(),
+    parentId: String?
 ) {
 
 
@@ -67,7 +67,7 @@ fun ProfilePictureDialog(
     if (showCamera && hasPermission) {
         ChildCameraScreen(
             onPhotoTaken = { bitmap ->
-                viewModel.uploadImageForQuest(user.id, bitmap)
+                viewModel.uploadImageForProfile(parentId, bitmap)
                 showCamera = false
             }
         )
@@ -99,7 +99,7 @@ fun ProfilePictureDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(150.dp)
-                            .clip(RoundedCornerShape(8.dp))
+                            .clip(CircleShape)
                     )
                     Button(
                         onClick = {
@@ -131,7 +131,7 @@ fun ProfilePictureDialog(
                 }
                 Button(
                     onClick = {
-                        viewModel.updateProfilePicture(user)
+                        viewModel.updateProfilePicture(parentId)
                         onDismissRequest()
                     },
                     modifier = Modifier.fillMaxWidth()

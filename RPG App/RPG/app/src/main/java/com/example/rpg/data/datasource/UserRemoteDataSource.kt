@@ -228,7 +228,7 @@ class UserRemoteDataSource @Inject constructor(
     suspend fun updateProfilePicture(userId: String, newImage: String) {
         firestore.collection(USERS_COLLECTION)
             .document(userId)
-            .update("submittedImageUrl", newImage)
+            .update("profilePicture", newImage)
             .await()
     }
 }
