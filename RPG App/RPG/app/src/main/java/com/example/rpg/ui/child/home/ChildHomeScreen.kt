@@ -126,7 +126,7 @@ fun ChildHomeScreen(
                         contentDescription = "Profile Picture",
                         modifier = Modifier
                             .padding(end = 12.dp)
-                            .size(100.dp)
+                            .size(80.dp)
                             .clip(CircleShape) // This makes it a perfect circle
                             .clickable { showProfilePictureDialog = true },
                         contentScale = ContentScale.Crop,

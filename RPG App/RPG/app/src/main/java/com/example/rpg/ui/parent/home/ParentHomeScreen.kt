@@ -119,7 +119,7 @@ fun ParentHomeScreen(
                 contentDescription = "Profile Picture",
                 modifier = Modifier
                     .padding(end = 12.dp)
-                    .size(100.dp)
+                    .size(80.dp)
                     .clip(CircleShape) // This makes it a perfect circle
                     .clickable { showProfilePictureDialog = true },
                 contentScale = ContentScale.Crop,
@@ -175,7 +175,7 @@ fun CardView(user: User) {
                 contentDescription = "Profile Picture",
                 modifier = Modifier
                     .padding(end = 12.dp)
-                    .size(100.dp)
+                    .size(60.dp)
                     .clip(CircleShape),
                 contentScale = ContentScale.Crop,
                 placeholder = painterResource(id = R.drawable.baseline_person_24),
