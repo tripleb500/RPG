@@ -77,13 +77,13 @@ fun ChildNotificationsScreen(
         ) {
             Spacer(Modifier.height(16.dp))
 
-            NotificationToggleCard(
-                title = "Quest Reminder Notifications",
-                checked = questRemindersEnabled,
-                onCheckedChange = { viewModel.toggleReminders(it) }
-            )
+            //NotificationToggleCard(
+                //title = "Quest Reminder Notifications",
+                //checked = questRemindersEnabled,
+                //onCheckedChange = { viewModel.toggleReminders(it) }
+            //)
 
-            Spacer(modifier = Modifier.height(8.dp))
+            //Spacer(modifier = Modifier.height(8.dp))
 
             SystemNotificationSettingsCard()
         }
