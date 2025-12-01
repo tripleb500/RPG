@@ -1,7 +1,14 @@
 *.iml
-[Ll]ibrary/
-[Tt}emp/
-[Oo}bj/
-{Bb}uild/
-{Bb}uilds/
+# Unity generated
+
 Assets/AssetStoreTools*
+[Ll]ibrary/
+[Tt]emp/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+[Oo]bj/
+[Uu]serSettings/
+clickerTypeBeat/.utmp/
+clickerTypeBeat/Temp/
