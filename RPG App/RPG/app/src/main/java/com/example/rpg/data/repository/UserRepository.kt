@@ -61,4 +61,7 @@ class UserRepository @Inject constructor(
 
     suspend fun updateProfilePicture(userId: String, newImage: String) =
         remoteDataSource.updateProfilePicture(userId, newImage)
+
+    suspend fun updateFCMToken(uid: String) =
+        remoteDataSource.updateFCMToken(uid)
 }

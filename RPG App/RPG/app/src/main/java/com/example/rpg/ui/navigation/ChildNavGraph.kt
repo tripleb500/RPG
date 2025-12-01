@@ -16,6 +16,7 @@ import com.example.rpg.ui.child.quest.ChildQuestScreen
 import com.example.rpg.ui.child.settings.ChildSettingsScreen
 import com.example.rpg.ui.child.social.ChildSocialScreen
 import com.example.rpg.ui.child.quest.ChildCameraScreen
+import com.example.rpg.ui.child.settings.ChildNotificationsScreen
 import com.example.rpg.ui.child.settings.ChildAccountSettingsScreen
 import com.example.rpg.ui.child.settings.ChildChangeEmailScreen
 import com.example.rpg.ui.child.settings.ChildChangePasswordScreen
@@ -78,6 +79,13 @@ fun ChildNavGraph(navController: NavHostController) {
 
             composable(Routes.ChildAccountSettingsScreen.route) {
                 ChildAccountSettingsScreen(
+                    navController = navController,
+                    overlayNavController = overlayNavController
+                )
+            }
+
+            composable(Routes.ChildNotificationsScreen.route) {
+                ChildNotificationsScreen(
                     navController = navController,
                     overlayNavController = overlayNavController
                 )

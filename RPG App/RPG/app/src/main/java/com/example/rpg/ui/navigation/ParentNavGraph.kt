@@ -1,5 +1,7 @@
 package com.example.rpg.ui.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.layout.padding
@@ -20,12 +22,14 @@ import com.example.rpg.ui.parent.home.ParentHomeScreen
 import com.example.rpg.ui.parent.quest.ParentQuestScreen
 import com.example.rpg.ui.parent.settings.ParentSettingsScreen
 import com.example.rpg.ui.parent.stats.ParentStatsScreen
+import com.example.rpg.ui.parent.settings.ParentNotificationScreen
 import com.example.rpg.ui.parent.settings.ParentAccountSettingsScreen
 import com.example.rpg.ui.parent.settings.ParentChangeEmailScreen
 import com.example.rpg.ui.parent.settings.ParentChangePasswordScreen
 import com.example.rpg.ui.parent.settings.ParentChangeUsernameScreen
 
 //ParentNavGraph handles navigation between screens with the parent version of a bottom NavBar
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ParentNavGraph(navController: NavHostController) {
     val overlayNavController = rememberNavController()
@@ -98,6 +102,14 @@ fun ParentNavGraph(navController: NavHostController) {
                     overlayNavController = overlayNavController,
                 )
             }
+
+            composable(Routes.ParentNotificationsScreen.route) {
+                ParentNotificationScreen(
+                    navController = navController,
+                    overlayNavController = overlayNavController
+                )
+            }
+
             composable (Routes.ParentChangeUsernameScreen.route) {
                 ParentChangeUsernameScreen(
                     navController = navController,

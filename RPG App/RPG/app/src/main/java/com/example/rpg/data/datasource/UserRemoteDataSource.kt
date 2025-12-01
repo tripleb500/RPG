@@ -13,6 +13,7 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
@@ -23,7 +24,8 @@ import javax.inject.Inject
 
 class UserRemoteDataSource @Inject constructor(
     private val firestore: FirebaseFirestore,
-    private val storage: FirebaseStorage
+    private val storage: FirebaseStorage,
+    private val messaging: FirebaseMessaging
 ) {
     private val usersCollection = firestore.collection(USERS_COLLECTION)
 
@@ -229,6 +231,15 @@ class UserRemoteDataSource @Inject constructor(
         firestore.collection(USERS_COLLECTION)
             .document(userId)
             .update("profilePicture", newImage)
+            .await()
+    }
+
+    // Firebase Messaging Handling (FCMToken is a device identifier)
+    suspend fun updateFCMToken(uid: String) {
+        val token = messaging.token.await()
+        firestore.collection(USERS_COLLECTION)
+            .document(uid)
+            .update("fcmToken", token)
             .await()
     }
 }

@@ -85,6 +85,7 @@ fun ChildSettingsScreen(
                         onClick = {
                             when (id) {
                                 1 -> overlayNavController.navigate(Routes.ChildAccountSettingsScreen.route)
+                                2 -> overlayNavController.navigate(Routes.ChildNotificationsScreen.route)
                                 6 -> {
                                     navController.navigate(Routes.SignInScreen.route) {
                                         popUpTo(id = 0) {inclusive = true}
