@@ -1,12 +1,12 @@
 # ninja log v5
-219	1309	7861761681912702	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	f8072f474a715ba6
-1313	1839	7861761686765911	C:/Users/tripl/Documents/GitHub/RPG/clickerTypeBeat/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/6m42495d/obj/arm64-v8a/libswappywrapper.so	7543130e4f033a1b
-43	3818	7861761706950918	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	45d4ed106accbee5
-83	3832	7861761707148960	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	f5d00ba8b96955c1
-16	3934	7861761708315546	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	b230fba650b178b4
-161	3977	7861761708739693	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	29d3220475a069af
-29	4061	7861761709644642	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	ab6a5f09a1148c44
-65	4554	7861761714581785	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	f0459366451bf113
-97	4573	7861761714778737	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	84ddf661be442c44
-1	4957	7861761718629919	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	f1d501fbc4e44e06
-4957	5128	7861761720400919	C:/Users/tripl/Documents/GitHub/RPG/clickerTypeBeat/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/6m42495d/obj/arm64-v8a/libgame.so	c412092008746801
+145	1255	7863344072646154	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	f8072f474a715ba6
+1259	1616	7863344076154160	C:/Users/tripl/Documents/GitHub/RPG/clickerTypeBeat/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/6m42495d/obj/arm64-v8a/libswappywrapper.so	7543130e4f033a1b
+88	20920	7863344269162752	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	f5d00ba8b96955c1
+71	20935	7863344269249058	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	45d4ed106accbee5
+18	20968	7863344269672590	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	b230fba650b178b4
+106	20986	7863344269864590	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	29d3220475a069af
+39	21156	7863344271519427	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	ab6a5f09a1148c44
+54	21572	7863344275703030	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	f0459366451bf113
+2	21823	7863344278154015	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	f1d501fbc4e44e06
+125	21897	7863344278919666	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	84ddf661be442c44
+21898	22106	7863344281014679	C:/Users/tripl/Documents/GitHub/RPG/clickerTypeBeat/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/6m42495d/obj/arm64-v8a/libgame.so	c412092008746801
