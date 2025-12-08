@@ -120,19 +120,34 @@ fun ChildHomeScreen(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Avatar
-                    AsyncImage(
-                        model = user?.profilePicture?.takeIf { it.isNotBlank() } ?: null,
-                        contentDescription = "Profile Picture",
-                        modifier = Modifier
-                            .padding(end = 12.dp)
-                            .size(80.dp)
-                            .clip(CircleShape) // This makes it a perfect circle
-                            .clickable { showProfilePictureDialog = true },
-                        contentScale = ContentScale.Crop,
-                        placeholder = painterResource(id = R.drawable.baseline_person_24),
-                        error = painterResource(id = R.drawable.baseline_person_24)
-                    )
+                    Box(){
+                        // Avatar
+                        AsyncImage(
+                            model = user?.profilePicture?.takeIf { it.isNotBlank() } ?: null,
+                            contentDescription = "Profile Picture",
+                            modifier = Modifier
+                                .padding(top = 20.dp, start = 10.dp, end = 12.dp)
+                                .size(80.dp)
+                                .clip(CircleShape) // This makes it a perfect circle
+                                .clickable { showProfilePictureDialog = true },
+                            contentScale = ContentScale.Crop,
+                            placeholder = painterResource(id = R.drawable.baseline_person_24),
+                            error = painterResource(id = R.drawable.baseline_person_24)
+                        )
+                        AsyncImage(
+                            model = R.drawable.tier1,
+                            contentDescription = "Picture Border",
+                            modifier = Modifier
+                                //.padding(end = 12.dp)
+                                .size(100.dp)
+                                .clip(CircleShape), // This makes it a perfect circle
+                                //.clickable { showProfilePictureDialog = true },
+                            contentScale = ContentScale.Crop,
+                            placeholder = painterResource(id = R.drawable.baseline_person_24),
+                            error = painterResource(id = R.drawable.baseline_person_24)
+                        )
+                    }
+
 
                     Spacer(modifier = Modifier.width(16.dp))
 
