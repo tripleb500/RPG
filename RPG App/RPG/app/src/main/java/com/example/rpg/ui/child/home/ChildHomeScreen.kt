@@ -1,5 +1,7 @@
 package com.example.rpg.ui.child.home
 // TODO: button for stats; achievements, list of main quests
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -58,6 +60,7 @@ import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
 import com.example.rpg.ui.child.achievements.ChildAchievementsDialog
+import com.example.rpg.ui.child.border.ChildCustomizeBorderDialog
 import com.example.rpg.ui.child.quest.ChildInProgressQuestDialog
 import com.example.rpg.ui.child.stats.ChildStatsDialog
 import java.text.SimpleDateFormat
@@ -78,11 +81,14 @@ fun ChildHomeScreen(
 
     var showDialogAchievements by remember { mutableStateOf(false) }
     var showDialogStats by remember { mutableStateOf(false) }
+    var showDialogCustomize by remember { mutableStateOf(false)}
     val questList = viewModel.childQuests.collectAsState()
     var selectedQuest by remember { mutableStateOf<Quest?>(null) }
     var sortOrder by rememberSaveable { mutableStateOf(SortOrder.ASCENDING) }
 
     var showProfilePictureDialog by remember { mutableStateOf(false) }
+    var avatarBorder by remember { mutableStateOf(0)}
+
 
     Box(
         modifier = Modifier
@@ -135,7 +141,7 @@ fun ChildHomeScreen(
                             error = painterResource(id = R.drawable.baseline_person_24)
                         )
                         AsyncImage(
-                            model = R.drawable.tier6,
+                            model = avatarBorder,
                             contentDescription = "Avatar Border",
                             modifier = Modifier
                                 //.padding(end = 12.dp)
@@ -145,7 +151,6 @@ fun ChildHomeScreen(
                             contentScale = ContentScale.Crop
                         )
                     }
-
 
                     Spacer(modifier = Modifier.width(16.dp))
 
@@ -188,6 +193,35 @@ fun ChildHomeScreen(
                         )
                     }
                 }
+                //Used to customize avatar border
+                Card(
+                    modifier = Modifier
+                        .height(40.dp)
+                        .width(110.dp)
+                        .padding(top = 10.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFF2B6A2B)
+                    ),
+                    onClick = { showDialogCustomize = true }, // open dialog on card tap
+                ){
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center)
+                    {
+                        Text(textAlign = TextAlign.Center, text = "Customize")
+                    }
+                }
+            }
+
+            if (showDialogCustomize) {
+                ChildCustomizeBorderDialog(
+                    onDismissRequest = { showDialogCustomize = false },
+                    viewModel = viewModel,
+                    onAvatarBorderSelect = { id ->
+                        avatarBorder = id
+                    }
+                )
             }
 
             Column(
