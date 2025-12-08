@@ -37,7 +37,6 @@ import com.example.rpg.ui.Routes
 fun ParentChangePasswordScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    overlayNavController: NavController,
     viewModel: ParentChangePasswordViewModel = hiltViewModel()
 ) {
     val currentPassword by viewModel.currentPassword
@@ -120,7 +119,7 @@ fun ParentChangePasswordScreen(
                 horizontalArrangement = Arrangement.SpaceEvenly
 
             ) {
-                Button(onClick = {overlayNavController.navigate(Routes.ParentAccountSettingsScreen.route)}
+                Button(onClick = {navController.navigate(Routes.ParentAccountSettingsScreen.route)}
                 ) {
                     Text("Cancel")
                 }

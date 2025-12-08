@@ -39,7 +39,6 @@ import androidx.navigation.NavController
 fun ParentNotificationScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    overlayNavController: NavController,
 ) {
     Scaffold(
         topBar = {

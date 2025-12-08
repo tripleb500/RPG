@@ -42,7 +42,13 @@ fun ParentNavGraph(navController: NavHostController) {
             startDestination = Routes.ParentHomeScreen.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            // Parent Routes : ParentQuest
+            composable(Routes.ParentHomeScreen.route) {
+                ParentHomeScreen(
+                    navController = navController,
+                    overlayNavController = overlayNavController
+                )
+            }
+
             composable(Routes.ParentQuestScreen.route) {
                 ParentQuestScreen(
                     navController = navController,
@@ -50,14 +56,12 @@ fun ParentNavGraph(navController: NavHostController) {
                 )
             }
 
-            // Parent Routes : ParentAddQuest
             composable(Routes.ParentAddQuestScreen.route) {
                 ParentAddQuestScreen(
                     overlayNavController = overlayNavController
                 )
             }
 
-            // Parent Routes : ParentCamera
             composable(Routes.ParentCameraScreen.route) {
                 val context = LocalContext.current
                 val cameraController = remember {
@@ -67,68 +71,16 @@ fun ParentNavGraph(navController: NavHostController) {
                 }
                 ParentCameraScreen(
                     controller = cameraController,
-                    overlayNavController = overlayNavController,
-                    modifier = Modifier
-                )
-            }
-
-            // Parent Routes : ParentHome
-            composable(Routes.ParentHomeScreen.route) {
-                ParentHomeScreen(
-                    navController = navController,
                     overlayNavController = overlayNavController
                 )
             }
 
-            // Parent Routes : ParentStats
             composable(Routes.ParentStatsScreen.route) {
                 ParentStatsScreen(
                     navController = navController,
                     overlayNavController = overlayNavController
                 )
             }
-
-            // Parent Routes : ParentSettings
-            composable(Routes.ParentSettingsScreen.route) {
-                ParentSettingsScreen(
-                    navController = navController,
-                    overlayNavController = overlayNavController
-                )
-            }
-
-            composable(Routes.ParentAccountSettingsScreen.route) {
-                ParentAccountSettingsScreen(
-                    navController = navController,
-                    overlayNavController = overlayNavController,
-                )
-            }
-
-            composable(Routes.ParentNotificationsScreen.route) {
-                ParentNotificationScreen(
-                    navController = navController,
-                    overlayNavController = overlayNavController
-                )
-            }
-
-            composable (Routes.ParentChangeUsernameScreen.route) {
-                ParentChangeUsernameScreen(
-                    navController = navController,
-                    overlayNavController = overlayNavController
-                )
-            }
-            composable (Routes.ParentChangeEmailScreen.route) {
-                ParentChangeEmailScreen(
-                    navController = navController,
-                    overlayNavController = overlayNavController
-                )
-            }
-            composable (Routes.ParentChangePasswordScreen.route) {
-                ParentChangePasswordScreen(
-                    navController = navController,
-                    overlayNavController = overlayNavController
-                )
-            }
-
         }
     }
 }

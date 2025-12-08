@@ -27,7 +27,6 @@ import com.example.rpg.ui.Routes
 fun ParentAccountSettingsScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    overlayNavController: NavHostController,
     viewModel: ParentAccountSettingsViewModel = hiltViewModel()
 ) {
 
@@ -82,9 +81,9 @@ fun ParentAccountSettingsScreen(
                         subtitle = subtitle,
                         onClick = {
                             when (id) {
-                                1 -> overlayNavController.navigate(Routes.ParentChangeUsernameScreen.route)
-                                2 -> overlayNavController.navigate(Routes.ParentChangeEmailScreen.route)
-                                3 -> overlayNavController.navigate(Routes.ParentChangePasswordScreen.route)
+                                1 -> navController.navigate(Routes.ParentChangeUsernameScreen.route)
+                                2 -> navController.navigate(Routes.ParentChangeEmailScreen.route)
+                                3 -> navController.navigate(Routes.ParentChangePasswordScreen.route)
                             }
                         }
                     )
