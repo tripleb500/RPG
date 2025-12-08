@@ -135,16 +135,14 @@ fun ChildHomeScreen(
                             error = painterResource(id = R.drawable.baseline_person_24)
                         )
                         AsyncImage(
-                            model = R.drawable.tier1,
-                            contentDescription = "Picture Border",
+                            model = R.drawable.tier6,
+                            contentDescription = "Avatar Border",
                             modifier = Modifier
                                 //.padding(end = 12.dp)
-                                .size(100.dp)
-                                .clip(CircleShape), // This makes it a perfect circle
+                                .size(100.dp),
+                                //.clip(CircleShape), // This makes it a perfect circle
                                 //.clickable { showProfilePictureDialog = true },
-                            contentScale = ContentScale.Crop,
-                            placeholder = painterResource(id = R.drawable.baseline_person_24),
-                            error = painterResource(id = R.drawable.baseline_person_24)
+                            contentScale = ContentScale.Crop
                         )
                     }
 
