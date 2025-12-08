@@ -1,5 +1,7 @@
 package com.example.rpg.ui.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -23,6 +25,7 @@ import com.example.rpg.ui.child.settings.ChildChangePasswordScreen
 import com.example.rpg.ui.child.settings.ChildChangeUsernameScreen
 
 //ChildNavGraph handles navigation between screens with the Child version of a bottom NavBar
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ChildNavGraph(navController: NavHostController) {
     val overlayNavController = rememberNavController()
