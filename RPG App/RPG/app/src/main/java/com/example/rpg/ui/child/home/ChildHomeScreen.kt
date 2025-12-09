@@ -29,6 +29,7 @@ import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,6 +60,7 @@ import coil.compose.AsyncImage
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
+import com.example.rpg.ui.Routes
 import com.example.rpg.ui.child.achievements.ChildAchievementsDialog
 import com.example.rpg.ui.child.border.ChildCustomizeBorderDialog
 import com.example.rpg.ui.child.quest.ChildInProgressQuestDialog
@@ -87,7 +89,9 @@ fun ChildHomeScreen(
     var sortOrder by rememberSaveable { mutableStateOf(SortOrder.ASCENDING) }
 
     var showProfilePictureDialog by remember { mutableStateOf(false) }
-    var avatarBorder by remember { mutableStateOf(0)}
+    var avatarBorder by remember { mutableStateOf(user?.avatarBorder)}
+
+    //var avatarBorder = user?.avatarBorder
 
 
     Box(
@@ -141,13 +145,10 @@ fun ChildHomeScreen(
                             error = painterResource(id = R.drawable.baseline_person_24)
                         )
                         AsyncImage(
-                            model = avatarBorder,
+                            model = user?.avatarBorder?.takeIf { it != 0} ?: null,
                             contentDescription = "Avatar Border",
                             modifier = Modifier
-                                //.padding(end = 12.dp)
                                 .size(100.dp),
-                                //.clip(CircleShape), // This makes it a perfect circle
-                                //.clickable { showProfilePictureDialog = true },
                             contentScale = ContentScale.Crop
                         )
                     }
@@ -216,13 +217,19 @@ fun ChildHomeScreen(
 
             if (showDialogCustomize) {
                 ChildCustomizeBorderDialog(
-                    onDismissRequest = { showDialogCustomize = false },
+                    onDismissRequest = {
+                        viewModel.updateAvatarBorder(user!!, avatarBorder)
+                        showDialogCustomize = false
+                        overlayNavController.navigate(Routes.ChildHomeScreen.route)
+                         },
                     viewModel = viewModel,
                     onAvatarBorderSelect = { id ->
                         avatarBorder = id
-                    }
+                    },
                 )
             }
+
+
 
             Column(
                 modifier = Modifier

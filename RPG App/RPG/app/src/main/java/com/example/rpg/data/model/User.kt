@@ -19,5 +19,6 @@ data class User(
     val email: String = "",
     val childrenIds: List<String> = emptyList(),
     val fcmToken: String? = null,
-    val profilePicture: String = ""
+    val profilePicture: String = "",
+    val avatarBorder: Int? = null
 )

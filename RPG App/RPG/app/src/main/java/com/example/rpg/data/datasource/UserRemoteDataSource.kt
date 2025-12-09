@@ -234,6 +234,14 @@ class UserRemoteDataSource @Inject constructor(
             .await()
     }
 
+    suspend fun updateAvatarBorder(userId: String, avatarBorder: Int?) {
+        firestore.collection(USERS_COLLECTION)
+            .document(userId)
+            .update("avatarBorder", avatarBorder)
+            .await()
+    }
+
+
     // Firebase Messaging Handling (FCMToken is a device identifier)
     suspend fun updateFCMToken(uid: String) {
         val token = messaging.token.await()

@@ -37,6 +37,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.rpg.R
 import com.example.rpg.data.model.Border
+import com.example.rpg.data.model.User
 import com.example.rpg.ui.child.home.ChildHomeScreenViewModel
 
 val levelBorders = mutableStateListOf(

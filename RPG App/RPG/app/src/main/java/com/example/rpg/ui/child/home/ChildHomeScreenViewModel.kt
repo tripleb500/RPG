@@ -89,6 +89,16 @@ class ChildHomeScreenViewModel @Inject constructor(
         }
     }
 
+    fun updateAvatarBorder(user: User, avatarBorder: Int?){
+        viewModelScope.launch{
+            try{
+                userRepository.updateAvatarBorder(user.id, avatarBorder)
+            } catch(e: Exception){
+                Log.e("QuestVM", "Error updating Avatar Border", e)
+            }
+        }
+    }
+
 
 
     private val questParentCache = mutableMapOf<String, User>()
