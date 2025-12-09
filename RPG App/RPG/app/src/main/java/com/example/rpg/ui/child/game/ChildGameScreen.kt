@@ -1,12 +1,14 @@
 package com.example.rpg.ui.child.game
 // TODO: Implement screen
 import android.content.Intent
+import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,16 +20,23 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 
 @Composable
 fun ChildGameScreen(
+    modifier: Modifier = Modifier,
     navController: NavHostController,
-    overlayNavController: NavHostController
+    overlayNavController: NavHostController,
+    viewModel: ChildGameViewModel = hiltViewModel()
 ) {
+    val user by viewModel.currentUserFlow.collectAsState(initial = null)
+    val level by viewModel.currentLevel.collectAsState()
     val context = LocalContext.current
     var launchStatus by remember { mutableStateOf<LaunchStatus>(LaunchStatus.Idle) }
 
+    val User = user?.username
+    val Userlvl = Bundle(level)
     // Try launching the Unity game once
     LaunchedEffect(Unit) {
         val intent = Intent().apply {
@@ -35,7 +44,10 @@ fun ChildGameScreen(
                 "com.DefaultCompany.clickerTypeBeat",
                 "com.unity3d.player.UnityPlayerGameActivity"
             )
+
         }
+        intent.putExtra("Userlvl",Userlvl)
+        intent.putExtra("userName", User)
         launchStatus = try {
             context.startActivity(intent)
             LaunchStatus.Success
