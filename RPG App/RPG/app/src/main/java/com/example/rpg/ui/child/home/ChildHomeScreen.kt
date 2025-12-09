@@ -2,6 +2,7 @@ package com.example.rpg.ui.child.home
 // TODO: button for stats; achievements, list of main quests
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.rpg.ui.theme.themeColor
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -96,7 +97,7 @@ fun ChildHomeScreen(
             //color tuple needs to be updated once material theming implemented
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(Color(0xFF798B6A), Color(0xFF6c7d5f))
+                    colors = listOf(themeColor(Color(0xFF798B6A)), themeColor(Color(0xFF6c7d5f)))
                 )
             )
     ) {
@@ -184,8 +185,8 @@ fun ChildHomeScreen(
                                 .fillMaxWidth()
                                 .height(12.dp)
                                 .clip(RoundedCornerShape(6.dp)),
-                            color = Color(0xFF2B6A2B),      // green
-                            trackColor = Color(0xFFBBDEFB),  // light blue
+                            color = themeColor(Color(0xFF2B6A2B)),      // green
+                            trackColor = themeColor(Color(0xFFBBDEFB)),  // light blue
                             strokeCap = ProgressIndicatorDefaults.LinearStrokeCap,
                         )
                     }
@@ -197,7 +198,7 @@ fun ChildHomeScreen(
                         .width(110.dp)
                         .padding(top = 10.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFF2B6A2B)
+                        containerColor = themeColor(Color(0xFF2B6A2B))
                     ),
                     onClick = { showDialogCustomize = true }, // open dialog on card tap
                 ){
@@ -237,7 +238,7 @@ fun ChildHomeScreen(
                         .height(115.dp)
                         .padding(12.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFF2B6A2B)
+                        containerColor = themeColor(Color(0xFF2B6A2B))
                     ),
                     onClick = { showDialogAchievements = true }, // open dialog on card tap
                 ) {
@@ -272,7 +273,7 @@ fun ChildHomeScreen(
                         .height(115.dp)
                         .padding(12.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFF2B6A2B)
+                        containerColor = themeColor(Color(0xFF2B6A2B))
                     ),
                     onClick = { showDialogStats = true }, // open dialog on card tap
                 ) {
@@ -320,7 +321,7 @@ fun ChildHomeScreen(
                         .fillMaxWidth()
                         .height(50.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFF1A4A17)
+                        containerColor = themeColor(Color(0xFF1A4A17))
                     )
                 ) {
                     Column(
@@ -386,7 +387,7 @@ fun CardView(
             .padding(8.dp)
             .clickable { onQuestClick() },
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFBBDEFB)
+            containerColor = themeColor(Color(0xFFBBDEFB))
         )
     ) {
         Row(

@@ -1,5 +1,6 @@
 package com.example.rpg.ui.theme
 
+import androidx.compose.ui.graphics.Color
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -9,6 +10,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.room.util.copy
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -54,4 +56,18 @@ fun RPGTheme(
         typography = Typography,
         content = content
     )
+}
+
+// Darkens passed colors
+@Composable
+fun themeColor(lightColor: Color): Color {
+    return if (isSystemInDarkTheme()) {
+        lightColor.copy(
+            red = lightColor.red * 0.35f,
+            green = lightColor.green * 0.35f,
+            blue = lightColor.blue * 0.35f
+        )
+    } else {
+        lightColor
+    }
 }

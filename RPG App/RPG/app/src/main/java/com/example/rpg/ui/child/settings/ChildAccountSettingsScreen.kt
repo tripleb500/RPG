@@ -22,6 +22,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.rpg.ui.Routes
 import com.example.rpg.ui.parent.settings.ClickableCard
+import com.example.rpg.ui.theme.themeColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,7 +47,7 @@ fun ChildAccountSettingsScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 colors  = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF1A4A17)
+                    containerColor = themeColor(Color(0xFF1A4A17))
                 ),
                 title = {
                     Text(

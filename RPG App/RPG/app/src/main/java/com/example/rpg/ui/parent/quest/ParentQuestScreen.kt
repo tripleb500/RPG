@@ -55,6 +55,7 @@ import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
 import com.example.rpg.ui.Routes
 import com.example.rpg.ui.theme.RPGTheme
+import com.example.rpg.ui.theme.themeColor
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -266,13 +267,15 @@ fun CardView(
             .padding(8.dp)
             .clickable { showDialog = true },
         colors = CardDefaults.cardColors(
-            containerColor = when (quest.status) {
+            containerColor = themeColor(
+                when (quest.status) {
                 Status.COMPLETED -> Color(0xFFB2DFDB)
                 Status.PENDING -> Color(0xFFFFF9C4)
                 Status.INPROGRESS -> Color(0xFFBBDEFB)
                 Status.INCOMPLETE -> Color(0xFFFFCDD2)
                 else -> Color.White
             }
+            )
         )
     ) {
         Row(
@@ -370,14 +373,14 @@ private fun QuestTabBar(
                 modifier = Modifier
                     .padding(vertical = 4.dp)
                     .background(
-                        color = if (tab == selected) statusColor(tab) else Color.Transparent,
+                        color = if (tab == selected) themeColor(statusColor(tab)) else Color.Transparent,
                         shape = RoundedCornerShape(8.dp)
                     ),
                 text = {
                     Text(
                         text = tab.name.replace("_", " "),
                         fontSize = 16.sp,
-                        color = Color.Black,
+//                        color = Color.Black,
                         modifier = Modifier.padding(vertical = 8.dp)
                     )
                 }

@@ -38,6 +38,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.theme.RPGTheme
+import com.example.rpg.ui.theme.themeColor
 
 @Composable
 fun ChildSocialScreen(
@@ -78,8 +79,8 @@ fun ChildSocialScreen(
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
                             .background(
-                                color = if (user.id == currentUserId) Color(0xFFBBDEFB)
-                                else Color(0xFFEFEFEF),
+                                color = if (user.id == currentUserId) themeColor(Color(0xFFBBDEFB))
+                                else themeColor(Color(0xFFEFEFEF)),
                                 shape = RoundedCornerShape(12.dp)
                             )
                             .padding(12.dp),

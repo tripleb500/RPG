@@ -64,6 +64,7 @@ import coil.compose.AsyncImage
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
+import com.example.rpg.ui.theme.themeColor
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZoneId
@@ -371,13 +372,15 @@ fun CardView(
             .padding(12.dp)
             .clickable { onQuestClick() },
         colors = CardDefaults.cardColors(
-            containerColor = when (selectedTab) {
+            containerColor = themeColor(
+                when (selectedTab) {
                 Status.COMPLETED -> Color(0xFFB2DFDB)
                 Status.PENDING -> Color(0xFFFFF9C4)
                 Status.INPROGRESS -> Color(0xFFBBDEFB)
                 Status.INCOMPLETE -> Color(0xFFFFCDD2)
                 else -> Color.White
             }
+            )
         )
     ) {
         Row(
