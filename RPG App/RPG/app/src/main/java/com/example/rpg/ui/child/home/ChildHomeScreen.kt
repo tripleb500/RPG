@@ -89,10 +89,6 @@ fun ChildHomeScreen(
     var sortOrder by rememberSaveable { mutableStateOf(SortOrder.ASCENDING) }
 
     var showProfilePictureDialog by remember { mutableStateOf(false) }
-    var avatarBorder by remember { mutableStateOf(user?.avatarBorder)}
-
-    //var avatarBorder = user?.avatarBorder
-
 
     Box(
         modifier = Modifier
@@ -145,7 +141,7 @@ fun ChildHomeScreen(
                             error = painterResource(id = R.drawable.baseline_person_24)
                         )
                         AsyncImage(
-                            model = user?.avatarBorder?.takeIf { it != 0} ?: null,
+                            model = user?.avatarBorder?.takeIf { it != 0},
                             contentDescription = "Avatar Border",
                             modifier = Modifier
                                 .size(100.dp),
@@ -218,18 +214,15 @@ fun ChildHomeScreen(
             if (showDialogCustomize) {
                 ChildCustomizeBorderDialog(
                     onDismissRequest = {
-                        viewModel.updateAvatarBorder(user!!, avatarBorder)
                         showDialogCustomize = false
-                        overlayNavController.navigate(Routes.ChildHomeScreen.route)
                          },
                     viewModel = viewModel,
                     onAvatarBorderSelect = { id ->
-                        avatarBorder = id
+                        viewModel.updateAvatarBorder(user!!, id)
+                        showDialogCustomize = false
                     },
                 )
             }
-
-
 
             Column(
                 modifier = Modifier

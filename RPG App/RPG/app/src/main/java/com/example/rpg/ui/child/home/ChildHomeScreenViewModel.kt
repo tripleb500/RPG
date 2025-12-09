@@ -89,6 +89,7 @@ class ChildHomeScreenViewModel @Inject constructor(
         }
     }
 
+
     fun updateAvatarBorder(user: User, avatarBorder: Int?){
         viewModelScope.launch{
             try{
@@ -98,8 +99,6 @@ class ChildHomeScreenViewModel @Inject constructor(
             }
         }
     }
-
-
 
     private val questParentCache = mutableMapOf<String, User>()
 
@@ -202,10 +201,11 @@ class ChildHomeScreenViewModel @Inject constructor(
         private set
 
     // FIX: Make currentUserFlow more robust
+    /*
     val currentUserFlow: Flow<User?> = authRepository.currentUserIdFlow
         .map { uid ->
             try {
-                uid?.let { userRepository.getUserByUid(it) }
+                uid?.let { userRepository.getUserByUidFlow(it) }
             } catch (e: Exception) {
                 Log.e("ChildHomeScreenVM", "Error loading user: ${e.message}")
                 null
@@ -215,4 +215,19 @@ class ChildHomeScreenViewModel @Inject constructor(
             Log.e("ChildHomeScreenVM", "Error in user flow: ${error.message}")
             emit(null)
         }
+    */
+
+    val currentUserFlow: Flow<User?> = authRepository.currentUserIdFlow
+        .flatMapLatest { uid ->
+            if (uid == null) {
+                flowOf(null)
+            } else {
+                userRepository.getUserByUidFlow(uid)
+            }
+        }
+        .catch { error ->
+            Log.e("ChildHomeScreenVM", "Error: ${error.message}")
+            emit(null)
+        }
+
 }

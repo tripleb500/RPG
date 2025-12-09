@@ -72,9 +72,9 @@ fun ChildCustomizeBorderDialog(
             ){
                 items(levelBorders){Border ->
                     CardView(level, Border,
-                        onDismissRequest = {onDismissRequest()},
                 onAvatarBorderSelect = { id ->
                     onAvatarBorderSelect(id)
+                    onDismissRequest()
                 })
                 }
             }
@@ -86,7 +86,7 @@ fun ChildCustomizeBorderDialog(
 fun CardView(
     level: Int,
     border: Border,
-    onDismissRequest: () -> Unit,
+
     onAvatarBorderSelect: (Int) -> Unit
     ){
     if(level >= border.id){
@@ -103,7 +103,6 @@ fun CardView(
                     .padding(vertical = 8.dp)
                     .clickable{
                         onAvatarBorderSelect(border.fileId)
-                        onDismissRequest()
                     },
                 contentAlignment = Alignment.Center
             ) {
