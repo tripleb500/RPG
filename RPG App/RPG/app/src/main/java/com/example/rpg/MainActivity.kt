@@ -1,9 +1,13 @@
 package com.example.rpg
 
 import android.Manifest
+import android.app.AppOpsManager
+import android.content.Intent
+import android.provider.Settings
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,6 +27,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         askNotificationPermission()
+        askScreenUsageAccessPermission()
         setContent {
             RPGTheme {
                 Surface(
@@ -54,6 +59,28 @@ class MainActivity : ComponentActivity() {
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
+    }
+
+    private fun askScreenUsageAccessPermission () {
+        if(!hasScreenUsageAccessPermission()) {
+            val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+            startActivity(intent)
+            Toast.makeText(
+                this,
+                "Please enable Usage Access to track screen time",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    private fun hasScreenUsageAccessPermission (): Boolean {
+        val appOps = getSystemService(AppOpsManager::class.java)
+        val mode = appOps.checkOpNoThrow(
+            AppOpsManager.OPSTR_GET_USAGE_STATS,
+            android.os.Process.myUid(),
+            packageName
+        )
+        return mode == AppOpsManager.MODE_ALLOWED
     }
 }
 
