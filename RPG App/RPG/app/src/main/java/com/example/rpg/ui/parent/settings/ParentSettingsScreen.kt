@@ -1,5 +1,7 @@
 package com.example.rpg.ui.parent.settings
 
+import android.content.Intent
+import android.provider.Settings
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,16 +24,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
-import com.example.rpg.ui.theme.RPGTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,6 +39,8 @@ fun ParentSettingsScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
 ) {
+    val context = LocalContext.current
+
     val settingsOptions = listOf(
         1 to "Account",
         2 to "Notifications",
@@ -84,6 +86,10 @@ fun ParentSettingsScreen(
                             when (id) {
                                 1 -> navController.navigate(Routes.ParentAccountSettingsScreen.route)
                                 2 -> navController.navigate(Routes.ParentNotificationsScreen.route)
+                                4 -> {
+                                    val intent = Intent(Settings.ACTION_DISPLAY_SETTINGS)
+                                    context.startActivity(intent)
+                                }
                                 6 -> {
                                     navController.navigate(Routes.SignInScreen.route) {
                                         popUpTo(id = 0) {inclusive = true}
