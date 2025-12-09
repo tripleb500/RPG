@@ -1,5 +1,7 @@
 package com.example.rpg.ui.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
@@ -10,9 +12,16 @@ import com.example.rpg.ui.auth.signin.SignInScreen
 import com.example.rpg.ui.auth.signup.SignUpScreen
 import com.example.rpg.ui.child.landing.ChildLandingScreen
 import com.example.rpg.ui.parent.landing.ParentLandingScreen
+import com.example.rpg.ui.parent.settings.ParentAccountSettingsScreen
+import com.example.rpg.ui.parent.settings.ParentChangeEmailScreen
+import com.example.rpg.ui.parent.settings.ParentChangePasswordScreen
+import com.example.rpg.ui.parent.settings.ParentChangeUsernameScreen
+import com.example.rpg.ui.parent.settings.ParentNotificationScreen
+import com.example.rpg.ui.parent.settings.ParentSettingsScreen
 import com.example.rpg.ui.theme.RPGTheme
 
 //RPGNavGraph handles navigation between screens without NavBar
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun RPGNavGraph() {
     val navController = rememberNavController()
@@ -45,17 +54,28 @@ fun RPGNavGraph() {
             ChildNavGraph(navController = navController)
         }
 
-        // Child Routes : childHome
-//        composable(Routes.ChildHomeScreen.route) {
-//            ChildHomeScreen(navController = navController, overlayNavController = navController)
-//        }
-    }
-}
+        composable(Routes.ParentSettingsScreen.route) {
+            ParentSettingsScreen(navController = navController)
+        }
 
-@Preview
-@Composable
-fun PreviewScreenMain() {
-    RPGTheme {
-        RPGNavGraph()
+        composable(Routes.ParentAccountSettingsScreen.route) {
+            ParentAccountSettingsScreen(navController = navController)
+        }
+
+        composable(Routes.ParentNotificationsScreen.route) {
+            ParentNotificationScreen(navController = navController)
+        }
+
+        composable(Routes.ParentChangeUsernameScreen.route) {
+            ParentChangeUsernameScreen(navController = navController)
+        }
+
+        composable(Routes.ParentChangeEmailScreen.route) {
+            ParentChangeEmailScreen(navController = navController)
+        }
+
+        composable(Routes.ParentChangePasswordScreen.route) {
+            ParentChangePasswordScreen(navController = navController)
+        }
     }
 }

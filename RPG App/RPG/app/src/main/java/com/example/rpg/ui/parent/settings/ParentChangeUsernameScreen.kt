@@ -38,7 +38,6 @@ import com.example.rpg.ui.Routes
 fun ParentChangeUsernameScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    overlayNavController: NavController,
     viewModel: ParentChangeUsernameScreenViewModel = hiltViewModel()
 ) {
     val currentUsername by viewModel.currentUsername
@@ -111,7 +110,7 @@ fun ParentChangeUsernameScreen(
                     .fillMaxSize(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Button(onClick = {overlayNavController.navigate(Routes.ParentAccountSettingsScreen.route)}
+                Button(onClick = {navController.navigate(Routes.ParentAccountSettingsScreen.route)}
                 ) {
                     Text("Cancel")
                 }

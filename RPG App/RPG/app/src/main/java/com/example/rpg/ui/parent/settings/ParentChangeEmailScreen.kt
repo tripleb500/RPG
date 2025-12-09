@@ -37,7 +37,6 @@ import com.example.rpg.ui.Routes
 fun ParentChangeEmailScreen (
     modifier: Modifier = Modifier,
     navController: NavController,
-    overlayNavController: NavHostController,
     viewModel: ParentChangeEmailViewModel = hiltViewModel()
 )  {
     val context = LocalContext.current
@@ -130,7 +129,7 @@ fun ParentChangeEmailScreen (
                     .fillMaxSize(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Button(onClick = {overlayNavController.navigate(Routes.ParentAccountSettingsScreen.route)}
+                Button(onClick = {navController.navigate(Routes.ParentAccountSettingsScreen.route)}
                 ) {
                     Text("Cancel")
                 }

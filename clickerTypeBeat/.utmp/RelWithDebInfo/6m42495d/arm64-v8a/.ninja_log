@@ -10,3 +10,5 @@
 2	21823	7863344278154015	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	f1d501fbc4e44e06
 125	21897	7863344278919666	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	84ddf661be442c44
 21898	22106	7863344281014679	C:/Users/tripl/Documents/GitHub/RPG/clickerTypeBeat/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/6m42495d/obj/arm64-v8a/libgame.so	c412092008746801
+32	1062	7869379736330758	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	f8072f474a715ba6
+1062	1455	7869379740255518	C:/Users/tripl/Documents/GitHub/RPG/clickerTypeBeat/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/6m42495d/obj/arm64-v8a/libswappywrapper.so	7543130e4f033a1b

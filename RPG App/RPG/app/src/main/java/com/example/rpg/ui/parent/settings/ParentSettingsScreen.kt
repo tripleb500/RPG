@@ -33,13 +33,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
 import com.example.rpg.ui.theme.RPGTheme
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParentSettingsScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    overlayNavController: NavHostController,
 ) {
     val settingsOptions = listOf(
         1 to "Account",
@@ -84,8 +82,8 @@ fun ParentSettingsScreen(
                         title = name,
                         onClick = {
                             when (id) {
-                                1 -> overlayNavController.navigate(Routes.ParentAccountSettingsScreen.route)
-                                2 -> overlayNavController.navigate(Routes.ParentNotificationsScreen.route)
+                                1 -> navController.navigate(Routes.ParentAccountSettingsScreen.route)
+                                2 -> navController.navigate(Routes.ParentNotificationsScreen.route)
                                 6 -> {
                                     navController.navigate(Routes.SignInScreen.route) {
                                         popUpTo(id = 0) {inclusive = true}
@@ -172,17 +170,5 @@ fun ClickableCard(
                 //text = title, textAlign = TextAlign.Center
             //)
         }
-    }
-}
-
-@Preview(
-    showBackground = true, showSystemUi = true
-)
-@Composable
-fun PreviewParentQuestScreen() {
-    RPGTheme {
-        ParentSettingsScreen(
-            navController = rememberNavController(), overlayNavController = rememberNavController()
-        )
     }
 }
