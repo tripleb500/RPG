@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,7 +24,8 @@ import androidx.navigation.NavHostController
 @Composable
 fun ChildGameScreen(
     navController: NavHostController,
-    overlayNavController: NavHostController
+    overlayNavController: NavHostController,
+    viewModel: ChildGameViewModel
 ) {
     val context = LocalContext.current
     var launchStatus by remember { mutableStateOf<LaunchStatus>(LaunchStatus.Idle) }
@@ -52,32 +54,38 @@ fun ChildGameScreen(
             .background(Color.LightGray),
         contentAlignment = Alignment.Center
     ) {
-        when (launchStatus) {
-            LaunchStatus.Idle -> {
-                Text(
-                    text = "Launching Unity game...",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
-            }
-            LaunchStatus.Success -> {
-                Text(
-                    text = "Unity game has been launched! Return here to see this message.",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Green,
-                    textAlign = TextAlign.Center
-                )
-            }
-            LaunchStatus.Failed -> {
-                Text(
-                    text = "Unity game has not been installed.",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Red,
-                    textAlign = TextAlign.Center
-                )
+        if (viewModel.isValid())
+            Text("You have reached the screen time limit")
+        else {
+            when (launchStatus) {
+                LaunchStatus.Idle -> {
+                    Text(
+                        text = "Launching Unity game...",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                LaunchStatus.Success -> {
+                    Text(
+                        text = "Unity game has been launched! Return here to see this message.",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Green,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                LaunchStatus.Failed -> {
+                    Text(
+                        text = "Unity game has not been installed.",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Red,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }

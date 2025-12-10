@@ -30,4 +30,8 @@ class ScreenUsageStatsRepository @Inject constructor (
     fun observeChildUsage(childId: String): Flow<List<ScreenTimeRecord>> {
         return firestoreUsage.observeDailyUsage(childId)
     }
+
+    suspend fun getCurrentDay(childId: String): ScreenTimeRecord? {
+        return firestoreUsage.getCurrentDay(childId)
+    }
 }
