@@ -66,7 +66,8 @@ fun ParentNavGraph(navController: NavHostController) {
             }
             composable (
                 route = Routes.ViewChildScreenUsageScreen.route,
-                arguments = listOf(navArgument("childId") {type = NavType.StringType })
+                arguments = listOf(
+                    navArgument("childId") {type = NavType.StringType },)
             ) { backStackEntry ->
                 val childId = backStackEntry.arguments?.getString("childId") ?: ""
                 ViewChildScreenUsageScreen(childId = childId)
