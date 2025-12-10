@@ -144,7 +144,7 @@ fun ParentHomeScreen(
 
             LazyColumn {
                 items(children, key = { it.id }) { child ->
-                    CardView(child)
+                    CardView(child, overlayNavController)
                 }
             }
         }
@@ -175,11 +175,16 @@ fun ParentHomeScreen(
 
 //This function takes the members information and displays it in card view
 @Composable
-fun CardView(user: User) {
+fun CardView(user: User, overlayNavController: NavHostController) {
     Card(
         modifier = Modifier
             .fillMaxSize()
             .padding(12.dp)
+            .clickable {
+                overlayNavController.navigate(
+                    Routes.ViewChildScreenUsageScreen.createRoute(user.id)
+                )
+            }
     ) {
         Row(
             modifier = Modifier.padding(8.dp),

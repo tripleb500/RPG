@@ -8,6 +8,10 @@ sealed class Routes(val route: String) {
     // routes for parent screens
     object ParentLandingScreen : Routes("parentLanding")
 
+    object ViewChildScreenUsageScreen : Routes("childUsage/{childId}") {
+        fun createRoute(childId: String) = "childUsage/$childId"
+    }
+
     object ParentQuestScreen : Routes("parentQuest")
     object ParentAddQuestScreen : Routes("parentAddQuest")
     object ParentCameraScreen : Routes("parentCameraScreen")
@@ -17,7 +21,7 @@ sealed class Routes(val route: String) {
     object ParentQuestOverviewScreen : Routes("parentQuestOverview")
     object ParentQuestOngoingScreen : Routes("parentQuestOngoing")
     object ParentQuestPendingScreen : Routes("parentQuestPending")
-    object ParentQuestCompletedScreen : Routes("parentQuestPending")
+    object ParentQuestCompletedScreen : Routes("parentQuestCompleted")
     // END NOTE
 
     object ParentHomeScreen : Routes("parentHome")

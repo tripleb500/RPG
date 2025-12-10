@@ -11,14 +11,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.rpg.ui.Routes
 import com.example.rpg.ui.parent.ParentBottomBar
 import com.example.rpg.ui.parent.addquest.ParentAddQuestScreen
 import com.example.rpg.ui.parent.camera.ParentCameraScreen
 import com.example.rpg.ui.parent.home.ParentHomeScreen
+import com.example.rpg.ui.parent.home.ViewChildScreenUsageScreen
 import com.example.rpg.ui.parent.quest.ParentQuestScreen
 import com.example.rpg.ui.parent.settings.ParentSettingsScreen
 import com.example.rpg.ui.parent.stats.ParentStatsScreen
@@ -60,6 +63,13 @@ fun ParentNavGraph(navController: NavHostController) {
                 ParentAddQuestScreen(
                     overlayNavController = overlayNavController
                 )
+            }
+            composable (
+                route = Routes.ViewChildScreenUsageScreen.route,
+                arguments = listOf(navArgument("childId") {type = NavType.StringType })
+            ) { backStackEntry ->
+                val childId = backStackEntry.arguments?.getString("childId") ?: ""
+                ViewChildScreenUsageScreen(childId = childId)
             }
 
             composable(Routes.ParentCameraScreen.route) {
