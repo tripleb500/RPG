@@ -29,7 +29,6 @@ fun ParentAccountSettingsScreen(
     navController: NavHostController,
     viewModel: ParentAccountSettingsViewModel = hiltViewModel()
 ) {
-
     val username = viewModel.username.value ?: "Loading..."
     val userEmail = viewModel.userEmail.value ?: "Loading..."
 
@@ -39,10 +38,10 @@ fun ParentAccountSettingsScreen(
         3 to "Change password"
     )
 
-    Scaffold (
+    Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                colors  = TopAppBarDefaults.topAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFF1B2631)
                 ),
                 title = {
@@ -62,15 +61,15 @@ fun ParentAccountSettingsScreen(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LazyColumn (
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(accountSettings) {(id, name) ->
+                items(accountSettings) { (id, name) ->
 
-                    val subtitle = when(id) {
+                    val subtitle = when (id) {
                         1 -> username
                         2 -> userEmail
                         else -> null
@@ -89,8 +88,6 @@ fun ParentAccountSettingsScreen(
                     )
                 }
             }
-
-
         }
     }
 }

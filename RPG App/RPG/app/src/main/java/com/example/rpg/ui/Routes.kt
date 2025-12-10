@@ -7,19 +7,9 @@ sealed class Routes(val route: String) {
 
     // routes for parent screens
     object ParentLandingScreen : Routes("parentLanding")
-
     object ParentQuestScreen : Routes("parentQuest")
     object ParentAddQuestScreen : Routes("parentAddQuest")
     object ParentCameraScreen : Routes("parentCameraScreen")
-
-    // START NOTE
-    // Bryan Note: Can we make another navgraph for overview, assign, ongoing etc.?
-    object ParentQuestOverviewScreen : Routes("parentQuestOverview")
-    object ParentQuestOngoingScreen : Routes("parentQuestOngoing")
-    object ParentQuestPendingScreen : Routes("parentQuestPending")
-    object ParentQuestCompletedScreen : Routes("parentQuestPending")
-    // END NOTE
-
     object ParentHomeScreen : Routes("parentHome")
     object ParentStatsScreen : Routes("parentStats")
     object ParentSettingsScreen : Routes("parentSettings")
@@ -31,6 +21,8 @@ sealed class Routes(val route: String) {
     object ParentScreentimeScreen : Routes("parentScreentime")
     object ParentAccountSettingsScreen : Routes("parentAccount")
     object ParentNotificationsScreen : Routes("parentNotifications")
+    object ParentPaymentScreen : Routes("parentPayment")
+
     object ParentNavGraph : Routes("ParentNavGraph")
 
     // routes for child screens

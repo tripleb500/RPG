@@ -44,7 +44,7 @@ fun ParentSettingsScreen(
     val settingsOptions = listOf(
         1 to "Account",
         2 to "Notifications",
-        3 to "Privacy",
+        3 to "Payment",
         4 to "Appearance",
         5 to "About",
         6 to "Logout"
@@ -86,6 +86,7 @@ fun ParentSettingsScreen(
                             when (id) {
                                 1 -> navController.navigate(Routes.ParentAccountSettingsScreen.route)
                                 2 -> navController.navigate(Routes.ParentNotificationsScreen.route)
+                                3 -> navController.navigate(Routes.ParentPaymentScreen.route)
                                 4 -> {
                                     val intent = Intent(Settings.ACTION_DISPLAY_SETTINGS)
                                     context.startActivity(intent)
