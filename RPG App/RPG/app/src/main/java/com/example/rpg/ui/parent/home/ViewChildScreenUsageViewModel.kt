@@ -29,8 +29,8 @@ class ViewChildScreenUsageViewModel @Inject constructor(
      */
     fun observeChildScreenUsage(childId: String) {
         viewModelScope.launch {
+            _isLoading.value = true
             try {
-                _isLoading.value = true
                 screenStatsRepository.syncToday(childId).collect {success ->
                     if(!success) {
                         _error.value = "Failed to sync today's usage"
@@ -39,10 +39,10 @@ class ViewChildScreenUsageViewModel @Inject constructor(
 
                 screenStatsRepository.observeChildUsage(childId).collect { usage ->
                     _childUsage.value = usage
+                    if(_isLoading.value) _isLoading.value = false
                 }
             } catch (e: Exception) {
                 _error.value = e.message
-            } finally {
                 _isLoading.value = false
             }
         }
