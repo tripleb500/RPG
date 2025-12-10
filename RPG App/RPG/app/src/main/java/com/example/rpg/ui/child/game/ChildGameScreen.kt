@@ -19,13 +19,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 
 @Composable
 fun ChildGameScreen(
     navController: NavHostController,
     overlayNavController: NavHostController,
-    viewModel: ChildGameViewModel
+    viewModel: ChildGameViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     var launchStatus by remember { mutableStateOf<LaunchStatus>(LaunchStatus.Idle) }
