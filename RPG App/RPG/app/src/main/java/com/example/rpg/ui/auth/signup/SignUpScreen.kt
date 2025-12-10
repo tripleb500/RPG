@@ -15,6 +15,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,18 +31,69 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
+import com.example.rpg.ui.auth.AuthState
+import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.theme.RPGTheme
 
 
 // "Container", connects to viewmodel; defines what logic to pass down to UI
 @Composable
 fun SignUpScreen(
-    viewModel: SignUpViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel(),
+    //viewModel: SignUpViewModel = hiltViewModel(),
     navController: NavController
 ) {
 
-    val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
+    //val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
+    val authState by authViewModel.authState.collectAsStateWithLifecycle()
+    var firstname by remember { mutableStateOf("") }
+    var lastname by remember {mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var username by remember {mutableStateOf("")}
+    var selectedRole by remember { mutableStateOf("") }
+    var localError by remember { mutableStateOf<String?>(null) }
 
+    LaunchedEffect(authState) {
+        when(authState) {
+            is AuthState.Authenticated -> {
+                val user = (authState as AuthState.Authenticated).user
+                val destination = when (user.familyRole.lowercase()) {
+                    "parent" -> Routes.ParentLandingScreen.route
+                    "child" -> Routes.ChildLandingScreen.route
+                    else -> Routes.SignInScreen.route
+                }
+                navController.navigate(destination) {
+                    popUpTo(Routes.SignUpScreen.route) {inclusive = true}
+                }
+            }
+            is AuthState.Error -> {
+                localError = (authState as AuthState.Error).message
+            }
+            else -> Unit
+        }
+    }
+
+    SignUpScreenContent(
+        firstname = firstname,
+        onFirstnameChange = {firstname = it},
+        lastname = lastname,
+        onLastnameChange = {lastname = it},
+        email = email,
+        onEmailChange = {email = it},
+        password = password,
+        onPasswordChange = {password = it},
+        username = username,
+        onUsernameChange = {username = it},
+        selectedRole = selectedRole,
+        onRoleChange = {selectedRole = it},
+        signUp = {
+            authViewModel.signUp(email, password, firstname, lastname, username, selectedRole)
+        },
+        errorMessage = localError,
+        navController = navController
+    )
+    /**
     SignUpScreenContent(
         signUp = { firstname, lastname, email, password, username, role ->  // Defines what happens when user submits sign-up.
             viewModel.signUp(  // Calls SignUpViewModel signUp function.
@@ -71,27 +123,42 @@ fun SignUpScreen(
         errorMessage = errorMessage,
         navController = navController
     )
+    */
 }
 
 // Pure UI, builds screen layout, responds to user input.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreenContent(
-    signUp: (String, String, String, String, String, String) -> Unit,
+    //signUp: (String, String, String, String, String, String) -> Unit,
+    firstname: String,
+    onFirstnameChange: (String) -> Unit,
+    lastname: String,
+    onLastnameChange: (String) -> Unit,
+    email: String,
+    onEmailChange: (String) -> Unit,
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    username: String,
+    onUsernameChange: (String) -> Unit,
+    selectedRole: String,
+    onRoleChange: (String) -> Unit,
+    signUp: () -> Unit,
+
     errorMessage: String?,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
-    var firstname by remember { mutableStateOf("") }
-    var lastname by remember { mutableStateOf("") }
+    //var firstname by remember { mutableStateOf("") }
+    //var lastname by remember { mutableStateOf("") }
 
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var username by remember { mutableStateOf("") }
+    //var email by remember { mutableStateOf("") }
+    //var password by remember { mutableStateOf("") }
+    //var username by remember { mutableStateOf("") }
 
     val roleOptions = listOf("Parent", "Child")
     var expanded by remember { mutableStateOf(false) }  // Whether the dropdown menu is open.
-    var selectedRole by remember { mutableStateOf(roleOptions[0]) }  // Selected dropdown role.
+    //var selectedRole by remember { mutableStateOf(roleOptions[0]) }  // Selected dropdown role.
 
     Column(
         modifier = Modifier
@@ -107,7 +174,7 @@ fun SignUpScreenContent(
         // Firstname input field
         OutlinedTextField(
             value = firstname,
-            onValueChange = {firstname = it},
+            onValueChange = onFirstnameChange,
             singleLine = true,
             label = {Text ("First Name")}
         )
@@ -115,14 +182,14 @@ fun SignUpScreenContent(
         // Lastname input field
         OutlinedTextField(
             value = lastname,
-            onValueChange = {lastname = it},
+            onValueChange = onLastnameChange,
             singleLine = true,
             label = {Text ("Last Name")}
         )
         // Email input field
         OutlinedTextField(
             value = email,
-            onValueChange = {email = it},
+            onValueChange = onEmailChange,
             singleLine = true,
             label = {Text ("Email")}
         )
@@ -132,7 +199,7 @@ fun SignUpScreenContent(
         // Password  input field
         OutlinedTextField(
             value = password,
-            onValueChange = {password = it},
+            onValueChange = onPasswordChange,
             singleLine = true,
             label = {Text ("Password")}
         )
@@ -142,7 +209,7 @@ fun SignUpScreenContent(
         // Username input field.
         OutlinedTextField(
             value = username,
-            onValueChange = {username = it},
+            onValueChange = onUsernameChange,
             singleLine = true,
             label = {Text ("Username")}
         )
@@ -156,7 +223,8 @@ fun SignUpScreenContent(
 
         ) {
             OutlinedTextField(
-                value = selectedRole,
+                //value = selectedRole,
+                value = if(selectedRole.isEmpty()) "Select Role" else selectedRole,
                 onValueChange = {},
                 label = { Text("Select Role") },
                 readOnly = true,
@@ -171,7 +239,7 @@ fun SignUpScreenContent(
                     DropdownMenuItem(
                         text = { Text(role) },
                         onClick = {
-                            selectedRole = role
+                            onRoleChange(role)
                             expanded = false
                         }
 
@@ -194,12 +262,12 @@ fun SignUpScreenContent(
         // Creates user's account, info is sent to Firebase Authentication if successful.
         Button(onClick = {
             signUp(
-                firstname,
-                lastname,
-                email,
-                password,
-                username,
-                selectedRole
+                //firstname,
+                //lastname,
+                //email,
+                //password,
+                //username,
+                //selectedRole
             )
         }) {
             Text(text = "Sign Up")
@@ -213,6 +281,7 @@ fun SignUpScreenContent(
     }
 }
 
+/**
 @Preview(
     showBackground = true,
     showSystemUi = true
@@ -226,3 +295,4 @@ fun PreviewSignUpScreen() {
         )
     }
 }
+ */

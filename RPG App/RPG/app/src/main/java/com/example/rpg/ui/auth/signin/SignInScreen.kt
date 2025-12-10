@@ -13,6 +13,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,15 +30,54 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
+import com.example.rpg.ui.auth.AuthState
+import com.example.rpg.ui.auth.AuthViewModel
+import com.example.rpg.ui.auth.signup.SignUpScreenContent
 import com.example.rpg.ui.theme.RPGTheme
 
 @Composable
 fun SignInScreen(
-    viewModel: SignInViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel(),
+    //viewModel: SignInViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
+    //val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
+    val authState by authViewModel.authState.collectAsStateWithLifecycle()
+    var email by remember { mutableStateOf("")}
+    var password by remember { mutableStateOf("") }
+    var localError by remember {mutableStateOf<String?>(null)}
 
+    LaunchedEffect(authState) {
+        when(authState) {
+            is AuthState.Authenticated -> {
+                val user = (authState as AuthState.Authenticated).user
+                val destination = when (user.familyRole.lowercase()) {
+                    "parent" -> Routes.ParentLandingScreen.route
+                    "child" -> Routes.ChildLandingScreen.route
+                    else -> Routes.SignInScreen.route
+                }
+                navController.navigate(destination) {
+                    popUpTo(Routes.SignInScreen.route) {inclusive = true}
+                }
+            }
+            is AuthState.Error -> {
+                localError = (authState as AuthState.Error).message
+            }
+            else -> Unit
+        }
+    }
+
+    SignInScreenContent(
+        email = email,
+        onEmailChange = {email = it},
+        password = password,
+        onPasswordChange = {password = it},
+        signIn = {authViewModel.signIn(email, password)},
+        errorMessage = localError,
+        navController = navController,
+        onSignUpClick = {navController.navigate(Routes.SignUpScreen.route)}
+    )
+    /**
     SignInScreenContent(
         signIn = { email, password ->
             viewModel.signIn(email, password) { success, role ->
@@ -57,17 +97,23 @@ fun SignInScreen(
         errorMessage = errorMessage,
         navController = navController
     )
+    */
 }
 
 @Composable
 fun SignInScreenContent(
-    signIn: (String, String) -> Unit,
+    email: String,
+    onEmailChange: (String) -> Unit,
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    signIn: () -> Unit,
+    onSignUpClick: () -> Unit,
     errorMessage: String?,
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    //var email by remember { mutableStateOf("") }
+    //var password by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -82,7 +128,7 @@ fun SignInScreenContent(
         // Email text input
         OutlinedTextField(
             value = email,
-            onValueChange = {email = it},
+            onValueChange = onEmailChange,
             // Prevents new line
             singleLine = true,
             label = {Text (text = "Email")}
@@ -93,12 +139,12 @@ fun SignInScreenContent(
         // Password text input
         OutlinedTextField(
             value = password,
-            onValueChange = {password = it},
+            onValueChange = onPasswordChange,
             // Prevents new line
             singleLine = true,
             // Changes enter button function to work the same as clicking the sign in button
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Go),
-            keyboardActions = KeyboardActions(onGo = {signIn(email, password)}),
+            keyboardActions = KeyboardActions(onGo = {signIn()}),
             label = {Text (text = "Password")}
         )
 
@@ -117,7 +163,7 @@ fun SignInScreenContent(
         Button(
             onClick = {
                 // Add firebase logic
-                signIn(email, password)
+                signIn()
             }
         ) {
             Text(text = "Sign in")
@@ -125,14 +171,14 @@ fun SignInScreenContent(
 
         TextButton(
             onClick = {
-                navController.navigate(Routes.SignUpScreen.route)
+                onSignUpClick()
             }
         ) {
             Text(text = "Don't have an account? Sign-up here")
         }
     }
 }
-
+/**
 @Preview(
     showBackground = true,
     showSystemUi = true
@@ -146,3 +192,4 @@ fun PreviewSignInScreen() {
         )
     }
 }
+        */

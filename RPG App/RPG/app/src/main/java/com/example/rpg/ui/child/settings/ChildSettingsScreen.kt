@@ -31,15 +31,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rpg.ui.Routes
+import com.example.rpg.ui.auth.AuthViewModel
 import com.example.rpg.ui.theme.RPGTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChildSettingsScreen(
     modifier: Modifier = Modifier,
+    authViewModel: AuthViewModel = hiltViewModel(),
     navController: NavHostController,
     overlayNavController: NavHostController
 ) {
@@ -95,8 +98,9 @@ fun ChildSettingsScreen(
                                     context.startActivity(intent)
                                 }
                                 6 -> {
+                                    authViewModel.signOut()
                                     navController.navigate(Routes.SignInScreen.route) {
-                                        popUpTo(id = 0) {inclusive = true}
+                                        popUpTo(Routes.ChildLandingScreen.route) {inclusive = true}
                                     }
                                 }
                             }

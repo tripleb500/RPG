@@ -2,6 +2,7 @@ package com.example.rpg.ui
 
 sealed class Routes(val route: String) {
     // routes for account management
+    object SplashScreen : Routes("splashScreen")
     object SignUpScreen : Routes("signUpScreen")
     object SignInScreen : Routes("signInScreen")
 

@@ -30,14 +30,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.rpg.ui.Routes
+import com.example.rpg.ui.auth.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParentSettingsScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    authViewModel: AuthViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
 
@@ -91,8 +94,9 @@ fun ParentSettingsScreen(
                                     context.startActivity(intent)
                                 }
                                 6 -> {
+                                    authViewModel.signOut()
                                     navController.navigate(Routes.SignInScreen.route) {
-                                        popUpTo(id = 0) {inclusive = true}
+                                        popUpTo(Routes.ParentLandingScreen.route) {inclusive = true}
                                     }
                                 }
                             }
