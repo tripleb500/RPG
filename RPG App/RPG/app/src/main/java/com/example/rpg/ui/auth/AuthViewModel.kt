@@ -37,6 +37,12 @@ class AuthViewModel @Inject constructor(
     fun signUp(email: String, password: String, firstname: String, lastname: String, username: String, role: String) {
         viewModelScope.launch {
             try {
+                val existingUser = userRepository.getUserByUsername(username)
+                if(existingUser != null) {
+                    _authState.value = AuthState.Error("Username already taken.")
+                    return@launch
+                }
+
                 authRepository.signUp(email, password)
                 val userId = authRepository.currentUser?.uid ?: throw Exception("User ID is null")
                 val user = User(
@@ -50,6 +56,9 @@ class AuthViewModel @Inject constructor(
                 //_authState.value = AuthState.Loading
                 //authRepository.signUp(email, password)
                 userRepository.createProfile(user)
+
+                userRepository.updateFCMToken(userId)
+
                 if(role.lowercase() == "child") {
                     statsRepository.createStats(userId, Stats())
                 }
