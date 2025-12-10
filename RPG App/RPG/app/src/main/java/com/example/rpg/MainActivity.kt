@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         askNotificationPermission()
-        askScreenUsageAccessPermission()
+        //askScreenUsageAccessPermission()
         setContent {
             RPGTheme {
                 Surface(
@@ -61,6 +61,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
     private fun askScreenUsageAccessPermission () {
         if(!hasScreenUsageAccessPermission()) {
             val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
@@ -82,6 +83,7 @@ class MainActivity : ComponentActivity() {
         )
         return mode == AppOpsManager.MODE_ALLOWED
     }
+    */
 }
 
 

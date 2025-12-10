@@ -1,8 +1,10 @@
 package com.example.rpg.ui.child.home
 // TODO: button for stats; achievements, list of main quests
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import com.example.rpg.ui.theme.themeColor
+import android.app.AppOpsManager
+import android.content.Context
+import android.content.Intent
+import android.provider.Settings
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -44,6 +46,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -54,18 +57,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.rpg.R
 import com.example.rpg.data.model.Quest
 import com.example.rpg.data.model.Status
-import com.example.rpg.ui.Routes
 import com.example.rpg.ui.child.achievements.ChildAchievementsDialog
 import com.example.rpg.ui.child.border.ChildCustomizeBorderDialog
 import com.example.rpg.ui.child.quest.ChildInProgressQuestDialog
 import com.example.rpg.ui.child.stats.ChildStatsDialog
+import com.example.rpg.ui.theme.themeColor
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -90,6 +92,20 @@ fun ChildHomeScreen(
     var sortOrder by rememberSaveable { mutableStateOf(SortOrder.ASCENDING) }
 
     var showProfilePictureDialog by remember { mutableStateOf(false) }
+
+    val context  = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        if (!hasScreenUsageAccessPermission(context)) {
+            val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+            context.startActivity(intent)
+            Toast.makeText(
+                context,
+                "Please enable Usage Access to track screen time",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -374,6 +390,16 @@ fun ChildHomeScreen(
             )
         }
     }
+}
+
+fun hasScreenUsageAccessPermission (context: Context): Boolean {
+    val appOps = context.getSystemService(AppOpsManager::class.java)
+    val mode = appOps.checkOpNoThrow(
+        AppOpsManager.OPSTR_GET_USAGE_STATS,
+        android.os.Process.myUid(),
+        context.packageName
+    )
+    return mode == AppOpsManager.MODE_ALLOWED
 }
 
 @Composable
