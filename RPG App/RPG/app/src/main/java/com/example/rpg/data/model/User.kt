@@ -20,5 +20,6 @@ data class User(
     val childrenIds: List<String> = emptyList(),
     val fcmToken: String? = null,
     val profilePicture: String = "",
-    val avatarBorder: Int? = null
+    val avatarBorder: Int? = null,
+    val screenTimeLimit: Int? = null
 )

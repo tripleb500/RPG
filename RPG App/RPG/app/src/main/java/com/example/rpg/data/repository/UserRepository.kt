@@ -67,4 +67,7 @@ class UserRepository @Inject constructor(
 
     suspend fun updateFCMToken(uid: String) =
         remoteDataSource.updateFCMToken(uid)
+
+    suspend fun updateScreenTimeLimit(childId: String, minutes: Int) =
+        remoteDataSource.updateScreenTimeLimit(childId, minutes)
 }

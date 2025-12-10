@@ -250,4 +250,11 @@ class UserRemoteDataSource @Inject constructor(
             .update("fcmToken", token)
             .await()
     }
+
+    suspend fun updateScreenTimeLimit(userId: String, minutes: Int) {
+        firestore.collection(USERS_COLLECTION)
+            .document(userId)
+            .update("screenTimeLimit", minutes)
+            .await()
+    }
 }
