@@ -31,14 +31,17 @@ fun ChildGameScreen(
     viewModel: ChildGameViewModel = hiltViewModel()
 ) {
     val user by viewModel.currentUserFlow.collectAsState(initial = null)
-    val level by viewModel.currentLevel.collectAsState()
+    val level by viewModel.currentLevel.collectAsState(initial = null)
     val context = LocalContext.current
     var launchStatus by remember { mutableStateOf<LaunchStatus>(LaunchStatus.Idle) }
 
-    val User = user?.username
-    val Userlvl = Bundle(level)
     // Try launching the Unity game once
-    LaunchedEffect(Unit) {
+    LaunchedEffect(user, level) {
+        val u = user
+        val userLvl = level
+        if (u == null || userLvl == null) return@LaunchedEffect  // wait until both are ready
+
+        val userName = u.username
         val intent = Intent().apply {
             setClassName(
                 "com.DefaultCompany.clickerTypeBeat",
@@ -46,8 +49,8 @@ fun ChildGameScreen(
             )
 
         }
-        intent.putExtra("Userlvl",Userlvl)
-        intent.putExtra("userName", User)
+        intent.putExtra("userName",userName)
+        intent.putExtra("userLevel", userLvl)
         launchStatus = try {
             context.startActivity(intent)
             LaunchStatus.Success
