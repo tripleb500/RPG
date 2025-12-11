@@ -37,23 +37,11 @@ fun ChildGameScreen(
 
     val valid by viewModel.valid.collectAsState()
 
-    // Try launching the Unity game once
     LaunchedEffect(Unit) {
         viewModel.isValid()
-        val intent = Intent().apply {
-            setClassName(
-                "com.DefaultCompany.clickerTypeBeat",
-                "com.unity3d.player.UnityPlayerGameActivity"
-            )
-        }
-        launchStatus = try {
-            context.startActivity(intent)
-            LaunchStatus.Success
-        } catch (e: Exception) {
-            e.printStackTrace()
-            LaunchStatus.Failed
-        }
     }
+
+    // Try launching the Unity game once
     // Display UI based on the launch result
     Box(
         modifier = Modifier
@@ -61,7 +49,7 @@ fun ChildGameScreen(
             .background(Color.LightGray),
         contentAlignment = Alignment.Center
     ) {
-        if (viewModel.isValid())
+        if (!valid)
             Text("You have reached the screen time limit")
         else {
             // Try launching the Unity game once
@@ -78,7 +66,7 @@ fun ChildGameScreen(
                     )
 
                 }
-                intent.putExtra("userName",userName)
+                intent.putExtra("userName", userName)
                 intent.putExtra("userLevel", userLvl)
                 launchStatus = try {
                     context.startActivity(intent)
@@ -88,49 +76,10 @@ fun ChildGameScreen(
                     LaunchStatus.Failed
                 }
             }
-
-    // Display UI based on the launch result
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.LightGray),
-        contentAlignment = Alignment.Center
-    ) {
-        if (!valid)
-            Text("You have reached the screen time limit")
-        else {
-            when (launchStatus) {
-                LaunchStatus.Idle -> {
-                    Text(
-                        text = "Launching Unity game...",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-                LaunchStatus.Success -> {
-                    Text(
-                        text = "Unity game has been launched! Return here to see this message.",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Green,
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-                LaunchStatus.Failed -> {
-                    Text(
-                        text = "Unity game has not been installed.",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Red,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
         }
     }
+
+
 }
 
 // Sealed class for launch state
