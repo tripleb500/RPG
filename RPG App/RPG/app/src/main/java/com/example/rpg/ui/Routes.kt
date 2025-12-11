@@ -2,27 +2,18 @@ package com.example.rpg.ui
 
 sealed class Routes(val route: String) {
     // routes for account management
+    object SplashScreen : Routes("splashScreen")
     object SignUpScreen : Routes("signUpScreen")
     object SignInScreen : Routes("signInScreen")
 
     // routes for parent screens
     object ParentLandingScreen : Routes("parentLanding")
-
     object ViewChildScreenUsageScreen : Routes("childUsage/{childId}") {
         fun createRoute(childId: String) = "childUsage/$childId"
     }
-
     object ParentQuestScreen : Routes("parentQuest")
     object ParentAddQuestScreen : Routes("parentAddQuest")
     object ParentCameraScreen : Routes("parentCameraScreen")
-
-    // START NOTE
-    // Bryan Note: Can we make another navgraph for overview, assign, ongoing etc.?
-    object ParentQuestOverviewScreen : Routes("parentQuestOverview")
-    object ParentQuestOngoingScreen : Routes("parentQuestOngoing")
-    object ParentQuestPendingScreen : Routes("parentQuestPending")
-    object ParentQuestCompletedScreen : Routes("parentQuestCompleted")
-    // END NOTE
 
     object ParentHomeScreen : Routes("parentHome")
     object ParentStatsScreen : Routes("parentStats")
@@ -30,11 +21,10 @@ sealed class Routes(val route: String) {
     object ParentChangeUsernameScreen : Routes("parentChangeUsername")
     object ParentChangeEmailScreen : Routes("parentChangeEmail")
     object ParentChangePasswordScreen : Routes("parentChangePassword")
-
-    object ParentModerationMainScreen : Routes("parentModerationMain")
-    object ParentScreentimeScreen : Routes("parentScreentime")
     object ParentAccountSettingsScreen : Routes("parentAccount")
     object ParentNotificationsScreen : Routes("parentNotifications")
+    object ParentPaymentScreen : Routes("parentPayment")
+
     object ParentNavGraph : Routes("ParentNavGraph")
 
     // routes for child screens

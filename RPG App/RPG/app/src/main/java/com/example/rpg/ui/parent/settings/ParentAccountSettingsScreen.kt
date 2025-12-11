@@ -6,8 +6,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -29,7 +34,6 @@ fun ParentAccountSettingsScreen(
     navController: NavHostController,
     viewModel: ParentAccountSettingsViewModel = hiltViewModel()
 ) {
-
     val username = viewModel.username.value ?: "Loading..."
     val userEmail = viewModel.userEmail.value ?: "Loading..."
 
@@ -39,12 +43,26 @@ fun ParentAccountSettingsScreen(
         3 to "Change password"
     )
 
-    Scaffold (
+    Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                colors  = TopAppBarDefaults.topAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFF1B2631)
                 ),
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            navController.navigate(Routes.ParentSettingsScreen.route) {
+                                popUpTo(Routes.ParentSettingsScreen.route) { saveState = true }
+                                launchSingleTop = true
+                            }
+                        }
+                    ) {
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White)
+                    }
+                },
                 title = {
                     Text(
                         "Account Settings",
@@ -62,15 +80,15 @@ fun ParentAccountSettingsScreen(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LazyColumn (
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(accountSettings) {(id, name) ->
+                items(accountSettings) { (id, name) ->
 
-                    val subtitle = when(id) {
+                    val subtitle = when (id) {
                         1 -> username
                         2 -> userEmail
                         else -> null
@@ -89,8 +107,6 @@ fun ParentAccountSettingsScreen(
                     )
                 }
             }
-
-
         }
     }
 }

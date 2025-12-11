@@ -13,12 +13,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,6 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.rpg.ui.Routes
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,6 +49,20 @@ fun ParentNotificationScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFF1B2631)
                 ),
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            navController.navigate(Routes.ParentSettingsScreen.route) {
+                                popUpTo(Routes.ParentSettingsScreen.route) { saveState = true }
+                                launchSingleTop = true
+                            }
+                        }
+                    ) {
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White)
+                    }
+                },
                 title = {
                     Text(
                         "Notifications",
