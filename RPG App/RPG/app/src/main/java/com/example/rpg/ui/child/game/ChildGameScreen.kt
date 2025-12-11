@@ -35,31 +35,6 @@ fun ChildGameScreen(
     val context = LocalContext.current
     var launchStatus by remember { mutableStateOf<LaunchStatus>(LaunchStatus.Idle) }
 
-    // Try launching the Unity game once
-    LaunchedEffect(user, level) {
-        val u = user
-        val userLvl = level
-        if (u == null || userLvl == null) return@LaunchedEffect  // wait until both are ready
-
-        val userName = u.username
-        val intent = Intent().apply {
-            setClassName(
-                "com.DefaultCompany.clickerTypeBeat",
-                "com.unity3d.player.UnityPlayerGameActivity"
-            )
-
-        }
-        intent.putExtra("userName",userName)
-        intent.putExtra("userLevel", userLvl)
-        launchStatus = try {
-            context.startActivity(intent)
-            LaunchStatus.Success
-        } catch (e: Exception) {
-            e.printStackTrace()
-            LaunchStatus.Failed
-        }
-    }
-
     // Display UI based on the launch result
     Box(
         modifier = Modifier
@@ -70,6 +45,31 @@ fun ChildGameScreen(
         if (viewModel.isValid())
             Text("You have reached the screen time limit")
         else {
+            // Try launching the Unity game once
+            LaunchedEffect(user, level) {
+                val u = user
+                val userLvl = level
+                if (u == null || userLvl == null) return@LaunchedEffect  // wait until both are ready
+
+                val userName = u.username
+                val intent = Intent().apply {
+                    setClassName(
+                        "com.DefaultCompany.clickerTypeBeat",
+                        "com.unity3d.player.UnityPlayerGameActivity"
+                    )
+
+                }
+                intent.putExtra("userName",userName)
+                intent.putExtra("userLevel", userLvl)
+                launchStatus = try {
+                    context.startActivity(intent)
+                    LaunchStatus.Success
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    LaunchStatus.Failed
+                }
+            }
+
             when (launchStatus) {
                 LaunchStatus.Idle -> {
                     Text(

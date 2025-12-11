@@ -3,7 +3,6 @@ package com.example.rpg.data.datasource
 import com.example.rpg.data.model.ScreenTimeRecord
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
