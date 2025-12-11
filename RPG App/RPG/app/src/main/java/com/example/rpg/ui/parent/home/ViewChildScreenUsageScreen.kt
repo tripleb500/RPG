@@ -19,6 +19,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -51,6 +52,8 @@ fun ViewChildScreenUsageScreen(
     val error by viewModel.error.collectAsState()
 
     var minutes by remember { mutableStateOf("") }
+
+    val isEnabled by viewModel.isEnabled.collectAsState()
 
 
     LaunchedEffect(childId) {
@@ -111,43 +114,48 @@ fun ViewChildScreenUsageScreen(
 
                     }
                 }
-            }
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp)
-            ) {
-                Row(
-                    modifier = Modifier.padding(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp)
                 ) {
-                    OutlinedTextField(
-                        value = minutes,
-                        onValueChange = { newValue ->
-                            // Allow only numbers
-                            if (newValue.all { it.isDigit() }) {
-                                minutes = newValue
-                            }
-                        },
-                        label = { Text("Set Screen Time") },
-                        placeholder = { Text("Enter minutes") },
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(end = 8.dp),
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number,
-                            imeAction = ImeAction.Done
-                        ),
-                        singleLine = true,
-                    )
-                    Button(
-                        onClick = {viewModel.updateScreenTimeLimit(childId, minutes)},
-                        modifier = Modifier.wrapContentSize()
+                    Row(
+                        modifier = Modifier.padding(4.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Apply")
+                        OutlinedTextField(
+                            value = minutes,
+                            onValueChange = { newValue ->
+                                // Allow only numbers
+                                if (newValue.all { it.isDigit() }) {
+                                    minutes = newValue
+                                }
+                            },
+                            label = { Text("Set Screen Time") },
+                            placeholder = { Text("Enter minutes") },
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 8.dp),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number,
+                                imeAction = ImeAction.Done
+                            ),
+                            singleLine = true,
+                        )
+                        Switch(
+                            checked = isEnabled,
+                            onCheckedChange = { enabled ->
+                                if (enabled && minutes != "") {
+                                    viewModel.updateScreenTimeLimit(childId, minutes)
+                                } else {
+                                    viewModel.updateScreenTimeLimit(childId, "0")
+                                }
+                            }
+                        )
                     }
                 }
             }
+
 
         }
     }

@@ -30,8 +30,8 @@ class ChildGameViewModel @Inject constructor(
     private val _limit = MutableStateFlow(0)
     val limit: StateFlow<Int?> = _limit
 
-    private val _valid = MutableStateFlow(0)
-    val valid: StateFlow<Int?> = _valid
+    private val _valid = MutableStateFlow(false)
+    val valid: StateFlow<Boolean> = _valid
 
     private val _screenTime = MutableStateFlow<ScreenTimeRecord?>(null)
     val screenTime: StateFlow<ScreenTimeRecord?> = _screenTime.asStateFlow()
@@ -54,38 +54,36 @@ class ChildGameViewModel @Inject constructor(
         }
     }
 
-    fun getCurrentDay(childId: String) {
-        viewModelScope.launch {
-            _screenTime.value = screenStatsRepository.getCurrentDay(childId)
-        }
-    }
 
-    fun getScreenTimeLimit(childId: String) {
-        viewModelScope.launch {
-            val child = userRepository.getUserByUid(childId)
-            if (child?.screenTimeLimit != null)
-                _limit.value = child.screenTimeLimit
-        }
-    }
-
-    fun checkChildScreen() {
+    fun isValid() {
         viewModelScope.launch {
             val uid = authRepository.currentUser?.uid
 
+            println("Uid is: " + uid)
+
             if (uid != null) {
-                getScreenTimeLimit(uid)
-                getCurrentDay(uid)
+                _screenTime.value = screenStatsRepository.getCurrentDay(uid)
 
+                val child = userRepository.getUserByUid(uid)
+                if (child?.screenTimeLimit != null) {
+                    _limit.value = child.screenTimeLimit
+
+                    println("Screen limit value is: " + _limit.value)
+                    println("Current scren time amount is: " + _screenTime.value?.screenTimeMs)
+
+                    val currentTime = _screenTime.value?.screenTimeMs
+                    val screenLimit = _limit.value
+                    println(currentTime)
+                    println(screenLimit)
+                    if (currentTime != null) {
+                        val currentMinutes = currentTime / 1000 / 60
+                        if (screenLimit == 0 || screenLimit < currentMinutes)
+                            _valid.value = true
+                    }
+
+                }
             }
-        }
-    }
 
-    fun isValid(): Boolean {
-        checkChildScreen()
-        val currentTime = _screenTime.value?.screenTimeMs
-        val screenLimit = _limit.value
-        if (currentTime != null && screenLimit > 0 && screenLimit < currentTime)
-            return false
-        return true
+        }
     }
 }

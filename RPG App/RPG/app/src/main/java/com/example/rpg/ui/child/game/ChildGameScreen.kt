@@ -19,19 +19,23 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 
 @Composable
 fun ChildGameScreen(
     navController: NavHostController,
     overlayNavController: NavHostController,
-    viewModel: ChildGameViewModel
+    viewModel: ChildGameViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     var launchStatus by remember { mutableStateOf<LaunchStatus>(LaunchStatus.Idle) }
 
+    val valid by viewModel.valid.collectAsState()
+
     // Try launching the Unity game once
     LaunchedEffect(Unit) {
+        viewModel.isValid()
         val intent = Intent().apply {
             setClassName(
                 "com.DefaultCompany.clickerTypeBeat",
@@ -54,7 +58,7 @@ fun ChildGameScreen(
             .background(Color.LightGray),
         contentAlignment = Alignment.Center
     ) {
-        if (viewModel.isValid())
+        if (!valid)
             Text("You have reached the screen time limit")
         else {
             when (launchStatus) {
