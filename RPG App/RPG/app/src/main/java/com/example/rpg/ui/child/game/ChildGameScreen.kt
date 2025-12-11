@@ -1,6 +1,7 @@
 package com.example.rpg.ui.child.game
 // TODO: Implement screen
 import android.content.Intent
+import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,21 +25,32 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun ChildGameScreen(
+    modifier: Modifier = Modifier,
     navController: NavHostController,
     overlayNavController: NavHostController,
     viewModel: ChildGameViewModel = hiltViewModel()
 ) {
+    val user by viewModel.currentUserFlow.collectAsState(initial = null)
+    val level by viewModel.currentLevel.collectAsState(initial = null)
     val context = LocalContext.current
     var launchStatus by remember { mutableStateOf<LaunchStatus>(LaunchStatus.Idle) }
 
     // Try launching the Unity game once
-    LaunchedEffect(Unit) {
+    LaunchedEffect(user, level) {
+        val u = user
+        val userLvl = level
+        if (u == null || userLvl == null) return@LaunchedEffect  // wait until both are ready
+
+        val userName = u.username
         val intent = Intent().apply {
             setClassName(
                 "com.DefaultCompany.clickerTypeBeat",
                 "com.unity3d.player.UnityPlayerGameActivity"
             )
+
         }
+        intent.putExtra("userName",userName)
+        intent.putExtra("userLevel", userLvl)
         launchStatus = try {
             context.startActivity(intent)
             LaunchStatus.Success

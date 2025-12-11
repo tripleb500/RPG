@@ -1,5 +1,6 @@
 package com.example.rpg.ui.navigation
 
+import ParentPaymentScreen
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
@@ -117,6 +118,10 @@ fun RPGNavGraph(
 
         composable(Routes.ParentChangePasswordScreen.route) {
             ParentChangePasswordScreen(navController = navController)
+        }
+
+        composable(Routes.ParentPaymentScreen.route) {
+            ParentPaymentScreen(navController = navController)
         }
     }
 }

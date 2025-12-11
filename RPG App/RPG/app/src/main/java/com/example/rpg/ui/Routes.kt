@@ -22,7 +22,7 @@ sealed class Routes(val route: String) {
     object ParentQuestOverviewScreen : Routes("parentQuestOverview")
     object ParentQuestOngoingScreen : Routes("parentQuestOngoing")
     object ParentQuestPendingScreen : Routes("parentQuestPending")
-    object ParentQuestCompletedScreen : Routes("parentQuestCompleted")
+    object ParentQuestCompletedScreen : Routes("parentQuestPending")
     // END NOTE
 
     object ParentHomeScreen : Routes("parentHome")
@@ -36,6 +36,8 @@ sealed class Routes(val route: String) {
     object ParentScreentimeScreen : Routes("parentScreentime")
     object ParentAccountSettingsScreen : Routes("parentAccount")
     object ParentNotificationsScreen : Routes("parentNotifications")
+    object ParentPaymentScreen : Routes("parentPayment")
+
     object ParentNavGraph : Routes("ParentNavGraph")
 
     // routes for child screens

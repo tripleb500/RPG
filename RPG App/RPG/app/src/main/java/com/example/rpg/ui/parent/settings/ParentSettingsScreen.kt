@@ -14,9 +14,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -47,7 +51,7 @@ fun ParentSettingsScreen(
     val settingsOptions = listOf(
         1 to "Account",
         2 to "Notifications",
-        3 to "Privacy",
+        3 to "Payment",
         4 to "Appearance",
         5 to "About",
         6 to "Logout"
@@ -58,7 +62,16 @@ fun ParentSettingsScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFF1B2631)
                 ),
-
+                navigationIcon = {
+                    IconButton(
+                        onClick = { navController.popBackStack()
+                        }
+                    ) {
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White)
+                    }
+                },
                 title = {
                     Text(
                         "Settings",
@@ -89,6 +102,7 @@ fun ParentSettingsScreen(
                             when (id) {
                                 1 -> navController.navigate(Routes.ParentAccountSettingsScreen.route)
                                 2 -> navController.navigate(Routes.ParentNotificationsScreen.route)
+                                3 -> navController.navigate(Routes.ParentPaymentScreen.route)
                                 4 -> {
                                     val intent = Intent(Settings.ACTION_DISPLAY_SETTINGS)
                                     context.startActivity(intent)

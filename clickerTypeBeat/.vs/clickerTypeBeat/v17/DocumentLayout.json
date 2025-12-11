@@ -7,7 +7,19 @@
       "RelativeMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\datafromapp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|c:\\users\\tripl\\documents\\github\\rpg\\clickertypebeat\\assets\\scripts\\mainbuttonclick.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\Assets\\Plugins\\Android\\AndroidManifest.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Plugins\\Android\\AndroidManifest.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\assets\\scripts\\miraclescript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\miraclescript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\assets\\scripts\\globaldestroyer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\globaldestroyer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\assets\\scripts\\mainbuttonclick.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\mainbuttonclick.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -21,14 +33,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\assets\\scripts\\purchaselog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\purchaselog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\assets\\scripts\\globaldestroyer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\globaldestroyer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\assets\\scripts\\miraclescript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EAF2685F-779B-8666-1688-E4387F5640A1}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\miraclescript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,8 +42,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AndroidManifest.xml",
+              "DocumentMoniker": "C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\Assets\\Plugins\\Android\\AndroidManifest.xml",
+              "RelativeDocumentMoniker": "Assets\\Plugins\\Android\\AndroidManifest.xml",
+              "ToolTip": "C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\Assets\\Plugins\\Android\\AndroidManifest.xml",
+              "RelativeToolTip": "Assets\\Plugins\\Android\\AndroidManifest.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2025-12-09T22:15:08.891Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -48,38 +65,38 @@
               "RelativeDocumentMoniker": "Assets\\Scripts\\DataFromApp.cs",
               "ToolTip": "C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\Assets\\Scripts\\DataFromApp.cs",
               "RelativeToolTip": "Assets\\Scripts\\DataFromApp.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAIwCUAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-01T06:31:56.125Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 2,
               "Title": "MiracleScript.cs",
               "DocumentMoniker": "C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\Assets\\Scripts\\MiracleScript.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\MiracleScript.cs",
               "ToolTip": "C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\Assets\\Scripts\\MiracleScript.cs",
               "RelativeToolTip": "Assets\\Scripts\\MiracleScript.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-29T00:55:41.093Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
               "Title": "GlobalDestroyer.cs",
               "DocumentMoniker": "C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\Assets\\Scripts\\GlobalDestroyer.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\GlobalDestroyer.cs",
               "ToolTip": "C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\Assets\\Scripts\\GlobalDestroyer.cs",
               "RelativeToolTip": "Assets\\Scripts\\GlobalDestroyer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwAYAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-27T08:15:21.467Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "PurchaseLog.cs",
               "DocumentMoniker": "C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\Assets\\Scripts\\PurchaseLog.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\PurchaseLog.cs",
@@ -91,7 +108,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "AutoCookie.cs",
               "DocumentMoniker": "C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\Assets\\Scripts\\AutoCookie.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\AutoCookie.cs",
@@ -103,7 +120,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "GlobalCookies.cs",
               "DocumentMoniker": "C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\Assets\\Scripts\\GlobalCookies.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\GlobalCookies.cs",
@@ -115,7 +132,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "MainButtonClick.cs",
               "DocumentMoniker": "C:\\Users\\tripl\\Documents\\GitHub\\RPG\\clickerTypeBeat\\Assets\\Scripts\\MainButtonClick.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\MainButtonClick.cs",
@@ -123,8 +140,7 @@
               "RelativeToolTip": "Assets\\Scripts\\MainButtonClick.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-27T02:38:42.628Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-27T02:38:42.628Z"
             }
           ]
         }
