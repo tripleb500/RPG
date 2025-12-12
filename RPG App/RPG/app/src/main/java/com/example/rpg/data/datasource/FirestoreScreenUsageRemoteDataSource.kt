@@ -1,5 +1,6 @@
 package com.example.rpg.data.datasource
 
+import android.util.Log
 import com.example.rpg.data.model.ScreenTimeRecord
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -11,6 +12,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
+import kotlin.math.log
 
 class FirestoreScreenUsageRemoteDataSource @Inject constructor(
     private val firestore: FirebaseFirestore
@@ -31,6 +33,7 @@ class FirestoreScreenUsageRemoteDataSource @Inject constructor(
                 val list = snapshot?.documents?.mapNotNull {
                     it.toObject(ScreenTimeRecord::class.java)
                 } ?: emptyList()
+                Log.d("FirestoreListener", "Updated screen time: $list")
                 trySend(list)
             }
         awaitClose { listener.remove() }

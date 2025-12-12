@@ -45,11 +45,13 @@ class ViewChildScreenUsageViewModel @Inject constructor(
                     _isEnabled.value = true
                 }
 
+                /**
                 screenStatsRepository.syncToday(childId).collect {success ->
                     if(!success) {
                         _error.value = "Failed to sync today's usage"
                     }
                 }
+                */
 
                 screenStatsRepository.observeChildUsage(childId).collect { usage ->
                     _childUsage.value = usage

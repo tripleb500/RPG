@@ -104,6 +104,8 @@ fun ChildHomeScreen(
                 "Please enable Usage Access to track screen time",
                 Toast.LENGTH_LONG
             ).show()
+        } else {
+            viewModel.syncToday()
         }
     }
 

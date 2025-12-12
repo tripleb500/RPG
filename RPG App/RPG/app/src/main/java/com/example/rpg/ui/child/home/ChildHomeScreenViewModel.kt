@@ -14,6 +14,7 @@ import com.example.rpg.data.model.Status
 import com.example.rpg.data.model.User
 import com.example.rpg.data.repository.AuthRepository
 import com.example.rpg.data.repository.QuestRepository
+import com.example.rpg.data.repository.ScreenUsageStatsRepository
 import com.example.rpg.data.repository.StatsRepository
 import com.example.rpg.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +25,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -38,7 +41,8 @@ class ChildHomeScreenViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
     private val questRepository: QuestRepository,
-    private val statsRepository: StatsRepository
+    private val statsRepository: StatsRepository,
+    private val screenUsageStatsRepository: ScreenUsageStatsRepository
 ) : ViewModel() {
     val childQuests = authRepository.currentUserIdFlow
         .filterNotNull()
@@ -100,6 +104,14 @@ class ChildHomeScreenViewModel @Inject constructor(
         }
     }
 
+    fun syncToday() {
+        viewModelScope.launch {
+            val uid = authRepository.currentUserIdFlow.firstOrNull()
+            if(uid != null) {
+                screenUsageStatsRepository.syncToday(uid).collect()
+            }
+        }
+    }
     private val questParentCache = mutableMapOf<String, User>()
 
     // Function to mark a quest as pending
