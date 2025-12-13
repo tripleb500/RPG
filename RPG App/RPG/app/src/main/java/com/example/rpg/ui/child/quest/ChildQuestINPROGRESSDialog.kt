@@ -79,7 +79,7 @@ fun ChildInProgressQuestDialog(
     {
         Surface(
             shape = RoundedCornerShape(16.dp),
-            color = Color.White,
+            //color = Color.White,
             tonalElevation = 4.dp,
             modifier = Modifier
                 .fillMaxWidth()
