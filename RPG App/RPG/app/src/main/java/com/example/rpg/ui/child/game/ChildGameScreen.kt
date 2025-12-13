@@ -1,10 +1,13 @@
 package com.example.rpg.ui.child.game
 // TODO: Implement screen
+import android.content.Context
 import android.content.Intent
-import android.os.Bundle
+import android.content.pm.PackageManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,9 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 
@@ -49,37 +49,43 @@ fun ChildGameScreen(
             .background(Color.LightGray),
         contentAlignment = Alignment.Center
     ) {
-        if (!valid)
-            Text("You have reached the screen time limit")
-        else {
-            // Try launching the Unity game once
-            LaunchedEffect(user, level) {
-                val u = user
-                val userLvl = level
-                if (u == null || userLvl == null) return@LaunchedEffect  // wait until both are ready
+        when {
+            !valid -> {
+                Text("You have reached the screen time limit")
+            }
 
-                val userName = u.username
-                val intent = Intent().apply {
-                    setClassName(
-                        "com.DefaultCompany.clickerTypeBeat",
-                        "com.unity3d.player.UnityPlayerGameActivity"
-                    )
+            launchStatus == LaunchStatus.Idle -> {
+                Text("Launching game...")
 
+                LaunchedEffect(user, level) {
+                    if (user == null || level == null) return@LaunchedEffect  // wait until both are ready
+
+                    val packageName = "com.DefaultCompany.clickerTypeBeat"
+                    val activityName = "com.unity3d.player.UnityPlayerGameActivity"
+
+                    val intent = Intent().apply {
+                        setClassName(packageName, activityName)
+                        putExtra("userName", user!!.username)
+                        putExtra("userLevel", level)
+                    }
+
+                    try {
+                        context.startActivity(intent)
+                        launchStatus = LaunchStatus.Success
+                    } catch (e: Exception) {
+                        launchStatus = LaunchStatus.Failed
+                    }
                 }
-                intent.putExtra("userName", userName)
-                intent.putExtra("userLevel", userLvl)
-                launchStatus = try {
-                    context.startActivity(intent)
-                    LaunchStatus.Success
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    LaunchStatus.Failed
-                }
+            }
+
+            launchStatus == LaunchStatus.Failed -> {
+                Text("Error, please install the game")
+            }
+
+            launchStatus == LaunchStatus.Success -> {
             }
         }
     }
-
-
 }
 
 // Sealed class for launch state
