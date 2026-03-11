@@ -5,9 +5,10 @@ At California State Univeristy, Long Beach, as one of the final requirements of 
 In Spring of 2025, formed RPG Dev and the development of the RPG application. RPG is a mobile application catered towards familes with children; The application features the ability for parents to monitor and incentivice their children to achieve tasks that may have difficulty completing. For the children, the application encourages children to complete their daily tasks with a game-like feeling to gain rewards set by their parents.
 
 # Meet the RPG Development Team 
-## Bryan Tran - 
-## Brady Askins - 
-## Erick Mao- 
-## Jordan Ramos - 
-## Michael Pham-Tran - 
-## Mitchell Flanagan - 
+## Bryan Tran
+Bryan serves as the team lead and contributes across multiple areas of the project, including project management, full-stack development, and testing. He coordinates team efforts, supports system design and implementation, and helps maintain code quality through testing and review. While working on this project, he was also an IT Data Analyst Intern, allowing him to incorporate industry practices and real-world technical insights into the team's development process.
+## Brady Askins
+## Erick Mao
+## Jordan Ramos
+## Michael Pham-Tran
+## Mitchell Flanagan
