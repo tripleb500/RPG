@@ -81,6 +81,7 @@ class AuthViewModel @Inject constructor(
                 if (user != null) {
                     _currentUserData.value = user
                     _authState.value = AuthState.Authenticated(user)
+                    userRepository.updateFCMToken(uid)
                 } else {
                     _authState.value = AuthState.Unauthenticated
                 }
