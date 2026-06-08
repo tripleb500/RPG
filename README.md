@@ -11,4 +11,5 @@ Bryan serves as the team lead and contributes across multiple areas of the proje
 ## Erick Mao
 ## Jordan Ramos
 ## Michael Pham-Tran
+Michael contributed to both front-end and back-end development as a full-stack developer. Implemented core application features, UI development, navigation flow, and critical bug fixes. Key contributions include back-end automation using Firebase Cloud Functions and Google Cloud Scheduler to manage automatic quest creation and status updates. As well as implemented push notifications using Firebase Cloud Messaging and FCM token handling. 
 ## Mitchell Flanagan
