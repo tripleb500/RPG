@@ -1,4 +1,6 @@
 # RPG
+<img width="2402" height="867" alt="Banner" src="https://github.com/user-attachments/assets/a1e5e46f-2bba-445d-b154-925e448341d4" />
+
 # CSULB CECS Senior Design Project
 At California State Univeristy, Long Beach, as one of the final requirements of the undergraduate Computer Science program; students must complete a two-part Senior Design Project. The capstone sequence, CECS 491A and CECS 491B, challenges students technical and teamwork skills to research, design, test, and develop a functioning product. 
 
